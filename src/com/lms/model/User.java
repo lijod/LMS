@@ -2,7 +2,7 @@ package com.lms.model;
 
 import java.io.Serializable;
 import java.lang.String;
-import java.sql.Date;
+import java.util.Date;
 import javax.persistence.*;
 
 /**
@@ -29,6 +29,7 @@ public class User implements Serializable {
 	@Column(name="email")
 	private String email;
 	@Column(name="dob")
+	@Temporal(TemporalType.DATE)
 	private Date dateOfBirth;
 	private static final long serialVersionUID = 1L;
 	   

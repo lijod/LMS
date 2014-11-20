@@ -2,7 +2,7 @@ package com.lms.model;
 
 import java.io.Serializable;
 import java.lang.String;
-import java.sql.Time;
+import java.util.Date;
 
 import javax.persistence.*;
 
@@ -26,9 +26,11 @@ public class Course implements Serializable {
 	@Column(name="course_location")
 	private String courseLocation;
 	@Column(name="course_start_time")
-	private Time courseStartTime;
+	@Temporal(TemporalType.TIME)
+	private Date courseStartTime;
 	@Column(name="course_end_time")
-	private Time courseEndTime;
+	@Temporal(TemporalType.TIME)
+	private Date courseEndTime;
 	@Column(name="course_day")
 	private String courseDay;
 	private static final long serialVersionUID = 1L;
@@ -38,7 +40,7 @@ public class Course implements Serializable {
 	}   
 	
 	public Course(String courseName, int sectionNumber, String courseLocation,
-			Time courseStartTime, Time courseEndTime, String courseDay) {
+			Date courseStartTime, Date courseEndTime, String courseDay) {
 		super();
 		this.courseName = courseName;
 		this.sectionNumber = sectionNumber;
@@ -49,7 +51,7 @@ public class Course implements Serializable {
 	}
 
 	public Course(int courseId, String courseName, int sectionNumber,
-			String courseLocation, Time courseStartTime, Time courseEndTime,
+			String courseLocation, Date courseStartTime, Date courseEndTime,
 			String courseDay) {
 		super();
 		this.courseId = courseId;
@@ -89,18 +91,18 @@ public class Course implements Serializable {
 	public void setCourseLocation(String courseLocation) {
 		this.courseLocation = courseLocation;
 	}   
-	public Time getCourseStartTime() {
+	public Date getCourseStartTime() {
 		return this.courseStartTime;
 	}
 
-	public void setCourseStartTime(Time courseStartTime) {
+	public void setCourseStartTime(Date courseStartTime) {
 		this.courseStartTime = courseStartTime;
 	}   
-	public Time getCourseEndTime() {
+	public Date getCourseEndTime() {
 		return this.courseEndTime;
 	}
 
-	public void setCourseEndTime(Time courseEndTime) {
+	public void setCourseEndTime(Date courseEndTime) {
 		this.courseEndTime = courseEndTime;
 	}   
 	public String getCourseDay() {
