@@ -4,23 +4,21 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-import com.lms.model.User;
+import com.lms.model.UserCourseDetail;
 
-public class UserDao {
+public class UserCourseDetailDao {
 
 	EntityManagerFactory emf = Persistence.createEntityManagerFactory("LMS");
 	EntityManager em = null;
-	public UserDao() {
+	public UserCourseDetailDao() {
 		em = emf.createEntityManager();
 	}
 	
-	public User createUser(User user){
-		
+	public UserCourseDetail createUserCourseDetail(UserCourseDetail ucd){
 		em.getTransaction().begin();
-		em.persist(user);
+		em.persist(ucd);
 		em.getTransaction().commit();
-		
-		return user;
+		return ucd;
 	}
-
+	
 }
