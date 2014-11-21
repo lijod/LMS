@@ -24,6 +24,7 @@ public class Course implements Serializable {
 	@Column(name="section_num")
 	private int sectionNumber;
 	@Column(name="course_location")
+	
 	private String courseLocation;
 	@Column(name="course_start_time")
 	@Temporal(TemporalType.TIME)
