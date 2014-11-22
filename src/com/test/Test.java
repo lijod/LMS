@@ -28,6 +28,11 @@ public class Test {
 		System.out.println(user);
 		System.out.println(course);
 		System.out.println(ucd);
+		
+		user = null;
+		user = new UserDao().findUserByUserId(1);
+		
+		System.out.println("select:\n" + user);
 	}
-
+	
 }

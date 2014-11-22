@@ -23,4 +23,15 @@ public class UserDao {
 		return user;
 	}
 
+	public User findUserByUserId(int userId){
+		User user = null;
+		
+		em.getTransaction().begin();
+		user = em.find(User.class, userId);
+		
+		em.getTransaction().commit();
+		
+		return user;
+	}
+	
 }

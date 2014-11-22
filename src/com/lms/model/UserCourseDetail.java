@@ -2,6 +2,7 @@ package com.lms.model;
 
 import java.io.Serializable;
 import java.lang.String;
+
 import javax.persistence.*;
 
 /**
@@ -25,6 +26,14 @@ public class UserCourseDetail implements Serializable {
 	private String roleName;
 	private static final long serialVersionUID = 1L;
 
+	@ManyToOne(optional=false, fetch=FetchType.EAGER)
+	@JoinColumn(name="course_id", referencedColumnName= "course_id", updatable=false, insertable=false)
+	private Course course;
+	
+	@ManyToOne(optional=false, fetch=FetchType.EAGER)
+	@JoinColumn(name="user_id", referencedColumnName= "user_id", updatable=false, insertable=false)
+	private User user;
+	
 	public UserCourseDetail() {
 		super();
 	}   
@@ -57,5 +66,40 @@ public class UserCourseDetail implements Serializable {
 	public void setRoleName(String roleName) {
 		this.roleName = roleName;
 	}
+
+	public Course getCourse() {
+		return course;
+	}
+
+	public void setCourse(Course course) {
+		this.course = course;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("UserCourseDetail [courseId=");
+		builder.append(courseId);
+		builder.append(", userid=");
+		builder.append(userid);
+		builder.append(", roleName=");
+		builder.append(roleName);
+		builder.append(", course=");
+		builder.append(course == null? null : course.getCourseName());
+		builder.append(", user first name=");
+		builder.append(user == null? null : user.getFirstName());
+		builder.append(", user last name=");
+		builder.append(user == null? null : user.getLastName());
+		builder.append("]");
+		return builder.toString();
+	}   
    
 }

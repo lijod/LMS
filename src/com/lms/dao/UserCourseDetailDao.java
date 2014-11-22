@@ -18,6 +18,7 @@ public class UserCourseDetailDao {
 		em.getTransaction().begin();
 		em.persist(ucd);
 		em.getTransaction().commit();
+		em.refresh(ucd);
 		return ucd;
 	}
 	

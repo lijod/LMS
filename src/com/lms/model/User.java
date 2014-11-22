@@ -3,6 +3,8 @@ package com.lms.model;
 import java.io.Serializable;
 import java.lang.String;
 import java.util.Date;
+import java.util.List;
+
 import javax.persistence.*;
 
 /**
@@ -31,6 +33,11 @@ public class User implements Serializable {
 	@Column(name="dob")
 	@Temporal(TemporalType.DATE)
 	private Date dateOfBirth;
+	@OneToMany(fetch=FetchType.EAGER)
+	@JoinColumn(name="user_id", referencedColumnName = "user_id")
+	private List<UserCourseDetail> userCourseDetail;
+	
+	
 	private static final long serialVersionUID = 1L;
 	   
 	public User() {
@@ -108,4 +115,35 @@ public class User implements Serializable {
 		this.dateOfBirth = dateOfBirth;
 	}
    
+	public List<UserCourseDetail> getUserCourseDetail() {
+		return userCourseDetail;
+	}
+
+	public void setUserCourseDetail(List<UserCourseDetail> userCourseDetail) {
+		this.userCourseDetail = userCourseDetail;
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("User [userId=");
+		builder.append(userId);
+		builder.append(", userName=");
+		builder.append(userName);
+		builder.append(", password=");
+		builder.append(password);
+		builder.append(", firstName=");
+		builder.append(firstName);
+		builder.append(", lastName=");
+		builder.append(lastName);
+		builder.append(", email=");
+		builder.append(email);
+		builder.append(", dateOfBirth=");
+		builder.append(dateOfBirth);
+		builder.append(", userCourseDetail=");
+		builder.append(userCourseDetail);
+		builder.append("]");
+		return builder.toString();
+	}
+	
 }
