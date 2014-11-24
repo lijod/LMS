@@ -1,11 +1,15 @@
 package com.lms.dao;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 
 import com.lms.model.Course;
 import com.lms.model.User;
+import com.lms.model.UserCourseDetail;
 
 public class CourseDao {
 
@@ -39,5 +43,14 @@ public class CourseDao {
 		em.getTransaction().commit();
 		return true;
 	}
+	
+	public List<Course> findAlleCourses() {
+		System.out.println("hi");
+		Query query = em.createQuery("select course from Course course");
+		List<Course> result = query.getResultList();
+		return result;
+	}
+	
+	
 	
 }

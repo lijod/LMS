@@ -7,6 +7,8 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 /**
  * Entity implementation class for Entity: Course
  *
@@ -35,6 +37,8 @@ public class Course implements Serializable {
 	private Date courseEndTime;
 	@Column(name="course_day")
 	private String courseDay;
+	
+	@JsonIgnore
 	@OneToMany(fetch=FetchType.EAGER)
 	@JoinColumn(name="course_id", referencedColumnName = "course_id")
 	private List<UserCourseDetail> userCourseDetail;

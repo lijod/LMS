@@ -1,12 +1,16 @@
 package com.lms.service;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.Query;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 
 import com.lms.dao.CourseDao;
 import com.lms.model.Course;
+import com.lms.model.UserCourseDetail;
 
 
 // /com.lms.servic/jwsCourseService
@@ -15,7 +19,7 @@ import com.lms.model.Course;
 public class CourseService {
 	
 	// /com.lms.servic/jwsCourseService/createCourse
-
+        @GET
 		@Path("/createCourse/{courseName}/{sectionNumber}/{courseLocation}/{courseStartTime}/{courseEndTime}/{courseDay}")
 		public Course createCourseService(@PathParam("courseName") String courseName,
 				@PathParam("sectionNumber") int sectionNumber,
@@ -50,5 +54,13 @@ public class CourseService {
 			return courseObj.deleteCourse(id);
 		}
 
+		// /com.lms.servic/jwsCourseService/findAlleCourses
+@GET
+		@Path("/findAlleCourses")
+		public List<Course> findAlleCoursesService() {	
+			System.out.println("hi000");
+			CourseDao courseObj = new CourseDao();
+			 return courseObj.findAlleCourses();
+		}
 	
 }
