@@ -31,11 +31,12 @@ public class UserDao {
 		return user;
 	}
 	
-	public void deleteUser(int userId){
+	public Boolean deleteUser(int userId){
 		em.getTransaction().begin();
 		User user = em.find (User.class, userId);
 		em.remove(user);
 		em.getTransaction().commit();
+		return true;
 	}
 	
 }

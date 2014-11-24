@@ -26,10 +26,11 @@ public class UserCourseDetailDao {
 		return ucd;
 	}
 	
-	public void deleteUserCourseDetail(int courseId, int userId, String roleName){
+	public Boolean deleteUserCourseDetail(int courseId, int userId, String roleName){
 		em.getTransaction().begin();
 		em.remove(em.find(UserCourseDetail.class, new UserCourseDetailPK(courseId, userId, roleName)));
 		em.getTransaction().commit();
+		return true;
 	}
 	
 	@SuppressWarnings("unchecked")

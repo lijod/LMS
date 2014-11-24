@@ -32,11 +32,12 @@ public class CourseDao {
 		return course;
 	}
 	
-	public void deleteCourse(int courseId){
+	public Boolean deleteCourse(int courseId){
 		em.getTransaction().begin();
 		Course course = em.find (Course.class, courseId);
 		em.remove(course);
 		em.getTransaction().commit();
+		return true;
 	}
 	
 }
