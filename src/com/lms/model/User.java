@@ -7,6 +7,8 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 /**
  * Entity implementation class for Entity: User
  *
@@ -33,6 +35,8 @@ public class User implements Serializable {
 	@Column(name="dob")
 	@Temporal(TemporalType.DATE)
 	private Date dateOfBirth;
+	
+	@JsonIgnore
 	@OneToMany(fetch=FetchType.EAGER)
 	@JoinColumn(name="user_id", referencedColumnName = "user_id")
 	private List<UserCourseDetail> userCourseDetail;

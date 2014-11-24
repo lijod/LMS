@@ -3,10 +3,8 @@
 <body>
 	<div class="container">
 		<div>
-			<select class="form-control">
-				<option class="form-control">SELECT</option>
-				<option class="form-control">Prof1</option>
-				<option class="form-control">Prof2</option>
+			<select id="prof-list" class="form-control">
+				<option class="form-control">ADD NEW</option>
 			</select>
 			<br/>
 			<button id="edit-prof" class="btn btn-default">EDIT</button>
@@ -34,6 +32,11 @@
 <script type="text/javascript">
 	var applicaitonURL = "/LMS/api";
 	var userServiceURl = applicaitonURL + "/jwsUserService/createUser";
+	
+	$(document).ready(function() {
+		populateProfessorList();
+	});
+	
 	function createProfessor(){
 		$.ajax({
 			type : "GET",
@@ -60,6 +63,23 @@
 		$("#email").val() + 
 		"/" + 
 		$("#dob").val()
+	}
+	
+	function populateProfessorList(){
+		$.ajax({
+			type : "GET",
+			url :  "http://localhost:8080/LMS/api/jwsUserCourseDetailService/findUserByRole/PROFESSOR",
+			dataType : "json",
+			success : function (result) {
+				$.each(result, function(i, val){
+					$("#prof-list").append(
+							"<option id='prof-" + val.userId + "'>" + val.lastName + ", " + val.firstName + "</option>");
+				});
+			},
+			failure : function () {
+				console.log("failed");
+			}
+		});
 	}
 </script>
 </html>

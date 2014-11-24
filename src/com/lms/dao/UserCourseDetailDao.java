@@ -53,4 +53,14 @@ public class UserCourseDetailDao {
 		return result;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<UserCourseDetail> findByRole(String role){
+		em.getTransaction().begin();
+		Query query = em.createQuery("select ucd from UserCourseDetail ucd where ucd.roleName = :role");
+		query.setParameter("role", role);
+		List<UserCourseDetail> result = query.getResultList();
+		em.getTransaction().commit();
+		return result;
+	}
+	
 }

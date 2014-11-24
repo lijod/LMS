@@ -2,13 +2,14 @@ package com.lms.service;
 
 import java.util.List;
 
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 
 import com.lms.dao.UserCourseDetailDao;
-import com.lms.dao.UserDao;
+import com.lms.model.User;
 import com.lms.model.UserCourseDetail;
-import com.mysql.fabric.xmlrpc.base.Array;
+import com.lms.util.UserCourseDetailUtil;
 
 // /com.lms.servic/jwsUserCourseDetailService
 @Path("/jwsUserCourseDetailService")
@@ -47,9 +48,17 @@ public class UserCourseDetailService {
 	
 	// /com.lms.servic/jwsUserCourseDetailService/findByCourseId
 
-		@Path("/findByCourseId/{userId}")
-		public List<UserCourseDetail> findByCourseIdService(@PathParam("courseIdId") int courseId) {
-			UserCourseDetailDao ucd = new UserCourseDetailDao();
-			return ucd.findByUserId(courseId);
-		}
+	@Path("/findByCourseId/{userId}")
+	public List<UserCourseDetail> findByCourseIdService(@PathParam("courseIdId") int courseId) {
+		UserCourseDetailDao ucd = new UserCourseDetailDao();
+		return ucd.findByUserId(courseId);
+	}
+	
+	@GET
+	@Path("/findUserByRole/{role}")
+	public List<User> findUserByRole(@PathParam("role") String role) {
+		UserCourseDetailDao ucd = new UserCourseDetailDao();
+		System.out.println(UserCourseDetailUtil.getUsersFromUserCourseDetail(ucd.findByRole(role)));
+		return UserCourseDetailUtil.getUsersFromUserCourseDetail(ucd.findByRole(role));
+	}
 }
