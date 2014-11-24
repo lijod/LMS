@@ -5,6 +5,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 import com.lms.model.Course;
+import com.lms.model.User;
 
 public class CourseDao {
 
@@ -24,4 +25,18 @@ public class CourseDao {
 		return course;
 	}
 
+	public Course findCourseById(int courseId){
+		em.getTransaction().begin();
+		Course course = em.find(Course.class, courseId);
+		em.getTransaction().commit();
+		return course;
+	}
+	
+	public void deleteCourse(int courseId){
+		em.getTransaction().begin();
+		Course course = em.find (Course.class, courseId);
+		em.remove(course);
+		em.getTransaction().commit();
+	}
+	
 }

@@ -7,8 +7,8 @@ import java.lang.String;
  * ID class for entity: UserCourseDetail
  *
  */ 
+
 public class UserCourseDetailPK  implements Serializable {   
-   
 	         
 	private int courseId;         
 	private int userid;         
@@ -17,7 +17,12 @@ public class UserCourseDetailPK  implements Serializable {
 
 	public UserCourseDetailPK() {}
 
-	
+	public UserCourseDetailPK(int courseId, int userid, String roleName) {
+		super();
+		this.courseId = courseId;
+		this.userid = userid;
+		this.roleName = roleName;
+	}
 
 	public int getCourseId() {
 		return this.courseId;
