@@ -8,8 +8,10 @@ import javax.persistence.Persistence;
 import javax.persistence.Query;
 
 import com.lms.model.Course;
+import com.lms.model.CourseSchedule;
 import com.lms.model.User;
-import com.lms.model.UserCourseDetail;
+/*import com.lms.model.User;
+import com.lms.model.UserCourseDetail;*/
 
 public class CourseDao {
 
@@ -44,12 +46,34 @@ public class CourseDao {
 		return true;
 	}
 	
-	public List<Course> findAlleCourses() {
-		System.out.println("hi");
+	@SuppressWarnings("unchecked")
+	public List<Course> findAllCourses() {
 		Query query = em.createQuery("select course from Course course");
 		List<Course> result = query.getResultList();
 		return result;
 	}
+	
+	
+	public void updateCourse(Course course){
+		System.out.println("updateCourse*******************"+course);
+		em.getTransaction().begin();
+		em.merge(course);
+		em.getTransaction().commit();
+		
+		
+		System.out.println(course.getCourseName());
+		System.out.println(course.getCourseId());
+		System.out.println(course); 
+	}
+	
+	
+	/*CourseSchedule courseScheduleObj=em.find(CourseSchedule.class, courseObj.getCourseId());
+	courseScheduleObj.setCourseEndDate(course);
+	courseScheduleObj.setCourseEndTime(courseEndTime);
+	courseScheduleObj.setCourseLocation(courseLocation);
+	courseScheduleObj.setCourseStartDate(courseStartDate);
+	courseScheduleObj.setCourseStartTime(courseStartTime);
+	courseScheduleObj.setDay(day);*/
 	
 	
 	

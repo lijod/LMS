@@ -7,4 +7,5 @@
 <title>Learning Management System</title>
 <link href="/LMS/css/bootstrap/bootstrap.min.css" rel="stylesheet"/>
 <script type="text/javascript" src="/LMS/js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="/LMS/js/json.date-extensions.js"></script>
 </head>

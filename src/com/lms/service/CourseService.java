@@ -1,66 +1,84 @@
 package com.lms.service;
 
-import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Query;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 import com.lms.dao.CourseDao;
 import com.lms.model.Course;
-import com.lms.model.UserCourseDetail;
 
-
-// /com.lms.servic/jwsCourseService
+// /com.lms.service/jwsCourseService
 @Path("/jwsCourseService")
-
 public class CourseService {
-	
-	// /com.lms.servic/jwsCourseService/createCourse
-        @GET
-		@Path("/createCourse/{courseName}/{sectionNumber}/{courseLocation}/{courseStartTime}/{courseEndTime}/{courseDay}")
-		public Course createCourseService(@PathParam("courseName") String courseName,
-				@PathParam("sectionNumber") int sectionNumber,
-				@PathParam("courseLocation") String courseLocation,
-				@PathParam("courseStartTime") String courseStartTime,
-				@PathParam("courseEndTime") String courseEndTime,
-				@PathParam("courseDay") String courseDay) {
-			Course course =new Course (courseName,sectionNumber,courseLocation,new Date(),new Date(),courseDay);
-			CourseDao courseObj = new CourseDao();
-			courseObj.createCourse(course);
-			return course;
-		}
 
-	
-	
-		// /com.lms.servic/jwsCourseService/findCourseById
+	// /com.lms.service/jwsCourseService/createCourse
+	/*
+	 * @GET
+	 * 
+	 * @Path("/createCourse/{courseName}/{sectionNumber}") public Course
+	 * createCourseService(@PathParam("courseName") String courseName,
+	 * 
+	 * @PathParam("sectionNumber") int sectionNumber) { Course course =new
+	 * Course (courseName,sectionNumber); CourseDao courseObj = new CourseDao();
+	 * courseObj.createCourse(course); return course; }
+	 */
 
-		@Path("/findCourseById/{id}")
-		public Course findCourseByIdService(@PathParam("id") int id) {
-			Course course =new Course();
-			CourseDao courseObj = new CourseDao();
-			course=courseObj.findCourseById(id);
-			return course;
-		}
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/createCourse")
+	public Course createCourseService(Course course) {
+
+		CourseDao courseDaoObj = new CourseDao();
+		courseDaoObj.createCourse(course);
+		return course;
+	}
+
+	// /com.lms.service/jwsCourseService/findCourseById
+	@GET
+	@Path("/findCourseById/{id}")
+	public Course findCourseByIdService(@PathParam("id") int id) {
+		Course course = new Course();
+		CourseDao courseDaoObj = new CourseDao();
+		course = courseDaoObj.findCourseById(id);
+		return course;
+	}
+
+	// /com.lms.service/jwsCourseService/deleteCourse
+	@DELETE
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/deleteCourseById")
+	public Boolean deleteCourseService(int id) {
+		CourseDao courseDaoObj = new CourseDao();
+		return courseDaoObj.deleteCourse(id);
+	}
+
+	// /com.lms.service/jwsCourseService/findAllCourses
+	@GET
+	@Path("/findAllCourses")
+	public List<Course> findAlleCoursesService() {
 		
-		
-		// /com.lms.servic/jwsCourseService/deleteCourse
+		CourseDao courseDaoObj = new CourseDao();
+		return courseDaoObj.findAllCourses();
+	}
 
-		@Path("/deleteCourse/{id}")
-		public Boolean deleteCourseService(@PathParam("id") int id) {
-			CourseDao courseObj = new CourseDao();
-			return courseObj.deleteCourse(id);
-		}
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/updateCourse")
+	public Course updateCourseService( Course course) {
+        System.out.println("updateCourseService");
+		CourseDao courseDaoObj = new CourseDao();
+		courseDaoObj.updateCourse(course);
+		return course;
+	}
 
-		// /com.lms.servic/jwsCourseService/findAlleCourses
-@GET
-		@Path("/findAlleCourses")
-		public List<Course> findAlleCoursesService() {	
-			System.out.println("hi000");
-			CourseDao courseObj = new CourseDao();
-			 return courseObj.findAlleCourses();
-		}
-	
 }

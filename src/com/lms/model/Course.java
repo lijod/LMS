@@ -2,7 +2,6 @@ package com.lms.model;
 
 import java.io.Serializable;
 import java.lang.String;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.*;
@@ -26,22 +25,16 @@ public class Course implements Serializable {
 	private String courseName;
 	@Column(name="section_num")
 	private int sectionNumber;
-	@Column(name="course_location")
-	
-	private String courseLocation;
-	@Column(name="course_start_time")
-	@Temporal(TemporalType.TIME)
-	private Date courseStartTime;
-	@Column(name="course_end_time")
-	@Temporal(TemporalType.TIME)
-	private Date courseEndTime;
-	@Column(name="course_day")
-	private String courseDay;
 	
 	@JsonIgnore
-	@OneToMany(fetch=FetchType.EAGER)
+	@OneToMany(fetch=FetchType.EAGER,cascade=CascadeType.ALL)
 	@JoinColumn(name="course_id", referencedColumnName = "course_id")
 	private List<UserCourseDetail> userCourseDetail;
+	
+	
+	@OneToMany(fetch=FetchType.EAGER,cascade=CascadeType.ALL)
+	@JoinColumn(name="course_id", referencedColumnName="course_id")
+	private List<CourseSchedule> courseScheduleList;
 
 	private static final long serialVersionUID = 1L;
 
@@ -49,28 +42,32 @@ public class Course implements Serializable {
 		super();
 	}   
 	
-	public Course(String courseName, int sectionNumber, String courseLocation,
-			Date courseStartTime, Date courseEndTime, String courseDay) {
+	public Course(String courseName, int sectionNumber) {
 		super();
 		this.courseName = courseName;
 		this.sectionNumber = sectionNumber;
-		this.courseLocation = courseLocation;
-		this.courseStartTime = courseStartTime;
-		this.courseEndTime = courseEndTime;
-		this.courseDay = courseDay;
 	}
-
-	public Course(int courseId, String courseName, int sectionNumber,
-			String courseLocation, Date courseStartTime, Date courseEndTime,
-			String courseDay) {
+	
+	public Course(String courseName, int sectionNumber, List<CourseSchedule> courseScheduleList) {
+		super();
+		this.courseName = courseName;
+		this.sectionNumber = sectionNumber;
+		this.courseScheduleList=courseScheduleList;
+	}
+	
+	public Course(int courseId, String courseName, int sectionNumber,List<CourseSchedule> courseScheduleList) {
 		super();
 		this.courseId = courseId;
 		this.courseName = courseName;
 		this.sectionNumber = sectionNumber;
-		this.courseLocation = courseLocation;
-		this.courseStartTime = courseStartTime;
-		this.courseEndTime = courseEndTime;
-		this.courseDay = courseDay;
+		this.courseScheduleList=courseScheduleList;
+	}
+
+	public Course(int courseId, String courseName, int sectionNumber) {
+		super();
+		this.courseId = courseId;
+		this.courseName = courseName;
+		this.sectionNumber = sectionNumber;
 	}
 
 	public int getCourseId() {
@@ -94,34 +91,7 @@ public class Course implements Serializable {
 	public void setSectionNumber(int sectionNumber) {
 		this.sectionNumber = sectionNumber;
 	}   
-	public String getCourseLocation() {
-		return this.courseLocation;
-	}
-
-	public void setCourseLocation(String courseLocation) {
-		this.courseLocation = courseLocation;
-	}   
-	public Date getCourseStartTime() {
-		return this.courseStartTime;
-	}
-
-	public void setCourseStartTime(Date courseStartTime) {
-		this.courseStartTime = courseStartTime;
-	}   
-	public Date getCourseEndTime() {
-		return this.courseEndTime;
-	}
-
-	public void setCourseEndTime(Date courseEndTime) {
-		this.courseEndTime = courseEndTime;
-	}   
-	public String getCourseDay() {
-		return this.courseDay;
-	}
-
-	public void setCourseDay(String courseDay) {
-		this.courseDay = courseDay;
-	}
+	
    
 	public List<UserCourseDetail> getUserCourseDetail() {
 		return userCourseDetail;
@@ -130,6 +100,16 @@ public class Course implements Serializable {
 	public void setUserCourseDetail(List<UserCourseDetail> userCourseDetail) {
 		this.userCourseDetail = userCourseDetail;
 	}
+	
+	public List<CourseSchedule> getCourseScheduleList() {
+		return courseScheduleList;
+	}
+
+	
+	public void setCourseScheduleList(List<CourseSchedule> courseScheduleList) {
+		this.courseScheduleList = courseScheduleList;
+	}
+	
 
 	@Override
 	public String toString() {
@@ -140,16 +120,10 @@ public class Course implements Serializable {
 		builder.append(courseName);
 		builder.append(", sectionNumber=");
 		builder.append(sectionNumber);
-		builder.append(", courseLocation=");
-		builder.append(courseLocation);
-		builder.append(", courseStartTime=");
-		builder.append(courseStartTime);
-		builder.append(", courseEndTime=");
-		builder.append(courseEndTime);
-		builder.append(", courseDay=");
-		builder.append(courseDay);
 		builder.append(", userCourseDetail=");
 		builder.append(userCourseDetail);
+		builder.append(", courseScheduleList=");
+		builder.append(courseScheduleList);
 		builder.append("]");
 		return builder.toString();
 	}
