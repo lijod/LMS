@@ -4,12 +4,9 @@
 	<div class="container">
 		<div>
 			<select id="prof-list" class="form-control">
-				<option class="form-control">ADD NEW</option>
+				<option class='form-control' id='add-new' value='ADD NEW'>ADD NEW</option>
 			</select>
 			<br/>
-			<button id="edit-prof" class="btn btn-default">EDIT</button>
-			<button id="delete-prof" class="btn btn-default">DELETE</button>
-			<button id="add-prof" class="btn btn-default" onClick="createProfessor()">ADD NEW</button>
 		</div>
 		
 		<div>
@@ -24,25 +21,87 @@
 			<!-- label for="email">E-MAIL ADDRESS</label-->
 			<input id="email" name="email" type=text class="form-control" placeholder="E-MAIL ADDRESS"/>
 			<!-- label for="dob">DATE OF BIRTH</label-->
-			<input id="dob" name="dob" type=text class="form-control" placeholder="DATE OF BIRTH"/>
+			<input id="dob" name="dob" type=text class="form-control" style="display:none;" value="09-14-2014" placeholder="DATE OF BIRTH"/>
+			
+			<select id="course-list" multiple class="form-control">
+				<option id="none-course" value="none">NONE</option>
+			</select>
+		</div>
+		<br/>
+		<div>
+			<button id="edit-prof" class="btn btn-default" onClick="updateUserDetails()">SAVE CHANGES</button>
+			<button id="delete-prof" class="btn btn-default" onClick="deleteUser()">DELETE</button>
+			<button id="add-prof" class="btn btn-default" onClick="createProfessor()">ADD</button>
 		</div>
 	</div>
 </body>
 
 <script type="text/javascript">
 	var applicaitonURL = "/LMS/api";
-	var userServiceURl = applicaitonURL + "/jwsUserService/createUser";
-	
+	var userCreateServiceURL = applicaitonURL + "/jwsUserService/createUser";
+	var userUpdateServiceURl = applicaitonURL + "/jwsUserService/updateUser";
+	var userUpdatDeleteServiceURl = applicaitonURL + "/jwsUserService/deleteUser";
+	var userJson = null;
+
 	$(document).ready(function() {
 		populateProfessorList();
+		populateCourseList()
+		profListChange();
+		$("#prof-list").change(profListChange);
 	});
+	
+	function profListChange(){
+		if($("#prof-list").val() == "ADD NEW"){
+			$("#edit-prof").hide();
+			$("#delete-prof").hide();
+			$("#add-prof").show();
+			populateuserDetail("", "", "", "", "", "");
+			clearCourseSelection();
+		}else{
+			$("#edit-prof").show();
+			$("#delete-prof").show();
+			$("#add-prof").hide();
+			populateUserDetailsFromJSON(extractUserIdFromOptionId($("#prof-list")));
+		}
+	}
+	
+	function extractUserIdFromOptionId(selectElement){
+		return selectElement.children(":selected").attr("id").split("prof-")[1];
+	}
+	
+	function populateUserDetailsFromJSON(userId){
+		$.each(userJson, function(i, val){
+			if(userId == val.userId){
+				populateuserDetail(val.firstName, val.lastName, val.userName, val.password, val.email, val.dateOfBirth);
+				clearCourseSelection();
+				$.each(val.userCourseDetail, function(j, ucdVal){
+					$("#course-" + ucdVal.courseId).attr("selected", true);
+				});
+			}
+		});
+	}
+	
+	function clearCourseSelection(){
+		$("#course-list").find("option").attr("selected", false);
+	}
+	
+	function populateuserDetail(firstName, lastName, userName, password, email, dob){
+		$("#first-name").val(firstName);
+		$("#last-name").val(lastName);
+		$("#user-name").val(userName);
+		$("#password").val(password);
+		$("#email").val(email);
+		//$("#dob").val(dateOfBirth);  // NEED TO CHANGE THE DATE FORMAT
+	}
 	
 	function createProfessor(){
 		$.ajax({
 			type : "GET",
-			url :  userServiceURl + getProfessorQueryString(),
+			dataType : "json",
+			url :  userCreateServiceURL + getProfessorQueryString(),
 			success : function (result) {
 				console.log(result);
+				location.reload();
 			},
 			failure : function () {
 				console.log("failed");
@@ -62,18 +121,41 @@
 		"/" + 
 		$("#email").val() + 
 		"/" + 
-		$("#dob").val()
+		$("#dob").val() + 
+		"/" +
+		"PROFESSOR" + 
+		"/" + 
+		getCourseIds();
+	}
+	
+	
+	function getCourseIds(){
+		var courseList = $("#course-list").val();
+		var toReturn = "";
+		if(courseList != null)
+			$.each(courseList, function (i, val){
+				toReturn += val;
+				if(i < courseList.length - 1) toReturn += ",";
+			});
+		return toReturn;
 	}
 	
 	function populateProfessorList(){
+		var profList = [];
 		$.ajax({
 			type : "GET",
 			url :  "http://localhost:8080/LMS/api/jwsUserCourseDetailService/findUserByRole/PROFESSOR",
 			dataType : "json",
 			success : function (result) {
+				userJson = result;
+				$("#prof-list").html(
+				"<option class='form-control' id='add-new' value='ADD NEW'>ADD NEW</option>"); 
+				
 				$.each(result, function(i, val){
-					$("#prof-list").append(
+					if(profList.indexOf(val.userId) == -1)
+						$("#prof-list").append(
 							"<option id='prof-" + val.userId + "'>" + val.lastName + ", " + val.firstName + "</option>");
+					profList.push(val.userId);
 				});
 			},
 			failure : function () {
@@ -81,5 +163,59 @@
 			}
 		});
 	}
+	
+	function updateUserDetails(){
+		$.ajax({
+			type : "GET",
+			url :  userUpdateServiceURl + "/" + extractUserIdFromOptionId($("#prof-list")) + getProfessorQueryString(),
+			dataType : "json",
+			success : function (result) {
+				//userJson = result;
+				populateProfessorList();
+			},
+			failure : function () {
+				console.log("failed");
+			}
+		});
+	}
+	
+	function deleteUser(){
+		$.ajax({
+			type : "GET",
+			url :  userUpdatDeleteServiceURl + "/" + extractUserIdFromOptionId($("#prof-list")),
+			dataType : "json",
+			success : function (result) {
+				//userJson = result;
+				console.log("delete success");
+				populateProfessorList();
+				$("#prof-list option:first").attr('selected','selected');
+				populateuserDetail("", "", "", "", "", "");
+			},
+			failure : function () {
+				console.log("failed");
+			}
+		});
+	}
+	
+	function populateCourseList(){
+		$.ajax({
+			type : "GET",
+			url :  "http://localhost:8080/LMS/api/jwsCourseService/findAllCourses",
+			dataType : "json",
+			success : function (result) {
+				$("#course-list").html(
+				"<option class='form-control' id='none-course' value='none'>NONE</option>"); 
+				$.each(result, function(i, val){
+					$("#course-list").append(
+						"<option class='form-control' value='" + val.courseId + "' id='course-" + val.courseId + "'>" + 
+						val.courseName + "</option>");
+				});
+			},
+			failure : function () {
+				console.log("failed");
+			}
+		});
+	}
+	
 </script>
 </html>

@@ -64,7 +64,7 @@ public class Test {
 		
 		List<CourseSchedule> csList = new ArrayList<CourseSchedule>();
 		csList.add(cs);
-		Course course = new Course(31, "ioioioioioioioi", 121212, csList);
+		Course course = new Course(31, "ioioioioioioioi"/*, 121212*/, csList);
 		CourseDao courseObj = new CourseDao();
 		courseObj.updateCourse(course);
 		

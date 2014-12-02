@@ -38,6 +38,7 @@ public class UserCourseDetailDao {
 		em.getTransaction().begin();
 		Query query = em.createQuery("select ucd from UserCourseDetail ucd where ucd.userid = :userId");
 		query.setParameter("userId", userId);
+		query.setHint("javax.persistence.cache.storeMode", "BYPASS");
 		List<UserCourseDetail> result = query.getResultList();
 		em.getTransaction().commit();
 		return result;
@@ -61,6 +62,17 @@ public class UserCourseDetailDao {
 		List<UserCourseDetail> result = query.getResultList();
 		em.getTransaction().commit();
 		return result;
+	}
+	
+	public int deleteByUserIdAndRole(int userId, String role){
+		em.getTransaction().begin();
+		Query query = em.createQuery("delete from UserCourseDetail ucd where ucd.roleName = :role and ucd.userId = :userId");
+		query.setParameter("role", role);
+		query.setParameter("userId", userId);
+		int deletedCount = query.executeUpdate();
+		em.getTransaction().commit();
+		System.out.println("Deleted " + deletedCount + " records");
+		return deletedCount;
 	}
 	
 }

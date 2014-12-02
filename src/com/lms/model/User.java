@@ -36,11 +36,10 @@ public class User implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date dateOfBirth;
 	
-	@JsonIgnore
-	@OneToMany(fetch=FetchType.EAGER)
+	//@JsonIgnore
+	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
 	@JoinColumn(name="user_id", referencedColumnName = "user_id")
 	private List<UserCourseDetail> userCourseDetail;
-	
 	
 	private static final long serialVersionUID = 1L;
 	   

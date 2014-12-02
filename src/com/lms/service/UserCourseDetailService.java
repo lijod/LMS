@@ -58,7 +58,6 @@ public class UserCourseDetailService {
 	@Path("/findUserByRole/{role}")
 	public List<User> findUserByRole(@PathParam("role") String role) {
 		UserCourseDetailDao ucd = new UserCourseDetailDao();
-		System.out.println(UserCourseDetailUtil.getUsersFromUserCourseDetail(ucd.findByRole(role)));
 		return UserCourseDetailUtil.getUsersFromUserCourseDetail(ucd.findByRole(role));
 	}
 }

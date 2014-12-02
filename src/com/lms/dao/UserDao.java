@@ -34,9 +34,17 @@ public class UserDao {
 	public Boolean deleteUser(int userId){
 		em.getTransaction().begin();
 		User user = em.find (User.class, userId);
+		System.out.println("delete:" + user);
 		em.remove(user);
 		em.getTransaction().commit();
 		return true;
+	}
+	
+	public User updateUser(User user){
+		em.getTransaction().begin();
+		em.merge(user);
+		em.getTransaction().commit();
+		return user;
 	}
 	
 }

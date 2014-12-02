@@ -11,7 +11,7 @@ import java.lang.String;
 public class UserCourseDetailPK  implements Serializable {   
 	         
 	private int courseId;         
-	private int userid;         
+	private int userId;         
 	private String roleName;
 	private static final long serialVersionUID = 1L;
 
@@ -20,7 +20,7 @@ public class UserCourseDetailPK  implements Serializable {
 	public UserCourseDetailPK(int courseId, int userid, String roleName) {
 		super();
 		this.courseId = courseId;
-		this.userid = userid;
+		this.userId = userid;
 		this.roleName = roleName;
 	}
 
@@ -34,14 +34,13 @@ public class UserCourseDetailPK  implements Serializable {
 	
 
 	public int getUserid() {
-		return this.userid;
+		return this.userId;
 	}
 
 	public void setUserid(int userid) {
-		this.userid = userid;
+		this.userId = userid;
 	}
 	
-
 	public String getRoleName() {
 		return this.roleName;
 	}

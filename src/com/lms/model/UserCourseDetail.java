@@ -5,13 +5,15 @@ import java.lang.String;
 
 import javax.persistence.*;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 /**
  * Entity implementation class for Entity: UserCourseDetail
  *
  */
 @Entity
 @Table(name="user_course_detail")
-
+@Cacheable(false)
 @IdClass(UserCourseDetailPK.class)
 public class UserCourseDetail implements Serializable {
 
@@ -20,16 +22,18 @@ public class UserCourseDetail implements Serializable {
 	private int courseId;   
 	@Id
 	@Column(name="user_id")
-	private int userid;   
+	private int userId;   
 	@Id
 	@Column(name="role")
 	private String roleName;
 	private static final long serialVersionUID = 1L;
 
+	@JsonIgnore
 	@ManyToOne(optional=false, fetch=FetchType.EAGER)
 	@JoinColumn(name="course_id", referencedColumnName= "course_id", updatable=false, insertable=false)
 	private Course course;
 	
+	@JsonIgnore
 	@ManyToOne(optional=false, fetch=FetchType.EAGER)
 	@JoinColumn(name="user_id", referencedColumnName= "user_id", updatable=false, insertable=false)
 	private User user;
@@ -41,7 +45,7 @@ public class UserCourseDetail implements Serializable {
 	public UserCourseDetail(int courseId, int userid, String roleName) {
 		super();
 		this.courseId = courseId;
-		this.userid = userid;
+		this.userId = userid;
 		this.roleName = roleName;
 	}
 	
@@ -53,11 +57,11 @@ public class UserCourseDetail implements Serializable {
 		this.courseId = courseId;
 	}   
 	public int getUserid() {
-		return this.userid;
+		return this.userId;
 	}
 
 	public void setUserid(int userid) {
-		this.userid = userid;
+		this.userId = userid;
 	}   
 	public String getRoleName() {
 		return this.roleName;
@@ -89,7 +93,7 @@ public class UserCourseDetail implements Serializable {
 		builder.append("UserCourseDetail [courseId=");
 		builder.append(courseId);
 		builder.append(", userid=");
-		builder.append(userid);
+		builder.append(userId);
 		builder.append(", roleName=");
 		builder.append(roleName);
 		builder.append(", course=");
