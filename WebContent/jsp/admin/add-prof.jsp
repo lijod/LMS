@@ -24,7 +24,7 @@
 			<input id="dob" name="dob" type=text class="form-control" style="display:none;" value="09-14-2014" placeholder="DATE OF BIRTH"/>
 			
 			<select id="course-list" multiple class="form-control">
-				<option id="none-course" value="none">NONE</option>
+				<option id="course-0" value="0">NONE</option>
 			</select>
 		</div>
 		<br/>
@@ -204,7 +204,7 @@
 			dataType : "json",
 			success : function (result) {
 				$("#course-list").html(
-				"<option class='form-control' id='none-course' value='none'>NONE</option>"); 
+				"<option class='form-control' id='course-0' value='0'>NONE</option>"); 
 				$.each(result, function(i, val){
 					$("#course-list").append(
 						"<option class='form-control' value='" + val.courseId + "' id='course-" + val.courseId + "'>" + 
