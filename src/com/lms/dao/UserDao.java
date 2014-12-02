@@ -1,8 +1,11 @@
 package com.lms.dao;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 
 import com.lms.model.User;
 
@@ -45,6 +48,12 @@ public class UserDao {
 		em.merge(user);
 		em.getTransaction().commit();
 		return user;
+	}
+	
+	public List<User> findAllUsers() {
+		Query query = em.createQuery("select user from User user");
+		List<User> result = query.getResultList();
+		return result;
 	}
 	
 }
