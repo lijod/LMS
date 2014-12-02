@@ -72,7 +72,7 @@ public class UserLoginServlet extends HttpServlet {
 					System.out.println("course found");					
 					hasUserSelectedCorrectRole=true;
 					request.setAttribute("user", user);
-					rd = request.getRequestDispatcher("/jsp/admin/user-profile.jsp");
+					rd = request.getRequestDispatcher("/jsp/user/user-profile.jsp");
 					rd.forward(request, response);
 					
 			}
@@ -85,12 +85,12 @@ public class UserLoginServlet extends HttpServlet {
 		
 		if (isUserFound == true && hasUserSelectedCorrectRole == false) {
 			request.setAttribute("errorMessage", "This role does not exist for the current user.");
-			rd = request.getRequestDispatcher("/jsp/admin/user-login.jsp");
+			rd = request.getRequestDispatcher("/jsp/user/user-login.jsp");
 			rd.forward(request, response);		
 		}
 		else if (isUserFound == false && hasUserSelectedCorrectRole == false) {
 				request.setAttribute("errorMessage", "User does not exist,Please try again.");
-				rd = request.getRequestDispatcher("/jsp/admin/user-login.jsp");
+				rd = request.getRequestDispatcher("/jsp/user/user-login.jsp");
 				rd.forward(request, response);		
 			}
 		
