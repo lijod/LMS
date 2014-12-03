@@ -56,11 +56,11 @@ public class UserCourseDetail implements Serializable {
 	public void setCourseId(int courseId) {
 		this.courseId = courseId;
 	}   
-	public int getUserid() {
+	public int getUserId() {
 		return this.userId;
 	}
 
-	public void setUserid(int userid) {
+	public void setUserId(int userid) {
 		this.userId = userid;
 	}   
 	public String getRoleName() {
