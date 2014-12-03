@@ -44,6 +44,14 @@ public class User implements Serializable {
 	@JoinColumn(name="user_id", referencedColumnName = "user_id")
 	private List<UserCourseDetail> userCourseDetail;
 	
+	//bi-directional many-to-one association to Post
+	@OneToMany(mappedBy="user", fetch=FetchType.EAGER)
+	private List<Post> posts;
+	
+	//bi-directional many-to-one association to Post
+	@OneToMany(mappedBy="user", fetch=FetchType.EAGER)
+	private List<Thread> thread;
+	
 	private static final long serialVersionUID = 1L;
 	   
 	public User() {

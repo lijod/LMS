@@ -6,6 +6,8 @@
 		<class>com.lms.model.Course</class>
 		<class>com.lms.model.UserCourseDetail</class>
 		<class>com.lms.model.CourseSchedule</class>
+		<class>com.lms.model.Post</class>
+		<class>com.lms.model.Thread</class>
 		<properties>
 			<property name="javax.persistence.jdbc.password" value="abc123"/>
 			<property name="javax.persistence.jdbc.user" value="root"/>
