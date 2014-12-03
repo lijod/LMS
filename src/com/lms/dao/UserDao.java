@@ -8,6 +8,7 @@ import javax.persistence.Persistence;
 import javax.persistence.Query;
 
 import com.lms.model.User;
+import com.lms.model.UserCourseDetail;
 
 public class UserDao {
 
@@ -27,12 +28,13 @@ public class UserDao {
 	}
 
 	public User findUserByUserId(int userId){
-		User user = null;
+		User user = new User();
 		em.getTransaction().begin();
 		user = em.find(User.class, userId);
 		em.getTransaction().commit();
 		return user;
 	}
+		
 	
 	public Boolean deleteUser(int userId){
 		em.getTransaction().begin();

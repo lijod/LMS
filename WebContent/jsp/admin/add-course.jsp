@@ -93,42 +93,42 @@ function addNewCourse(){
 }
 
 function refreshCourseList(){
-	 userServiceURl = userServiceURl = applicaitonURL + "/jwsCourseService/findAllCourses";
-	$.ajax({
-		type : "GET",
-		url :  userServiceURl,
-		dataType:"JSON",
-		success : function (result) {
-			//console.log(result);
-			$.each(result, function(i, val){
-				$("#course-list").append(
-						"<option id='course-" + val.courseId + "' value='"+val.courseId+"'>" + val.courseName + "</option>");
-			});
-			
-			$("#course-details").html(
-					"<input id='course-name' name='course-name' class='form-control' type='text' placeholder='COURSE NAME' />"+
-					"<input id='section-number' name='section-number' type='text' class='form-control' placeholder='SECTION NUMBER' />"+
-					"<div class='course-schedule'>"+
-		  			"<input id='course-location1' name='course-location' class='form-control'  type='text' placeholder='COURSE LOCATION' />"+
-		  			"<select id='course-day1' name='course-day' class='form-control'>"+
-		  				"<option value='monday'>Monday</option>"+
-				  		"<option value='tuesday'>Tuesday</option>"+
-				  		"<option value='wednesday'>Wednesday</option>"+
-				  		"<option value='thursday'>Thursday</option>"+
-				  		"<option value='friday'>Friday</option>"+
-				  		"<option value='saturday'>Saturday</option>"+
-				  		"<option value='sunday'>Sunday</option>	"+	  	
-				  	"</select>"+
-				  	"<input id='course-start-time1' name='course-start-time' class='form-control' type='text'  placeholder='COURSE START TIME (hh:mm)' />"+
-				  	"<input id='course-end-time1' name='course-end-time' class='form-control' type='text'  placeholder='COURSE END TIME(hh:mm)' />" +
-				  	"<input id='course-start-date1' name='course-start-date' class='form-control' type='text'  placeholder='COURSE START DATE (MM/DD/YYYY)' />"+
-				  	"<input id='course-end-date1' name='course-end-date' class='form-control' type='text'  placeholder='COURSE END DATE(MM/DD/YYY)' />" +
-		  	"</div>");
-		},
-		failure : function () {
-			console.log("failed");
-		}
-	});
+		 userServiceURl = userServiceURl = applicaitonURL + "/jwsCourseService/findAllCourses";
+		$.ajax({
+			type : "GET",
+			url :  userServiceURl,
+			dataType:"JSON",
+			success : function (result) {
+				//console.log(result);
+				$.each(result, function(i, val){
+					$("#course-list").append(
+							"<option id='course-" + val.courseId + "' value='"+val.courseId+"'>" + val.courseName + "</option>");
+				});
+				
+				$("#course-details").html(
+						"<input id='course-name' name='course-name' class='form-control' type='text' placeholder='COURSE NAME' />"+
+						"<input id='section-number' name='section-number' type='text' class='form-control' placeholder='SECTION NUMBER' />"+
+						"<div class='course-schedule'>"+
+			  			"<input id='course-location1' name='course-location' class='form-control'  type='text' placeholder='COURSE LOCATION' />"+
+			  			"<select id='course-day1' name='course-day' class='form-control'>"+
+			  				"<option value='monday'>Monday</option>"+
+					  		"<option value='tuesday'>Tuesday</option>"+
+					  		"<option value='wednesday'>Wednesday</option>"+
+					  		"<option value='thursday'>Thursday</option>"+
+					  		"<option value='friday'>Friday</option>"+
+					  		"<option value='saturday'>Saturday</option>"+
+					  		"<option value='sunday'>Sunday</option>	"+	  	
+					  	"</select>"+
+					  	"<input id='course-start-time1' name='course-start-time' class='form-control' type='text'  placeholder='COURSE START TIME (hh:mm)' />"+
+					  	"<input id='course-end-time1' name='course-end-time' class='form-control' type='text'  placeholder='COURSE END TIME(hh:mm)' />" +
+					  	"<input id='course-start-date1' name='course-start-date' class='form-control' type='text'  placeholder='COURSE START DATE (MM/DD/YYYY)' />"+
+					  	"<input id='course-end-date1' name='course-end-date' class='form-control' type='text'  placeholder='COURSE END DATE(MM/DD/YYY)' />" +
+			  	"</div>");
+			},
+			failure : function () {
+				console.log("failed");
+			}
+		});
 	
 }
 	

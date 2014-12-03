@@ -62,11 +62,22 @@ public class Test {
 		CourseDao courseObj = new CourseDao();
 		courseObj.createCourse(course);*/
 		
-		List<CourseSchedule> csList = new ArrayList<CourseSchedule>();
+/*		List<CourseSchedule> csList = new ArrayList<CourseSchedule>();
 		csList.add(cs);
-		Course course = new Course(31, "ioioioioioioioi"/*, 121212*/, csList);
+		Course course = new Course(31, "ioioioioioioioi", 121212, csList);
 		CourseDao courseObj = new CourseDao();
-		courseObj.updateCourse(course);
+		courseObj.updateCourse(course);*/
+	
+	
+	/*User user = new User();
+	UserDao userDaoObj = new UserDao();
+	user=userDaoObj.findUserByUserId(8);
+	System.out.println(user);
+	System.out.println(user.getUserCourseDetail().get(1).getCourse());*/
+	
+	UserCourseDetailDao userCourseDetailDaoObj = new UserCourseDetailDao();
+	userCourseDetailDaoObj.createUserCourseDetail(new UserCourseDetail(4,4,"TA"));
+	
 		
 	}
 	

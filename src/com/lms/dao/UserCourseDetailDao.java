@@ -38,7 +38,6 @@ public class UserCourseDetailDao {
 		em.getTransaction().begin();
 		Query query = em.createQuery("select ucd from UserCourseDetail ucd where ucd.userid = :userId");
 		query.setParameter("userId", userId);
-		query.setHint("javax.persistence.cache.storeMode", "BYPASS");
 		List<UserCourseDetail> result = query.getResultList();
 		em.getTransaction().commit();
 		return result;
