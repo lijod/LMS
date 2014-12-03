@@ -28,7 +28,7 @@ public class UserService {
 			@PathParam("lastName") String lastName,
 			@PathParam("email") String email,
 			@PathParam("dateOfBirth") String dateOfBirth) {
-		User user =new User (userName,password,firstName,lastName,email,new Date());
+		User user =new User (userName,password,firstName,lastName,email,new Date(), null);
 		UserDao userDaoObj = new UserDao();
 		userDaoObj.createUser(user);
 		return user;
@@ -44,7 +44,7 @@ public class UserService {
 			@PathParam("dateOfBirth") String dateOfBirth,
 			@PathParam("role") String role,
 			@PathParam("courses") String courses) {
-		User user =new User (userName,password,firstName,lastName,email,new Date());
+		User user =new User (userName,password,firstName,lastName,email,new Date(), null);
 		user = new UserDao().createUser(user);
 		List<UserCourseDetail> ucdList = new ArrayList<UserCourseDetail>();
 		for(String id : courses.split(",")){

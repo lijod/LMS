@@ -6,8 +6,10 @@ import java.util.List;
 import com.lms.model.User;
 import com.lms.model.UserCourseDetail;
 
-public class UserCourseDetailUtil {
+public final class UserCourseDetailUtil {
 
+	private UserCourseDetailUtil(){}
+	
 	public static List<User> getUsersFromUserCourseDetail(List<UserCourseDetail> ucdList){
 		List<User> userList = new ArrayList<User>();
 		for(UserCourseDetail ucd : ucdList){

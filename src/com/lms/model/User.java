@@ -35,6 +35,9 @@ public class User implements Serializable {
 	@Column(name="dob")
 	@Temporal(TemporalType.DATE)
 	private Date dateOfBirth;
+	@Lob
+	@Column(name="user_image")
+	private byte[] userImage;
 	
 	//@JsonIgnore
 	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
@@ -47,7 +50,7 @@ public class User implements Serializable {
 		super();
 	}
 	public User(String userName, String password, String firstName,
-			String lastName, String email, Date dateOfBirth) {
+			String lastName, String email, Date dateOfBirth, byte[] userImage) {
 		super();
 		this.userName = userName;
 		this.password = password;
@@ -55,9 +58,10 @@ public class User implements Serializable {
 		this.lastName = lastName;
 		this.email = email;
 		this.dateOfBirth = dateOfBirth;
+		this.userImage = userImage;
 	}
 	public User(int userId, String userName, String password, String firstName,
-			String lastName, String email, Date dateOfBirth) {
+			String lastName, String email, Date dateOfBirth, byte[] userImage) {
 		super();
 		this.userId = userId;
 		this.userName = userName;
@@ -66,6 +70,7 @@ public class User implements Serializable {
 		this.lastName = lastName;
 		this.email = email;
 		this.dateOfBirth = dateOfBirth;
+		this.userImage = userImage;
 	}
 
 	public int getUserId() {
@@ -126,6 +131,12 @@ public class User implements Serializable {
 		this.userCourseDetail = userCourseDetail;
 	}
 	
+	public byte[] getUserImage() {
+		return userImage;
+	}
+	public void setUserImage(byte[] userImage) {
+		this.userImage = userImage;
+	}
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
