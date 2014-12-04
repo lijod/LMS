@@ -37,12 +37,12 @@ public class Post implements Serializable {
 
 	//bi-directional many-to-one association to Thread
 	@ManyToOne
-	@JoinColumn(name="thread_id")
+	@JoinColumn(name="thread_id",insertable=false,updatable=false)
 	private Thread thread;
 
 	//bi-directional many-to-one association to Thread
 	@ManyToOne
-	@JoinColumn(name="user_id")
+	@JoinColumn(name="user_id",insertable=false,updatable=false)
 	private User user;
 	
 	public Post() {
