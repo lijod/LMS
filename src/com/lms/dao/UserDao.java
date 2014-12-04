@@ -57,5 +57,17 @@ public class UserDao {
 		List<User> result = query.getResultList();
 		return result;
 	}
+
+	public List<User> findAllUsersNotTAForACourse(int courseId) {
+		em.getTransaction().begin();
+        Query query = em.createQuery(" select u from User u where u.userId IN "
+        		+ " (select ucd.userId from UserCourseDetail ucd where ucd.courseId != :courseId AND  ucd.roleName='STUDENT')"
+        		+ " AND "
+        		+ " u.userId NOT IN (select ucd.userId from UserCourseDetail ucd where ucd.courseId = :courseId AND  ucd.roleName ='TA')");
+		query.setParameter("courseId", courseId);
+		List<User> result = query.getResultList();
+		em.getTransaction().commit();
+		return result;
+	}
 	
 }

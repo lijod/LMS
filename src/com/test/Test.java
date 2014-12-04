@@ -74,9 +74,12 @@ public class Test {
 	user=userDaoObj.findUserByUserId(8);
 	System.out.println(user);
 	System.out.println(user.getUserCourseDetail().get(1).getCourse());*/
-	
+/*	
 	UserCourseDetailDao userCourseDetailDaoObj = new UserCourseDetailDao();
-	userCourseDetailDaoObj.createUserCourseDetail(new UserCourseDetail(4,4,"TA"));
+	userCourseDetailDaoObj.createUserCourseDetail(new UserCourseDetail(4,4,"TA"));*/
+	
+	UserDao userDaoObj=new	UserDao();
+	System.out.println(userDaoObj.findAllUsersNotTAForACourse(38));
 	
 		
 	}

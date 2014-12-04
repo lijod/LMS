@@ -116,5 +116,16 @@ public class UserService {
 	  UserDao userDaoObj = new UserDao();
 	  return userDaoObj.findAllUsers();
 	 }
+	 
+	 
+	 
+	 @POST
+	 @Produces(MediaType.APPLICATION_JSON)
+	 @Consumes(MediaType.APPLICATION_JSON)
+	 @Path("/findAllUsersNotTAForACourse")
+	 public List<User> findAllUsersNotTAForACourseService(int courseId){
+	  UserDao userDaoObj = new UserDao();
+	  return userDaoObj.findAllUsersNotTAForACourse(courseId);
+	 }
 	
 }

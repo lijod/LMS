@@ -45,97 +45,76 @@ $(document).ready(function(){
 	
 })
 
-$("#dd-course-list").change(function(){
-	
+
+$("#dd-course-list").change(function(){	
 	var id=id=$("#dd-course-list").children(":selected").attr("value");
+	findAllStudentsToBeElligibleToBecomeTa(id);
 	
-	userServiceURl = applicaitonURL + "/jwsUserService/findAllUsers";
-		$.ajax({
-			type : "POST",
-			url :  userServiceURl,
-			data :JSON.stringify(8),
-			dataType:"JSON",
-			contentType: "application/json",
-			success : function (result) {
-				//console.log(result);
-				//console.log("success"+id);
-				$("#tb-users-list").children().remove();
-				$.each(result,function(i,userVal){
-					//console.log("success"+userVal);
-					$.each(userVal.userCourseDetail,function(ucdIndex,ucd){
-						//console.log("successinner"+ucd);
-					if((id==ucd.courseId) && (ucd.roleName=="STUDENT")){
-						$("#tb-users-list").append(
-								
-						"<tr>"+
-						     "<td><input id='chb-"+userVal.userId+"' type='checkbox' name='abc' value='"+userVal.userId+"'> </td>"+
-						     "<td>"+userVal.firstName+"</td>"+
-						     "<td>"+userVal.lastName+"</td>"+
-						     "<td>"+userVal.userName+"</td>"+
-						     "<td>"+userVal.email+"</td>"+
-						"</tr>"
-						)						
-					}					
-				})
-			})				
-							
-			},
-			failure : function () {
-				console.log("failed");
-			}
-		});
 })
 
-
-$("#btn-add-ta").click(function(){
+function findAllStudentsToBeElligibleToBecomeTa(id){
+	userServiceURl = applicaitonURL + "/jwsUserService/findAllUsersNotTAForACourse";
+	$.ajax({
+		type : "POST",
+		url :  userServiceURl,
+		data :id,
+		dataType:"JSON",
+		contentType: "application/json",
+		success : function (result) {
+			console.log(result);
+			//console.log("success"+id);
+			$("#tb-users-list").children().remove();
+			$.each(result,function(i,userVal){
+				console.log("success"+userVal);		
+					$("#tb-users-list").append(								
+					"<tr>"+
+					     "<td><input id='chb-"+userVal.userId+"' type='checkbox' name='abc' value='"+userVal.userId+"'> </td>"+
+					     "<td>"+userVal.firstName+"</td>"+
+					     "<td>"+userVal.lastName+"</td>"+
+					     "<td>"+userVal.userName+"</td>"+
+					     "<td>"+userVal.email+"</td>"+
+					"</tr>"
+					)					
+		})									
+		},
+		failure : function () {
+			console.log("failed");
+		}
+	});
 	
+	
+}
+
+
+
+
+$("#btn-add-ta").click(function(){	
 	 userServiceURl = userServiceURl = applicaitonURL + "/jwsUserCourseDetailService/createUserCourseDetailForTa";
 	 var courseId =parseInt($("#dd-course-list").children(":selected").attr("value"));
 	 var roleName ="TA";
-	 
-/* 	 var userIdList = [];
-	  $('input[name="abc"]:checked').each(function() {
-		   userIdList.push($(this).attr("value"));
-		  // userIdList.push({id : $(this).attr("value")});
-	 });
-	 userIdList=userIdList;
-	 console.log(userIdList); */
-	 var arrayobj=new Array();
-	 
-	 var arrayobj1=[];
-	 
-	 
+	 var arrayobj=new Array();	 
+	 var arrayobj1=[];	 
 	 var ucdList = new Array();
 	  $('input[name="abc"]:checked').each(function() {
 		  arrayobj1 = { "courseId" : courseId, "userId" : parseInt($(this).attr("value")) , "roleName" : roleName};
 		  ucdList.push(arrayobj1);
 	 });
-	 // ucd=JSON.stringify(ucd);
 	  console.log(ucdList);
-	  
-/* 	  ucdList =[
-{ "courseId" : 38 , "userId" : 4, "roleName" : "TA"},
-{ "courseId" : 38 , "userId" : 5, "roleName" : "TA"}
-]; */
-/* 	 var roleName ="TA";
-	 var courseId =$("#dd-course-list").children(":selected").attr("value");
-	 console.log({userIdList : userIdList, roleName : roleName, courseId : courseId}); */
 		$.ajax({
 			type : "POST",
 			url :  userServiceURl,
-			/* data : {userIdList : userIdList, roleName : roleName, courseId : courseId}, */
 			data : JSON.stringify(ucdList),
 			dataType:"JSON",
 			contentType: "application/json",
 			success : function (result) {
-				console.log(result);						
+				console.log(result);		
+				var id=id=$("#dd-course-list").children(":selected").attr("value");
+				findAllStudentsToBeElligibleToBecomeTa(id);
 			},
 			failure : function () {
 				console.log("failed");
 			}
-		});
-	
-	
+		});	
 })
 
 
