@@ -9,3 +9,5 @@
 <script type="text/javascript" src="/LMS/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="/LMS/js/json.date-extensions.js"></script>
 </head>
+
+<% String applicationContext = "/LMS"; %>

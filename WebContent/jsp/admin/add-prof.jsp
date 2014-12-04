@@ -1,4 +1,5 @@
 <%@include file="../common.jsp" %>
+<%@ include file="../check-login.jsp"%>
 
 <body>
 	<div class="container">

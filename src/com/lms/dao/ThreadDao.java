@@ -18,7 +18,7 @@ public class ThreadDao {
 		em = emf.createEntityManager();
 	}
 	
-	public Thread createUser(Thread thread){
+	public Thread createThread(Thread thread){
 		
 		em.getTransaction().begin();
 		em.persist(thread);

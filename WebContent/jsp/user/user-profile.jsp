@@ -1,11 +1,8 @@
 <%@ include file="../common.jsp"%>
-<html>
+<%@ include file="../check-login.jsp"%>
 
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
-</head>
+
 <body>
-
+<a href="javascript:void(0)" onClick="navigate('/jsp/user/thread-post.jsp')">START A THREAD</a>
 </body>
 </html>
