@@ -14,6 +14,7 @@ import java.util.Date;
  * 
  */
 @Entity
+@Cacheable(false)
 @NamedQuery(name="Post.findAll", query="SELECT p FROM Post p")
 public class Post implements Serializable {
 	private static final long serialVersionUID = 1L;

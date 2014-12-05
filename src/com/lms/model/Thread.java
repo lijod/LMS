@@ -14,6 +14,7 @@ import java.util.List;
  * 
  */
 @Entity
+@Cacheable(false)
 @NamedQuery(name="Thread.findAll", query="SELECT t FROM Thread t")
 public class Thread implements Serializable {
 	private static final long serialVersionUID = 1L;
