@@ -18,16 +18,24 @@ public class ThreadDao {
 		em = emf.createEntityManager();
 	}
 	
-	public Thread createThread(Thread thread){
-		
+	public Thread createaThread(Thread thread){		
 		em.getTransaction().begin();
 		em.persist(thread);
-		em.getTransaction().commit();
-		
+		em.getTransaction().commit();		
 		return thread;
 	}
 	
-	public Thread findThreadByThreadId(int threadId){
+	
+	public List<Thread> findAllThreads(){
+		List<Thread> threadList = null;
+		em.getTransaction().begin();
+		Query query = em.createQuery("select thread from Thread thread");
+		threadList = query.getResultList();
+		em.getTransaction().commit();
+		return threadList;
+	}
+	
+	public Thread findAThreadByThreadId(int threadId){
 		Thread thread = new Thread();
 		em.getTransaction().begin();
 		thread = em.find(Thread.class, threadId);
