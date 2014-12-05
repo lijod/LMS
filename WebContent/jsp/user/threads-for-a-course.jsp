@@ -316,7 +316,7 @@ function getTags(){
 }
 
 function getNewPostBtn(){
-	return '<tr> <td> <input type="button" value="NEW POST" class="btn btn-success" onClick="showNewPostContainer()" /> </td> </tr>';	
+	return '<tr> <td> <input type="button" value="NEW THREAD" class="btn btn-success" onClick="showNewPostContainer()" /> </td> </tr>';	
 }
 
 </script>
