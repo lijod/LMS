@@ -37,6 +37,16 @@ public class PostDao {
 			return post;
 		}
 		
+		public List<Post> findAllPostsByThreadId(int threadId){
+			List<Post> postList = null;
+			em.getTransaction().begin();
+			Query query = em.createQuery("select post from Post post where post.threadId = :threadId");
+			query.setParameter("threadId", threadId);
+			postList = query.getResultList();
+			em.getTransaction().commit();
+			return postList;
+		}
+		
 		public Boolean deletePost(int postId){
 			em.getTransaction().begin();
 			Post post = em.find (Post.class, postId);

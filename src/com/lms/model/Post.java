@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import java.sql.Time;
 import java.util.Date;
 
@@ -36,6 +38,7 @@ public class Post implements Serializable {
 	private int userId;
 
 	//bi-directional many-to-one association to Thread
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="thread_id",insertable=false,updatable=false)
 	private Thread thread;

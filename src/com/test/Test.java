@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.lms.dao.CourseDao;
 import com.lms.dao.CourseScheduleDao;
+import com.lms.dao.ThreadDao;
 import com.lms.dao.UserCourseDetailDao;
 import com.lms.dao.UserDao;
 import com.lms.enumeration.Role;
@@ -80,6 +81,15 @@ public class Test {
 	
 	UserDao userDaoObj=new	UserDao();
 	System.out.println(userDaoObj.findAllUsersNotTAForACourse(38));
+	
+	
+	ThreadDao userDaoObj1 =new	ThreadDao();
+	System.out.println(userDaoObj1.findAllThreads());
+	
+	ThreadDao userDaoObj2 =new	ThreadDao();
+	System.out.println(userDaoObj2.findAThreadByThreadId(5));
+	
+	
 	
 		
 	}
