@@ -1,17 +1,22 @@
 package com.test;
 
+import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import com.lms.dao.CourseDao;
 import com.lms.dao.CourseScheduleDao;
+import com.lms.dao.PostDao;
 import com.lms.dao.ThreadDao;
 import com.lms.dao.UserCourseDetailDao;
 import com.lms.dao.UserDao;
 import com.lms.enumeration.Role;
 import com.lms.model.Course;
 import com.lms.model.CourseSchedule;
+import com.lms.model.Post;
 import com.lms.model.User;
 import com.lms.model.UserCourseDetail;
 
@@ -79,7 +84,7 @@ public class Test {
 	UserCourseDetailDao userCourseDetailDaoObj = new UserCourseDetailDao();
 	userCourseDetailDaoObj.createUserCourseDetail(new UserCourseDetail(4,4,"TA"));*/
 	
-	UserDao userDaoObj=new	UserDao();
+	/*UserDao userDaoObj=new	UserDao();
 	System.out.println(userDaoObj.findAllUsersNotTAForACourse(38));
 	
 	
@@ -87,7 +92,23 @@ public class Test {
 	System.out.println(userDaoObj1.findAllThreads());
 	
 	ThreadDao userDaoObj2 =new	ThreadDao();
-	System.out.println(userDaoObj2.findAThreadByThreadId(5));
+	System.out.println(userDaoObj2.findAThreadByThreadId(5));*/
+	
+	/*ThreadDao userDaoObj1 =new	ThreadDao();
+	System.out.println(userDaoObj1.findThreadsByCourseId(38));*/
+	
+	//CourseDao courseDaoObj=new CourseDao();
+	//System.out.println(courseDaoObj.findAllCoursesForAUserId(2).size());
+	
+/*	public Post(String postContent, Date postDate, Time postTime, int userId,
+			int threadId) {*/
+	
+	
+	
+	PostDao p=new PostDao();
+	Post post=new Post("abc",new Date(),new Time(new Date().getTime()),2,6);
+	p.createPost(post);
+	
 	
 	
 	

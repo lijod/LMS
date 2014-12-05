@@ -62,17 +62,17 @@ public class ThreadDao {
 	public List<Thread> findThreadByUserId(int userId){
 		List<Thread> threadList = null;
 		em.getTransaction().begin();
-		Query query = em.createQuery("select thread from Thread thread where userId = :userId");
+		Query query = em.createQuery("select thread from Thread thread where thread.userId = :userId");
 		query.setParameter("userId", userId);
 		threadList = query.getResultList();
 		em.getTransaction().commit();
 		return threadList;
 	}
 	
-	public List<Thread> findThreadByCourseId(int courseId){
+	public List<Thread> findThreadsByCourseId(int courseId){
 		List<Thread> threadList = null;
 		em.getTransaction().begin();
-		Query query = em.createQuery("select thread from Thread thread where courseId = :courseId");
+		Query query = em.createQuery("select thread from Thread thread where thread.courseId = :courseId");
 		query.setParameter("courseId", courseId);
 		threadList = query.getResultList();
 		em.getTransaction().commit();

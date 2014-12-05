@@ -1,4 +1,7 @@
 <%@ include file="../common.jsp"%>
+<link href="/LMS/css/jquery-te-1.4.0.css" rel="stylesheet">
+
+<script src="/LMS/js/jquery-te-1.4.0.min.js" type="text/javascript"></script>
 <html>
 <style>
 
@@ -22,7 +25,7 @@ table, td, th {
 	<div class="container">
 		<div>
 			<select id="course-list" class="form-control">
-				<option class="form-control">Select</option>
+				
 			</select> <br />			
 		</div> <br />		
 	</div>
@@ -34,13 +37,7 @@ table, td, th {
 		<td><table  id="tbl-all-threads" class="table table-striped"></table></td>
 		<td><table id="tbl-thread-desc" class="table table-striped"></table></td>
 		</tr>
-	    
-		<!-- <tr style="height:150px;">
-		<td><a href="#">Thread1</a></td>
-		</tr>
-			<tr>
-		<td>Thread1</td>
-		</tr> -->
+
 		</table>
 </body>
 </html>
@@ -52,23 +49,25 @@ var userServiceURl ;
 
 $(document).ready(function(){	
 	refreshCourseList();
-	loadAllThreads();
-	loadAThreadAndItsAllPosts();
 });
-	
+
+
 function refreshCourseList(){
-	userServiceURl = applicaitonURL + "/jwsCourseService/findAllCourses";
+	userServiceURl = applicaitonURL + "/jwsCourseService/findAllCoursesForAUserId";
 	$.ajax({
-		type : "GET",
+		type : "POST",
 		url :  userServiceURl,
+		data: "2",
 		dataType:"JSON",
+		contentType: "application/json",
 		success : function (result) {
-			//console.log(result);
+			console.log(result);
 			$.each(result, function(i, val){
 				$("#course-list").append(
 						"<option id='course-" + val.courseId + "' value='"+val.courseId+"'>" + val.courseName + "</option>");
-			});			
-
+			});		
+			var courseId = $("#course-list").children(":selected").attr("value");
+			loadAllThreadsByCourseId(courseId);
 		},
 		failure : function () {
 			console.log("failed");
@@ -76,26 +75,36 @@ function refreshCourseList(){
 	});
 }
 
-function loadAllThreads(){
-	console.log("loadallthreads");
-	userServiceURl =  applicaitonURL + "/jwsThreadService/findAllThreads";
+
+function loadAllThreadsByCourseId(courseId){
+console.log(courseId);
+userServiceURl =  applicaitonURL + "/jwsThreadService/findThreadsByCourseId";
 	$.ajax({
 		type : "POST",
 		url :  userServiceURl,
+		data: JSON.stringify(courseId),
 		dataType:"JSON",
 		contentType: "application/json",
 		success : function (result) {
-			//console.log(result);
+			$("#tbl-all-threads").children().remove();
+			$("#tbl-thread-desc").children().remove();
+			if(result.length > 0){	
 			$.each(result, function(i, val){				
 				$("#tbl-all-threads").append(
-						"<tr style='height:120px;'> <td  onClick='clickOnThread("+val.threadId+")'> <span class='spanClass'  id='thread-" + val.threadId + "'>"+ val.threadTitle+ "</span></td></tr>");
+						"<tr style='height:120px;'> <td  onClick='clickOnThread("+val.threadId+")'> <span class='spanClass'  id='"+ val.threadId +"'>"+ val.threadContent+ "</span></td></tr>");
 			});
+			
+			var firstThreadIdInList = $("#tbl-all-threads span:first").attr("id");
+			loadAThreadAndItsAllPosts(firstThreadIdInList);
+		}
+			
+			
 		},
 		failure : function () {
 			console.log("failed");
 		}
 	});
-	}
+}
 	
 
 
@@ -109,22 +118,26 @@ function loadAThreadAndItsAllPosts(threadId){
 		dataType:"JSON",
 		contentType: "application/json",
 		success : function (result) {
-			console.log(result.posts);
-			console.log("hi");
-			$("#tbl-thread-desc").children().remove();
-			//$.each(result, function(i, val){				
+			$("#tbl-thread-desc").children().remove();	
 				 $("#tbl-thread-desc").html(
-						"<tr style='height:120px;'> <td> <a href='#' id='thread-" + result.threadId + "'>"+ result.threadTitle+ "</a></td></tr>"+
+						"<tr style='height:120px;'> <td> <a href='#' id='thread-" + result.threadId + "'>"+ result.threadContent+ "</a></td></tr>"+
 						"<tr style='height:5px;'> <td> <span id='span-" + result.threadId + "'>Created on :"+ result.threadDate+ "</span></td></tr>"		
-				 ); 
+				 );
 				 
 				$.each(result.posts, function(i, val){				
 				 $("#tbl-thread-desc").append(
-						"<tr style='height:120px;'> <td> <a href='#' id='post-" + val.postId + "'> Dummy Post-Content</a></td></tr>"); 
+						"<tr style='height:120px;'> <td> <a href='#' id='post-" + val.postId + "'>"+ val.postContent +"</a></td></tr><br/>"); 				
+			});
 				
-			});		
+				 $("#tbl-thread-desc").append(
+							"<tr style='height:120px;'><td>"+
+							
+							
+							"<textarea name='textarea' id='txt-replyToThread' style='height: 100%;width:100%'></textarea>"+
+							"<input id='btn-submit-post' onClick='submitpost("+threadId+")' class='btn btn-primary' type='submit' value='Post' style='' />"+							
+							"</td></tr>"); 		
 				
-
+				
 		},
 		failure : function () {
 			console.log("failed");
@@ -136,6 +149,40 @@ function loadAThreadAndItsAllPosts(threadId){
 function clickOnThread(threadId) {
 	loadAThreadAndItsAllPosts(threadId);
 }
+
+$("#course-list").change(function() {
+	var courseId = $(this).children(":selected").attr("value");
+	console.log(courseId);
+	loadAllThreadsByCourseId(courseId);
+});
+
+
+function submitpost(threadId){
+	userServiceURl = applicaitonURL + "/jwsPostService/createPost";
+
+	 
+	var postContent=$("#txt-replyToThread").val();
+    var userId = 2;
+    var threadId=threadId;
+    var post={"postContent" : postContent,  "userId" : userId,"threadId" : threadId};
+	console.log(post);
+	$.ajax({
+		type : "POST",
+		url :  userServiceURl,
+		data : JSON.stringify(post),
+		dataType:"JSON",
+		contentType: "application/json",
+		success : function (result) {
+			console.log(result);				
+				
+		},
+		failure : function () {
+			console.log("failed");
+		}
+	});
+	
+}
+
 
 
 </script>

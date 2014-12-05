@@ -36,6 +36,11 @@ public class Post implements Serializable {
 
 	@Column(name="user_id")
 	private int userId;
+	
+	@Column(name="thread_id")
+	private int threadId;
+
+	
 
 	//bi-directional many-to-one association to Thread
 	@JsonIgnore
@@ -52,24 +57,36 @@ public class Post implements Serializable {
 	}
 	
 	public Post(int postId, String postContent, Date postDate, Time postTime,
-			int userId, Thread thread) {
+			int userId,int threadId, Thread thread) {
 		super();
 		this.postId = postId;
 		this.postContent = postContent;
 		this.postDate = postDate;
 		this.postTime = postTime;
 		this.userId = userId;
+		this.threadId=threadId;
 		this.thread = thread;
 	}
 
 	public Post(String postContent, Date postDate, Time postTime, int userId,
-			Thread thread) {
+			int threadId,Thread thread) {
 		super();
 		this.postContent = postContent;
 		this.postDate = postDate;
 		this.postTime = postTime;
 		this.userId = userId;
+		this.threadId=threadId;
 		this.thread = thread;
+	}
+	
+	public Post(String postContent, Date postDate, Time postTime, int userId,
+			int threadId) {
+		super();
+		this.postContent = postContent;
+		this.postDate = postDate;
+		this.postTime = postTime;
+		this.userId = userId;
+		this.threadId=threadId;
 	}
 
 	public int getPostId() {
@@ -118,6 +135,14 @@ public class Post implements Serializable {
 
 	public void setThread(Thread thread) {
 		this.thread = thread;
+	}
+	
+	public int getThreadId() {
+		return threadId;
+	}
+
+	public void setThreadId(int threadId) {
+		this.threadId = threadId;
 	}
 
 }

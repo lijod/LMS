@@ -74,11 +74,23 @@ public class CourseService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/updateCourse")
-	public Course updateCourseService( Course course) {
+	public Course updateCourseService(Course course) {
         System.out.println("updateCourseService");
 		CourseDao courseDaoObj = new CourseDao();
 		courseDaoObj.updateCourse(course);
 		return course;
 	}
+	
+	
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/findAllCoursesForAUserId")
+	public List<Course> findAllCoursesForAUserIdService(int userId) {		
+		CourseDao courseDaoObj = new CourseDao();
+		return courseDaoObj.findAllCoursesForAUserId(userId);
+	}
+
+	
 
 }

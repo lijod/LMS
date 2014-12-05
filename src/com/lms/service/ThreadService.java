@@ -16,6 +16,14 @@ import com.lms.model.Thread;
 public class ThreadService {
 
 	
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/findThreadsByCourseId")
+	public List<Thread> findThreadsByCourseIdService(int courseId) {		
+		ThreadDao courseDaoObj = new ThreadDao();
+		return courseDaoObj.findThreadsByCourseId(courseId);
+	}
 	
 	
 	@POST
