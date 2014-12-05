@@ -51,12 +51,19 @@ public class Thread implements Serializable {
 	@JoinColumn(name="user_id",insertable=false,updatable=false)
 	private User user;
 	
+	//bi-directional many-to-many association to Tag
+	@ManyToMany(fetch=FetchType.EAGER, cascade={CascadeType.MERGE, CascadeType.REFRESH})
+	@JoinTable(name="thread_tag", 
+				joinColumns=@JoinColumn (name="thread_id"),
+				inverseJoinColumns=@JoinColumn(name="tag_id"))
+	private List<Tag> tags;
+	
 	public Thread() {
 	}
 	
 	public Thread(int threadId, int courseId, String threadContent,
 			Date threadDate, Time threadTime, String threadTitle, int userId,
-			List<Post> posts) {
+			List<Post> posts, List<Tag> tags) {
 		super();
 		this.threadId = threadId;
 		this.courseId = courseId;
@@ -66,10 +73,11 @@ public class Thread implements Serializable {
 		this.threadTitle = threadTitle;
 		this.userId = userId;
 		this.posts = posts;
+		this.tags = tags;
 	}
 
 	public Thread(int courseId, String threadContent, Date threadDate,
-			Time threadTime, String threadTitle, int userId, List<Post> posts) {
+			Time threadTime, String threadTitle, int userId, List<Post> posts, List<Tag> tags) {
 		super();
 		this.courseId = courseId;
 		this.threadContent = threadContent;
@@ -78,6 +86,23 @@ public class Thread implements Serializable {
 		this.threadTitle = threadTitle;
 		this.userId = userId;
 		this.posts = posts;
+		this.tags = tags;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public List<Tag> getTags() {
+		return tags;
+	}
+
+	public void setTags(List<Tag> tags) {
+		this.tags = tags;
 	}
 
 	public int getThreadId() {
@@ -157,5 +182,55 @@ public class Thread implements Serializable {
 
 		return post;
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Thread [threadId=");
+		builder.append(threadId);
+		builder.append(", courseId=");
+		builder.append(courseId);
+		builder.append(", threadContent=");
+		builder.append(threadContent);
+		builder.append(", threadDate=");
+		builder.append(threadDate);
+		builder.append(", threadTime=");
+		builder.append(threadTime);
+		builder.append(", threadTitle=");
+		builder.append(threadTitle);
+		builder.append(", userId=");
+		builder.append(userId);
+		builder.append(", posts=");
+		builder.append(posts != null ? posts.size() : "");
+		builder.append(", user=");
+		builder.append(user);
+		builder.append(", tags=");
+		builder.append(tags != null ? tags.size() : "");
+		builder.append("]");
+		return builder.toString();
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + threadId;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Thread other = (Thread) obj;
+		if (threadId != other.threadId)
+			return false;
+		return true;
+	}
+	
 
 }

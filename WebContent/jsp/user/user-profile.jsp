@@ -3,6 +3,6 @@
 
 
 <body>
-<a href="javascript:void(0)" onClick="navigate('/jsp/user/thread-post.jsp')">START A THREAD</a>
+<a href="javascript:void(0)" onClick="navigate('/jsp/user/threads-for-a-course.jsp')">VIEW ALL THREADS</a>
 </body>
 </html>
