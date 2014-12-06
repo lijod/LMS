@@ -3,6 +3,7 @@ package com.lms.service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -12,8 +13,10 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.lms.dao.PostDao;
 import com.lms.dao.UserCourseDetailDao;
 import com.lms.dao.UserDao;
+import com.lms.model.Post;
 import com.lms.model.User;
 import com.lms.model.UserCourseDetail;
 
@@ -127,5 +130,45 @@ public class UserService {
 	  UserDao userDaoObj = new UserDao();
 	  return userDaoObj.findAllUsersNotTAForACourse(courseId);
 	 }
+	 
+	    @POST
+		@Produces(MediaType.APPLICATION_JSON)
+		@Consumes(MediaType.APPLICATION_JSON)
+		@Path("/UserFollowsAnotherUser")
+		public User UserFollowsAnotherUserService(int followerUserId,int followedUserId) {	
+			UserDao userDaoObj = new UserDao();			
+			User followerUserObj = userDaoObj.findUserByUserId(followerUserId);
+			System.out.println("service before dao call1"+followerUserObj);						
+			List<User> existingFollowedUserList = followerUserObj.getFollowedUsersList();			
+			User followedUserObj = userDaoObj.findUserByUserId(followedUserId);
+			System.out.println("service before dao call2"+followedUserObj);
+			existingFollowedUserList.add(followedUserObj);			
+			followerUserObj.setFollowedUsersList(existingFollowedUserList);			
+		  return userDaoObj.updateUser(followerUserObj);
+	    	//return followerUserObj;
+		}
+	    
+	    @POST
+		@Produces(MediaType.APPLICATION_JSON)
+		@Consumes(MediaType.APPLICATION_JSON)
+		@Path("/UserUnFollowsAnotherUser")
+		public User UserUnFollowsAnotherUserService(int followerUserId,int followedUserIdToBeRemoved) {	
+			UserDao userDaoObj = new UserDao();			
+			User followerUserObj = userDaoObj.findUserByUserId(followerUserId);
+			System.out.println("service before dao call1"+followerUserObj);			
+					
+			List<User> usersWhoHaveAlreadyFollowedUsers = new CopyOnWriteArrayList<User>(followerUserObj.getFollowedUsersList());
+			
+			for(User u : usersWhoHaveAlreadyFollowedUsers) {
+				if(u.getUserId() == followedUserIdToBeRemoved){
+					usersWhoHaveAlreadyFollowedUsers.remove(u);
+				}
+			}
+			
+					
+			followerUserObj.setFollowedUsersList(usersWhoHaveAlreadyFollowedUsers);			
+		  return userDaoObj.updateUser(followerUserObj);
+	    	//return followerUserObj;
+		}
 	
 }

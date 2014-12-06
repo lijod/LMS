@@ -64,16 +64,20 @@ public class User implements Serializable {
 	@OneToMany(mappedBy="user", fetch=FetchType.EAGER)
 	private List<Thread> threads;
 	
+	
+	
+	@JsonIgnore
+	@ManyToMany(fetch=FetchType.EAGER, cascade={CascadeType.MERGE, CascadeType.REFRESH})
+	@JoinTable(name="follow_user", 
+				joinColumns=@JoinColumn (name="follower_user_id"),
+				inverseJoinColumns=@JoinColumn(name="followed_user_id"))
+    private List<User> followedUsersList ;
 
-	public List<Post> getLikedPosts() {
-		return likedPosts;
-	}
-
-	public void setLikedPosts(List<Post> likedPosts) {
-		this.likedPosts = likedPosts;
-	}
-
-
+	@JsonIgnore
+	@ManyToMany(mappedBy="followedUsersList", fetch=FetchType.EAGER)
+	private List<User> followersUsersList;
+	
+	
 
 	private static final long serialVersionUID = 1L;
 	   
@@ -187,6 +191,30 @@ public class User implements Serializable {
 	public void setThreads(List<Thread> threads) {
 		this.threads = threads;
 	}
+	
+	public List<Post> getLikedPosts() {
+		return likedPosts;
+	}
+
+	public void setLikedPosts(List<Post> likedPosts) {
+		this.likedPosts = likedPosts;
+	}
+
+	public List<User> getFollowersUsersList() {
+		return followersUsersList;
+	}
+
+	public void setFollowersUsersList(List<User> followersUsersList) {
+		this.followersUsersList = followersUsersList;
+	}
+
+	public List<User> getFollowedUsersList() {
+		return followedUsersList;
+	}
+
+	public void setFollowedUsersList(List<User> followedUsersList) {
+		this.followedUsersList = followedUsersList;
+	}
 
 	@Override
 	public String toString() {
@@ -195,9 +223,14 @@ public class User implements Serializable {
 				+ ", lastName=" + lastName + ", email=" + email
 				+ ", dateOfBirth=" + dateOfBirth + ", userImage="
 				+ Arrays.toString(userImage) + ", userCourseDetail="
-				+ userCourseDetail.size() + ", posts=" + posts.size() + ", thread=" + threads.size()
-				+ "]";
+				+ userCourseDetail.size() + ", posts=" + posts.size() + ", likedPosts="
+				+ likedPosts.size() + ", favThreads=" + favThreads.size() + ", threads="
+				+ threads.size() + ", followersUsersList=" + followersUsersList.size()
+				+ ", followedUsersList=" + followedUsersList.size() + "]";
 	}
+
+
+
 
 	
 }
