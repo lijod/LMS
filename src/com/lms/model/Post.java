@@ -8,6 +8,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 
 import java.sql.Time;
 import java.util.Date;
+import java.util.List;
 
 /**
  * The persistent class for the post database table.
@@ -54,6 +55,17 @@ public class Post implements Serializable {
 	@JoinColumn(name="user_id",insertable=false,updatable=false)
 	private User user;
 	
+	
+
+
+	//bi-directional many-to-many association to Tag
+		@ManyToMany(fetch=FetchType.EAGER, cascade={CascadeType.MERGE, CascadeType.REFRESH})
+		@JoinTable(name="user_like_post", 
+					joinColumns=@JoinColumn (name="post_id"),
+					inverseJoinColumns=@JoinColumn(name="user_id"))
+		private List<User> usersWhoHaveLikedPosts;
+	
+
 	public Post() {
 	}
 	
@@ -145,5 +157,15 @@ public class Post implements Serializable {
 	public void setThreadId(int threadId) {
 		this.threadId = threadId;
 	}
+	
+	
+	public List<User> getUsersWhoHaveLikedPosts() {
+		return usersWhoHaveLikedPosts;
+	}
+
+	public void setUsersWhoHaveLikedPosts(List<User> usersWhoHaveLikedPosts) {
+		this.usersWhoHaveLikedPosts = usersWhoHaveLikedPosts;
+	}
+
 
 }

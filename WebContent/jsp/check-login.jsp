@@ -14,7 +14,8 @@
 	function navigate(path){
 		console.log("Navigating to: " + path);
 		var form = $('<form>', {
-		    "html": '<input type="hidden" name="userId" value="<%= userId %>" />' + 
+		    "html":  '<input type="hidden" name="userId" value="<%= userId %>" />'
+		    + 
 		    		'<input type="hidden" name="path" value="' + path + '" />',
 		    "action": '<%= applicationContext %>/Navigator',
 		    "method": 'post'

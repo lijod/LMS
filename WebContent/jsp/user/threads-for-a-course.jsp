@@ -86,7 +86,7 @@ function refreshCourseList(){
 		dataType:"JSON",
 		contentType: "application/json",
 		success : function (result) {
-			console.log(result);
+			//console.log(result);
 			$.each(result, function(i, val){
 				$("#course-list").append(
 						"<option id='course-" + val.courseId + "' value='"+val.courseId+"'>" + val.courseName + "</option>");
@@ -102,7 +102,6 @@ function refreshCourseList(){
 
 
 function loadAllThreadsByCourseId(courseId){
-console.log(courseId);
 userServiceURl =  applicaitonURL + "/jwsThreadService/findThreadsByCourseId";
 	$.ajax({
 		type : "POST",
@@ -114,17 +113,15 @@ userServiceURl =  applicaitonURL + "/jwsThreadService/findThreadsByCourseId";
 			$("#tbl-all-threads").children().remove();
 			$("#tbl-all-threads").append(getNewPostBtn());
 			$("#tbl-thread-desc").children().remove();
-			if(result.length > 0){	
-			$.each(result, function(i, val){				
-				$("#tbl-all-threads").append(
-						"<tr style='height:120px;'> <td  onClick='clickOnThread("+val.threadId+")'> <span class='spanClass'  id='"+ val.threadId +"'>"+ val.threadContent+ "</span></td></tr>");
-			});
-			
-			var firstThreadIdInList = $("#tbl-all-threads span:first").attr("id");
-			loadAThreadAndItsAllPosts(firstThreadIdInList);
-		}
-			
-			
+				if(result.length > 0){	
+				$.each(result, function(i, val){				
+					$("#tbl-all-threads").append(
+							"<tr style='height:120px;'> <td  onClick='clickOnThread("+val.threadId+")'> <span class='spanClass'  id='"+ val.threadId +"'>"+ val.threadContent+ "</span></td></tr>");
+				});
+				
+				var firstThreadIdInList = $("#tbl-all-threads span:first").attr("id");
+				loadAThreadAndItsAllPosts(firstThreadIdInList);
+			}				
 		},
 		failure : function () {
 			console.log("failed");
@@ -135,7 +132,8 @@ userServiceURl =  applicaitonURL + "/jwsThreadService/findThreadsByCourseId";
 
 
 function loadAThreadAndItsAllPosts(threadId){
-	console.log("loadAThreadAndItsAllPosts");
+	//console.log("hhhhhhhh");
+	//console.log("loadAThreadAndItsAllPosts");
 	userServiceURl = applicaitonURL + "/jwsThreadService/findAThreadByThreadId";
 	$.ajax({
 		type : "POST",
@@ -144,26 +142,30 @@ function loadAThreadAndItsAllPosts(threadId){
 		dataType:"JSON",
 		contentType: "application/json",
 		success : function (result) {
+			//console.log(result);
 			$("#tbl-thread-desc").children().remove();	
 				 $("#tbl-thread-desc").html(
 						"<tr style='height:120px;'> <td> <a href='#' id='thread-" + result.threadId + "'>"+ result.threadContent+ "</a></td></tr>"+
 						"<tr style='height:5px;'> <td> <span id='span-" + result.threadId + "'>Created on :"+ result.threadDate+ "</span></td></tr>"		
 				 );
 				 
-				$.each(result.posts, function(i, val){				
-				 $("#tbl-thread-desc").append(
-						"<tr style='height:120px;'> <td> <a href='#' id='post-" + val.postId + "'>"+ val.postContent +"</a></td></tr><br/>"); 				
+				$.each(result.posts, function(i, val){
+					//console.log(val);
+						if(doesLoggedInUserIExistInThisUser (<%= userId %>,val.usersWhoHaveLikedPosts) == 1)
+						{								
+							getLikedButton(val,result.threadId);				
+						}
+					else
+						{
+						getUnLikedButton(val,result.threadId);
+						}				 
 			});
 				
 				 $("#tbl-thread-desc").append(
 							"<tr style='height:120px;'><td>"+
-							
-							
 							"<textarea name='textarea' id='txt-replyToThread' style='height: 100%;width:100%'></textarea>"+
 							"<input id='btn-submit-post' onClick='submitpost("+threadId+")' class='btn btn-primary' type='submit' value='Post' style='' />"+							
-							"</td></tr>"); 		
-				
-				
+							"</td></tr>");
 		},
 		failure : function () {
 			console.log("failed");
@@ -171,10 +173,39 @@ function loadAThreadAndItsAllPosts(threadId){
 	});
 	
 }
-	
+
+
+function doesLoggedInUserIExistInThisUser (userId,allUsers){
+	var isLiked=0;
+	$.each(allUsers, function(i, aUser){
+		if(userId==aUser.userId)
+			//console.log("doesLoggedInUserIExistInThisUser");
+			isLiked=1;
+			return isLiked;			
+	});
+	return isLiked;
+}
+
+
+function getLikedButton(val,threadId){
+$("#tbl-thread-desc").append(
+		"<tr style='height:120px;'> <td> <a href='#' id='post-" + val.postId + "'>"+ val.postContent +"</a></td>"+
+		"<td> <button class='btn btn-success' onClick='unlikePost("+ val.postId +","+ threadId +")' id='like-post-" + val.postId + "'>Click to Unlike</button></td>"+
+		"</tr><br/>");
+}
+
+function getUnLikedButton(val,threadId){
+	$("#tbl-thread-desc").append(
+			"<tr style='height:120px;'> <td> <a href='#' id='post-" + val.postId + "'>"+ val.postContent +"</a></td>"+
+			"<td> <button class='btn btn-warning' onClick='likePost("+ val.postId +","+ threadId +")' id='unlike-post-" + val.postId + "'>Click to Like</button></td>"+
+			"</tr><br/>");
+}
+
+
 function clickOnThread(threadId) {
 	loadAThreadAndItsAllPosts(threadId);
 }
+
 
 $("#course-list").change(function() {
 	var courseId = $(this).children(":selected").attr("value");
@@ -184,11 +215,9 @@ $("#course-list").change(function() {
 
 
 function submitpost(threadId){
-	userServiceURl = applicaitonURL + "/jwsPostService/createPost";
-
-	 
+	userServiceURl = applicaitonURL + "/jwsPostService/createPost";	 
 	var postContent=$("#txt-replyToThread").val();
-    var userId = 2;
+    var userId = <%= userId %>;
     var threadId=threadId;
     var post={"postContent" : postContent,  "userId" : userId,"threadId" : threadId};
 	console.log(post);
@@ -199,7 +228,8 @@ function submitpost(threadId){
 		dataType:"JSON",
 		contentType: "application/json",
 		success : function (result) {
-			console.log(result);				
+			//console.log(result);
+			loadAThreadAndItsAllPosts(threadId);
 				
 		},
 		failure : function () {
@@ -227,7 +257,7 @@ function createThread(){
 		dataType:"JSON",
 		contentType: "application/json",
 		success : function(result){
-			console.log(result);
+			//console.log(result);
 			hideNewPostContainer();
 			loadAllThreadsByCourseId(result.courseId)
 		},
@@ -271,18 +301,18 @@ function loadTags(){
 	});
 }
 
+
 function appendTag(tagId, tagText){
 	$("#tags").append("<span class='tagClass'>&nbsp" + 
 						"<input type='checkbox' value='" +tagId + "_" + tagText + "' class='form-field' />" + tagText  
 						+ "&nbsp</span> |")
 	if($("#tags").find(".tagClass").length % 10 == 0)
 		$("#tags").append("<br/>");
-	}
+}
+
 
 function getTagData(){
-	return {
-				"tagText" : $("#tag-text").val()
-			}
+	return {"tagText" : $("#tag-text").val()}
 }
 
 function getThreadData(){
@@ -317,6 +347,46 @@ function getTags(){
 
 function getNewPostBtn(){
 	return '<tr> <td> <input type="button" value="NEW THREAD" class="btn btn-success" onClick="showNewPostContainer()" /> </td> </tr>';	
+}
+
+
+function likePost(postId,threadId){
+	console.log({"postId" : postId, "userId" : <%= userId %>});
+	userServiceURl = applicaitonURL + "/jwsPostService/likeAPost";	
+	 $.ajax({
+		type : "POST",
+		url : userServiceURl,
+		data: JSON.stringify({"postId" : postId, "userId" : <%= userId %>}),
+		dataType:"JSON",
+		contentType: "application/json",
+		success : function(post){
+		
+			loadAThreadAndItsAllPosts(threadId);
+			
+		},
+		failure : function(){
+			console.log("Error while liking a Post...");
+		}
+	});	
+}
+
+function unlikePost(postId,threadId){
+	//console.log({"postId" : postId, "userId" : <%= userId %>});
+	userServiceURl = applicaitonURL + "/jwsPostService/unLikeAPost";	
+	 $.ajax({
+		type : "POST",
+		url : userServiceURl,
+		data: JSON.stringify({"postId" : postId, "userId" : <%= userId %>}),
+		dataType:"JSON",
+		contentType: "application/json",
+		success : function(post){
+		
+			loadAThreadAndItsAllPosts(threadId);
+		},
+		failure : function(){
+			console.log("Error while liking a Post...");
+		}
+	}); 	
 }
 
 </script>

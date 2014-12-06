@@ -105,9 +105,17 @@ public class Test {
 	
 	
 	
-	PostDao p=new PostDao();
+/*	PostDao p=new PostDao();
 	Post post=new Post("abc",new Date(),new Time(new Date().getTime()),2,6);
-	p.createPost(post);
+	p.createPost(post);*/
+	
+/*	User user = new User();
+	UserDao userDaoObj = new UserDao();
+	user=userDaoObj.findUserByUserId(11);
+	System.out.println(user);*/
+	
+	ThreadDao userDaoObj2 =new	ThreadDao();
+	System.out.println(userDaoObj2.findAThreadByThreadId(5).getPosts().get(0).getUsersWhoHaveLikedPosts());
 	
 	
 	

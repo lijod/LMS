@@ -2,6 +2,7 @@ package com.lms.model;
 
 import java.io.Serializable;
 import java.lang.String;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -15,6 +16,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  */
 
 @Entity
+@Cacheable(false)
 @Table(name="user")
 public class User implements Serializable {
 
@@ -52,11 +54,26 @@ public class User implements Serializable {
 	@OneToMany(mappedBy="user", fetch=FetchType.EAGER)
 	private List<Thread> thread;
 	
+	@JsonIgnore
+	@ManyToMany(mappedBy="usersWhoHaveLikedPosts", fetch=FetchType.EAGER)
+	private List<Post> likedPosts ;
+
+	public List<Post> getLikedPosts() {
+		return likedPosts;
+	}
+
+	public void setLikedPosts(List<Post> likedPosts) {
+		this.likedPosts = likedPosts;
+	}
+
+
+
 	private static final long serialVersionUID = 1L;
 	   
 	public User() {
 		super();
 	}
+	
 	public User(String userName, String password, String firstName,
 			String lastName, String email, Date dateOfBirth, byte[] userImage) {
 		super();
@@ -145,27 +162,19 @@ public class User implements Serializable {
 	public void setUserImage(byte[] userImage) {
 		this.userImage = userImage;
 	}
+	
+	
+	
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("User [userId=");
-		builder.append(userId);
-		builder.append(", userName=");
-		builder.append(userName);
-		builder.append(", password=");
-		builder.append(password);
-		builder.append(", firstName=");
-		builder.append(firstName);
-		builder.append(", lastName=");
-		builder.append(lastName);
-		builder.append(", email=");
-		builder.append(email);
-		builder.append(", dateOfBirth=");
-		builder.append(dateOfBirth);
-		builder.append(", userCourseDetail=");
-		builder.append(userCourseDetail);
-		builder.append("]");
-		return builder.toString();
+		return "User [userId=" + userId + ", userName=" + userName
+				+ ", password=" + password + ", firstName=" + firstName
+				+ ", lastName=" + lastName + ", email=" + email
+				+ ", dateOfBirth=" + dateOfBirth + ", userImage="
+				+ Arrays.toString(userImage) + ", userCourseDetail="
+				+ userCourseDetail.size() + ", posts=" + posts.size() + ", thread=" + thread.size()
+				+ "]";
 	}
+
 	
 }
