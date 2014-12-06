@@ -50,13 +50,20 @@ public class User implements Serializable {
 	@OneToMany(mappedBy="user", fetch=FetchType.EAGER)
 	private List<Post> posts;
 	
-	//bi-directional many-to-one association to Post
-	@OneToMany(mappedBy="user", fetch=FetchType.EAGER)
-	private List<Thread> thread;
-	
 	@JsonIgnore
 	@ManyToMany(mappedBy="usersWhoHaveLikedPosts", fetch=FetchType.EAGER)
 	private List<Post> likedPosts ;
+	
+	//bi-directional many-to-many association to Tag
+	@JsonIgnore
+	@ManyToMany(mappedBy="favUsers", fetch=FetchType.EAGER)
+	private List<Thread> favThreads;	
+		
+	//bi-directional many-to-one association to Post
+	@JsonIgnore
+	@OneToMany(mappedBy="user", fetch=FetchType.EAGER)
+	private List<Thread> threads;
+	
 
 	public List<Post> getLikedPosts() {
 		return likedPosts;
@@ -165,6 +172,22 @@ public class User implements Serializable {
 	
 	
 	
+	public List<Thread> getFavThreads() {
+		return favThreads;
+	}
+
+	public void setFavThreads(List<Thread> favThreads) {
+		this.favThreads = favThreads;
+	}
+
+	public List<Thread> getThreads() {
+		return threads;
+	}
+
+	public void setThreads(List<Thread> threads) {
+		this.threads = threads;
+	}
+
 	@Override
 	public String toString() {
 		return "User [userId=" + userId + ", userName=" + userName
@@ -172,7 +195,7 @@ public class User implements Serializable {
 				+ ", lastName=" + lastName + ", email=" + email
 				+ ", dateOfBirth=" + dateOfBirth + ", userImage="
 				+ Arrays.toString(userImage) + ", userCourseDetail="
-				+ userCourseDetail.size() + ", posts=" + posts.size() + ", thread=" + thread.size()
+				+ userCourseDetail.size() + ", posts=" + posts.size() + ", thread=" + threads.size()
 				+ "]";
 	}
 

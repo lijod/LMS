@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import java.sql.Time;
 import java.util.Date;
 import java.util.List;
@@ -48,6 +50,7 @@ public class Thread implements Serializable {
 	@OneToMany(mappedBy="thread", fetch=FetchType.EAGER)
 	private List<Post> posts;
 	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="user_id",insertable=false,updatable=false)
 	private User user;
@@ -58,6 +61,13 @@ public class Thread implements Serializable {
 				joinColumns=@JoinColumn (name="thread_id"),
 				inverseJoinColumns=@JoinColumn(name="tag_id"))
 	private List<Tag> tags;
+	
+	//@JsonIgnore
+	@ManyToMany(fetch=FetchType.EAGER, cascade={CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE})
+	@JoinTable(name="fav_thread", 
+				joinColumns=@JoinColumn (name="thread_id"),
+				inverseJoinColumns=@JoinColumn(name="user_id"))
+	private List<User> favUsers;
 	
 	public Thread() {
 	}
@@ -170,6 +180,14 @@ public class Thread implements Serializable {
 		this.posts = posts;
 	}
 
+	public List<User> getFavUsers() {
+		return favUsers;
+	}
+
+	public void setFavUsers(List<User> favUsers) {
+		this.favUsers = favUsers;
+	}
+
 	public Post addPost(Post post) {
 		getPosts().add(post);
 		post.setThread(this);
@@ -210,28 +228,5 @@ public class Thread implements Serializable {
 		builder.append("]");
 		return builder.toString();
 	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + threadId;
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Thread other = (Thread) obj;
-		if (threadId != other.threadId)
-			return false;
-		return true;
-	}
-	
 
 }

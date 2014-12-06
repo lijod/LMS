@@ -53,7 +53,8 @@ table, td, th {
 					</div>
 					<input type="text" value="" class="form-control" id="thread-title" placeholder="THREAD TITLE"/>
 					<textarea name="textarea" id="thread-content" style="height: 100px;"></textarea>
-					<input class="form-control" type="button" value="SUBMIT THREAD" style="" onClick="createThread()"/>
+					<input class="btn btn-success" type="button" value="SUBMIT THREAD" style="" onClick="createThread()"/>
+					<input class="btn btn-warning" type="button" value="CANCEL" style="" onClick="hideNewPostContainer()"/>
 				</form>
 			</div>
 		</td>
@@ -146,7 +147,8 @@ function loadAThreadAndItsAllPosts(threadId){
 			$("#tbl-thread-desc").children().remove();	
 				 $("#tbl-thread-desc").html(
 						"<tr style='height:120px;'> <td> <a href='#' id='thread-" + result.threadId + "'>"+ result.threadContent+ "</a></td></tr>"+
-						"<tr style='height:5px;'> <td> <span id='span-" + result.threadId + "'>Created on :"+ result.threadDate+ "</span></td></tr>"		
+						"<tr style='height:5px;'> <td> <span id='span-" + result.threadId + "'>Created on :"+ result.threadDate+ "</span>&nbsp;"
+						 +  getFavBtnForThread(result.favUsers, result.threadId) + "</td></tr>"		
 				 );
 				 
 				$.each(result.posts, function(i, val){
@@ -166,6 +168,7 @@ function loadAThreadAndItsAllPosts(threadId){
 							"<textarea name='textarea' id='txt-replyToThread' style='height: 100%;width:100%'></textarea>"+
 							"<input id='btn-submit-post' onClick='submitpost("+threadId+")' class='btn btn-primary' type='submit' value='Post' style='' />"+							
 							"</td></tr>");
+				 $('#txt-replyToThread').jqte();
 		},
 		failure : function () {
 			console.log("failed");
@@ -387,6 +390,80 @@ function unlikePost(postId,threadId){
 			console.log("Error while liking a Post...");
 		}
 	}); 	
+}
+
+function addToFav(threadId){
+	console.log("userId:<%= userId %>");
+	console.log("threadId:" + threadId);
+	$.ajax({
+		type : "post",
+		url : threadService + "/setFavThreadForUser",
+		data : JSON.stringify({"threadId" : threadId, "userId" : <%= userId %>}),
+		dataType:"JSON",
+		contentType: "application/json",
+		success : function(thread){
+			console.log("SUCCESS!");
+			console.log(thread);
+			$("#thread-fav-btn").attr("class", "btn btn-warning");
+			$("#thread-fav-btn").attr("value", "UNDO FAVORITE");
+			$("#thread-fav-btn").attr("onClick", "undoFav(" + thread.threadId + ")");
+		},
+		failure : function(){
+			console.log("Error while saving Tag...");
+		}
+	});
+}
+
+function undoFav(threadId){
+	console.log("userId:<%= userId %>");
+	console.log("threadId:" + threadId);	
+	$.ajax({
+		type : "DELETE",
+		url : threadService + "/undoFavThreadForUser",
+		data : JSON.stringify({"threadId" : threadId, "userId" : <%= userId %>}),
+		dataType:"JSON",
+		contentType: "application/json",
+		success : function(thread){
+			console.log("SUCCESS!");
+			console.log(thread);
+			$("#thread-fav-btn").attr("class", "btn btn-success");
+			$("#thread-fav-btn").attr("value", "ADD TO FAVORITE");
+			$("#thread-fav-btn").attr("onClick", "addToFav(" + thread.threadId + ")");
+		},
+		failure : function(){
+			console.log("Error while saving Tag...");
+		}
+	});
+}
+
+function getFavBtnForThread(userJson, threadId){
+	console.log("getFavBtnForThread");
+	console.log(userJson);
+	console.log(threadId);
+	if(userExistsInJson(userJson))
+		return getUndoFavoriteBtn(threadId);
+	else
+		return getFavoriteBtn(threadId);
+}
+
+function userExistsInJson(userJson){
+	var isFav = false;
+	$.each(userJson, function (i, user) {
+		if(user.userId == <%= userId %>){
+			isFav = true;
+			return isFav;
+		}	
+	});
+	return isFav;
+}
+
+
+function getFavoriteBtn(threadId){
+	return '<input type="button" value="ADD TO FAVORITE" id="thread-fav-btn" class="btn btn-success" onClick="addToFav(' + threadId + ')" />';
+}
+
+function getUndoFavoriteBtn(threadId){
+	return '<input type="button" value="UNDO FAVORITE" id="thread-fav-btn" class="btn btn-warning" onClick="undoFav(' + threadId + ')" />';
 }
 
 </script>

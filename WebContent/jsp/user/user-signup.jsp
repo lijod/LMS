@@ -19,6 +19,6 @@
 			<input class="form-control" type="submit" value="SIGN UP!"/>
 		</form>
 	</div>
-
+<a href="/LMS/jsp/user/user-signup.jsp">USER SIGNUP</a>
 </body>
 </html>
