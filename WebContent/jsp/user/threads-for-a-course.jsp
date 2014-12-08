@@ -102,33 +102,33 @@ function refreshCourseList(){
 }
 
 
-function loadAllThreadsByCourseId(courseId){
-userServiceURl =  applicaitonURL + "/jwsThreadService/findThreadsByCourseId";
-	$.ajax({
-		type : "POST",
-		url :  userServiceURl,
-		data: JSON.stringify(courseId),
-		dataType:"JSON",
-		contentType: "application/json",
-		success : function (result) {
-			$("#tbl-all-threads").children().remove();
-			$("#tbl-all-threads").append(getNewPostBtn());
-			$("#tbl-thread-desc").children().remove();
-				if(result.length > 0){	
-				$.each(result, function(i, val){				
-					$("#tbl-all-threads").append(
-							"<tr style='height:120px;'> <td  onClick='clickOnThread("+val.threadId+")'> <span class='spanClass'  id='"+ val.threadId +"'>"+ val.threadContent+ "</span></td></tr>");
-				});
-				
-				var firstThreadIdInList = $("#tbl-all-threads span:first").attr("id");
-				loadAThreadAndItsAllPosts(firstThreadIdInList);
-			}				
-		},
-		failure : function () {
-			console.log("failed");
-		}
-	});
-}
+	function loadAllThreadsByCourseId(courseId){
+	userServiceURl =  applicaitonURL + "/jwsThreadService/findThreadsByCourseId";
+		$.ajax({
+			type : "POST",
+			url :  userServiceURl,
+			data: JSON.stringify(courseId),
+			dataType:"JSON",
+			contentType: "application/json",
+			success : function (result) {
+				$("#tbl-all-threads").children().remove();
+				$("#tbl-all-threads").append(getNewPostBtn());
+				$("#tbl-thread-desc").children().remove();
+					if(result.length > 0){	
+					$.each(result, function(i, val){				
+						$("#tbl-all-threads").append(
+								"<tr style='height:120px;'> <td  onClick='clickOnThread("+val.threadId+")'> <span class='spanClass'  id='"+ val.threadId +"'>"+ val.threadContent+ "</span></td></tr>");
+					});
+					
+					var firstThreadIdInList = $("#tbl-all-threads span:first").attr("id");
+					loadAThreadAndItsAllPosts(firstThreadIdInList);
+				}				
+			},
+			failure : function () {
+				console.log("failed");
+			}
+		});
+	}
 	
 
 

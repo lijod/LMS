@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.lms.dao.CourseDao;
 import com.lms.dao.CourseScheduleDao;
+import com.lms.dao.JobDao;
 import com.lms.dao.PostDao;
 import com.lms.dao.ThreadDao;
 import com.lms.dao.UserCourseDetailDao;
@@ -114,12 +115,15 @@ public class Test {
 	user=userDaoObj.findUserByUserId(11);
 	System.out.println(user);*/
 	
-	ThreadDao userDaoObj2 =new	ThreadDao();
-	System.out.println(userDaoObj2.findAThreadByThreadId(5).getPosts().get(0).getUsersWhoHaveLikedPosts());
+	/*ThreadDao userDaoObj2 =new	ThreadDao();
+	System.out.println(userDaoObj2.findAThreadByThreadId(5).getPosts().get(0).getUsersWhoHaveLikedPosts());*/
 	
 	
+	JobDao jobdaoObj=new JobDao();
 	
+	System.out.println(jobdaoObj.findJobsByProfessorIdAndCourseId(11,41));
 	
+	System.out.println(jobdaoObj.findJobsByCourseId(41).get(0).getJobResponsobility());
 		
 	}
 	

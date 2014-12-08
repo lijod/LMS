@@ -6,12 +6,17 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+
+import org.codehaus.jackson.annotate.JsonAutoDetect;
+import org.codehaus.jettison.json.JSONArray;
 
 import com.lms.dao.PostDao;
 import com.lms.dao.UserCourseDetailDao;
@@ -131,11 +136,11 @@ public class UserService {
 	  return userDaoObj.findAllUsersNotTAForACourse(courseId);
 	 }
 	 
-	    @POST
+	  
 		@Produces(MediaType.APPLICATION_JSON)
-		@Consumes(MediaType.APPLICATION_JSON)
+		@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 		@Path("/UserFollowsAnotherUser")
-		public User UserFollowsAnotherUserService(int followerUserId,int followedUserId) {	
+		public User UserFollowsAnotherUserService(@FormParam("followerUserId") int followerUserId,@FormParam("followedUserId") int followedUserId) {
 			UserDao userDaoObj = new UserDao();			
 			User followerUserObj = userDaoObj.findUserByUserId(followerUserId);
 			System.out.println("service before dao call1"+followerUserObj);						
@@ -150,9 +155,12 @@ public class UserService {
 	    
 	    @POST
 		@Produces(MediaType.APPLICATION_JSON)
-		@Consumes(MediaType.APPLICATION_JSON)
+		@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 		@Path("/UserUnFollowsAnotherUser")
-		public User UserUnFollowsAnotherUserService(int followerUserId,int followedUserIdToBeRemoved) {	
+		public User UserUnFollowsAnotherUserService(@FormParam("followerUserId") int followerUserId,@FormParam("followedUserId") int followedUserIdToBeRemoved) {
+
+	    	System.out.println(followerUserId+ "_"+followedUserIdToBeRemoved);
+	    	
 			UserDao userDaoObj = new UserDao();			
 			User followerUserObj = userDaoObj.findUserByUserId(followerUserId);
 			System.out.println("service before dao call1"+followerUserObj);			
@@ -166,7 +174,7 @@ public class UserService {
 			}
 			
 					
-			followerUserObj.setFollowedUsersList(usersWhoHaveAlreadyFollowedUsers);			
+		followerUserObj.setFollowedUsersList(usersWhoHaveAlreadyFollowedUsers);			
 		  return userDaoObj.updateUser(followerUserObj);
 	    	//return followerUserObj;
 		}
