@@ -42,6 +42,10 @@ public class JobApplication implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="job_id",insertable=false,updatable=false)
 	private Job job	;
+	
+	@ManyToOne
+	@JoinColumn(name="user_id",insertable=false,updatable=false)
+	private User user;
 
 	public JobApplication(String gpa, int userId, int jobId, Job job) {
 		super();
@@ -93,6 +97,33 @@ public class JobApplication implements Serializable {
 
 	public void setJob(Job job) {
 		this.job = job;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("JobApplication [job_App_Id=");
+		builder.append(job_App_Id);
+		builder.append(", gpa=");
+		builder.append(gpa);
+		builder.append(", userId=");
+		builder.append(userId);
+		builder.append(", jobId=");
+		builder.append(jobId);
+		builder.append(", job=");
+		builder.append(job.getJobTitle());
+		builder.append(", user=");
+		builder.append(user.getUserName());
+		builder.append("]");
+		return builder.toString();
 	}
 
 }

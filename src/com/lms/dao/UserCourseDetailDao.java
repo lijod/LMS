@@ -36,7 +36,7 @@ public class UserCourseDetailDao {
 	@SuppressWarnings("unchecked")
 	public List<UserCourseDetail> findByUserId(int userId){
 		em.getTransaction().begin();
-		Query query = em.createQuery("select ucd from UserCourseDetail ucd where ucd.userid = :userId");
+		Query query = em.createQuery("select ucd from UserCourseDetail ucd where ucd.userId = :userId");
 		query.setParameter("userId", userId);
 		List<UserCourseDetail> result = query.getResultList();
 		em.getTransaction().commit();

@@ -32,7 +32,7 @@ public class JobDao {
 	
 	
 	public List<Job> findAllJobs() {
-		Query query = em.createQuery("select job from JobDescription job");
+		Query query = em.createQuery("select job from Job job");
 		List<Job> jobsList = query.getResultList();
 		return jobsList;
 	}

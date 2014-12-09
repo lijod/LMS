@@ -1,12 +1,25 @@
 package com.lms.model;
 
 import java.io.Serializable;
-import java.lang.String;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.Cacheable;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 
@@ -64,8 +77,6 @@ public class User implements Serializable {
 	@OneToMany(mappedBy="user", fetch=FetchType.EAGER)
 	private List<Thread> threads;
 	
-	
-	
 	@JsonIgnore
 	@ManyToMany(fetch=FetchType.EAGER, cascade={CascadeType.MERGE, CascadeType.REFRESH})
 	@JoinTable(name="follow_user", 
@@ -77,6 +88,9 @@ public class User implements Serializable {
 	@ManyToMany(mappedBy="followedUsersList", fetch=FetchType.EAGER)
 	private List<User> followersUsersList;
 	
+	@OneToMany
+	@JoinColumn(name="user_id")
+	private List<Job> jobList; 
 	
 
 	private static final long serialVersionUID = 1L;
@@ -216,13 +230,28 @@ public class User implements Serializable {
 		this.followedUsersList = followedUsersList;
 	}
 
+	public List<Post> getPosts() {
+		return posts;
+	}
+
+	public void setPosts(List<Post> posts) {
+		this.posts = posts;
+	}
+
+	public List<Job> getJobList() {
+		return jobList;
+	}
+
+	public void setJobList(List<Job> jobList) {
+		this.jobList = jobList;
+	}
+
 	@Override
 	public String toString() {
 		return "User [userId=" + userId + ", userName=" + userName
 				+ ", password=" + password + ", firstName=" + firstName
 				+ ", lastName=" + lastName + ", email=" + email
-				+ ", dateOfBirth=" + dateOfBirth + ", userImage="
-				+ Arrays.toString(userImage) + ", userCourseDetail="
+				+ ", dateOfBirth=" + dateOfBirth + ", userCourseDetail="
 				+ userCourseDetail.size() + ", posts=" + posts.size() + ", likedPosts="
 				+ likedPosts.size() + ", favThreads=" + favThreads.size() + ", threads="
 				+ threads.size() + ", followersUsersList=" + followersUsersList.size()

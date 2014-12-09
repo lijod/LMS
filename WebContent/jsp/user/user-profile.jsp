@@ -1,18 +1,182 @@
 <%@ include file="../common.jsp"%>
 <%@ include file="../check-login.jsp"%>
+<%@ page import="com.lms.model.Thread" %>
+<%@ page import="com.lms.model.Post" %>
+<%@page import="com.lms.model.Job"%>
+<%@page import="com.lms.model.JobApplication"%>
+
+<%
+	User displayUser = (User) request.getAttribute("displayUser");
+	int courseId =  0;
+	if(request.getAttribute("courseId") != null)
+		courseId =  (Integer) request.getAttribute("courseId");
+	boolean viewer = displayUser != null;
+	if(viewer)
+		user = displayUser;
+	
+	List<Job> jobList = null;
+	if((role.equalsIgnoreCase("student") || role.equalsIgnoreCase("ta")) && !viewer)
+		jobList = (List<Job>) request.getAttribute("jobs");
+%>
 
 </html>
 <body>
-	<a href="javascript:void(0)" onClick="navigate('/jsp/user/threads-for-a-course.jsp')">VIEW ALL THREADS</a>
+	<!--a href="javascript:void(0)" onClick="navigate('/jsp/user/threads-for-a-course.jsp')">VIEW ALL THREADS</a>
 	<a href="javascript:void(0)" onClick="navigate('/jsp/admin/add-prof.jsp')">ADD PROFESSOR</a>
 	<a href="javascript:void(0)" onClick="navigate('/jsp/user/threads-for-a-course.jsp')">ADD/VIEW THREAD</a>
 	<a href="javascript:void(0)" onClick="navigate('/jsp/professor/add-ta.jsp')">ADD TA</a><br/>
 	<a href="javascript:void(0)" onClick="navigate('/jsp/professor/add-job.jsp')">ADD Job</a>
 	<a href="javascript:void(0)" onClick="navigate('/jsp/user/user-view-job-app.jsp')">View Latest Jobs</a>
-	<a href="javascript:void(0)" onClick="navigate('/jsp/TA/add-schedule.jsp')">TA adds his schedule</a>
-	<input type="button" id="btn-set-follower" value="follow" class="btn btn-warning" style="float:left;" />
-	<input type="text" id="tb-user-id">
-	<input type="button" id="btn-Un-set-follower" value="Unfollow" class="btn btn-warning" style="float:left;" />
+	<a href="javascript:void(0)" onClick="navigate('/jsp/TA/add-schedule.jsp')">TA adds his schedule</a-->
+	<div class="container">
+	<hr/>
+	<% if(displayUser != null)  {%>
+		<a href="javascript:void(0)" onClick="navigate('/jsp/user/user-profile.jsp')">BACK TO MY PROFILE</a> <br/>
+	<% }  %>
+	<img style="width: 40px; height: 50px;" alt="No image" src="<%= ImageUtil.getBase64ImageFromByte(user.getUserImage()) %>">
+	
+	<span id="name"><span id="first-name"><%= user.getFirstName() %></span>&nbsp;
+					<span id="last-name"><%= user.getLastName() %></span></span>
+	
+	<button id="btn-Un-set-follower" class="btn btn-warning" style="display:none;">UNFOLLOW</button>
+	<button id="btn-set-follower" class="btn btn-success" style="display:none;">FOLLOW</button>
+	<% if(viewer) {
+		boolean isFollower = false;
+		for(User u : followingList){
+			System.out.println(u.getUserId()  + "==" +  user.getUserId());
+			if(u.getUserId() == user.getUserId())
+				isFollower = true;
+		}
+		System.out.println("isFollower:" + isFollower);
+		if(isFollower){
+	%>
+		<script type="text/javascript">
+			$("#btn-Un-set-follower").show();
+		</script>
+	<% } else { %>
+		<script type="text/javascript">
+			$("#btn-set-follower").show();
+		</script>
+	<% }
+	} %>
+	
+	<!-- a href="javascript:void(0)" onClick="navigate('/jsp/user/threads-for-a-course.jsp')">ADD/VIEW THREAD</a -->
+	<br/><br/>
+	<% if (role != null && role.equalsIgnoreCase("TA")) { %>
+		TA VIEW ONLY!!!
+		<% if(!viewer) { %>
+			EDIT ONLY
+		<% } %>
+	<% } %>
+	<br/>
+	<select id="course-role" class="form-control"></select>
+	
+	<hr/>
+	THREAD:
+	<div id="posted-thread-container" >
+		<% for(Thread thread : user.getThreads()) {%>
+			<%= thread.getThreadTitle() %>
+			<%= thread.getThreadContent() %>
+			<% if(!viewer) { %>
+				EDIT ONLY
+			<% } %>
+			<hr/>
+		<% } %>
+		<% if(!viewer) { %>
+				ADD NEW THREAD
+		<% } %>
+	</div>
+	<hr/>
+	FAVORITE THREAD:
+	<div id="fav-thread-container" >
+		<% for(Thread thread : user.getFavThreads()) {%>
+			<%= thread.getThreadTitle() %>
+			<%= thread.getThreadContent() %>
+			<hr/>
+		<% } %>
+	</div>
+	<hr/>
+	POSTS:
+	<div id="user-post-container" >
+		<% for(Post post : user.getPosts()) {%>
+			<%= post.getPostContent() %>
+			<% if(!viewer) { %>
+				EDIT ONLY
+			<% } %>
+			<hr/>
+		<% } %>
+	</div>
+	<hr/>
+	LIKED POSTS:
+	<div id="liked-post-container" >
+		<% for(Post post : user.getLikedPosts()) {%>
+			<%= post.getPostContent() %>
+			<hr/>
+		<% } %>
+	</div>
+	
+	<hr/>
+	FOLLOWING:
+	<div id="following-container" >
+		<% for(User u: user.getFollowedUsersList()) {%>
+			<a href="javascript:void(0)" onClick="viewUser(<%= u.getUserId() %>)"> <%= u.getFirstName() %> <%= u.getLastName() %> </a>
+			<hr/>
+		<% } %>
+	</div>
+	
+	<hr/>
+	FOLLOWED BY:
+	<div id="followed-by-container" >
+		<% for(User u: user.getFollowersUsersList()) {%>
+			<a href="javascript:void(0)" onClick="viewUser(<%= u.getUserId() %>)"> <%= u.getFirstName() %> <%= u.getLastName() %> </a>
+			<hr/>
+		<% } %>
+	</div>
+	
+	<% if ((role != null && role.equalsIgnoreCase("PROFESSOR")) && !viewer) { %>
+	<hr/>
+		<div id="jobs" >
+			<% for(Job job : user.getJobList()) { %>
+				<div>
+					<span class="job-title"><a><%= job.getJobTitle() %></a></span><br/>
+					<div class="job-child" style="display:none;">
+						<span>DESCRIPTION: <%= job.getJobDesc() %></span><br/>
+						<span>RESPONSIBILITIES: <%= job.getJobResponsobility() %></span><br/>
+						<span>REQUIREMENT: <%= job.getJobRequirement() %></span><br/>
+					</div>
+					<div id="job-application">
+						Applications:
+						<% for(JobApplication jobApp : job.getJobApplications()) { %>
+							<span>Username: <%= jobApp.getUser().getUserName() %></span>
+							<span>Email: <%= jobApp.getUser().getEmail() %></span>
+							<span>GPA: <%= jobApp.getGpa() %></span>
+						<% } %>
+					</div>
+				</div>
+			<% } %>
+			<br/><span><a href="javascript:void(0)" onClick="navigate('/jsp/professor/add-job.jsp')">ADD JOB</a></span>
+		</div>
+	<% } %>
+	
+	<% if ((role != null && !role.equalsIgnoreCase("PROFESSOR")) && !viewer) { %>
+	<hr/>
+	<div id="job-listing">
+		<% for(Job job : jobList){ %>
+			<div>
+				<span class="job-title"><a><%= job.getJobTitle() %></a></span>
+				<span><a href="javascript:void(0)" onClick="navigate('/jsp/user/user-view-job-app.jsp')">APPLY</a></span><br/>
+				<div class="job-child" style="display:none;">
+					<span>DESCRIPTION: <%= job.getJobDesc() %></span><br/>
+					<span>RESPONSIBILITIES: <%= job.getJobResponsobility() %></span><br/>
+					<span>REQUIREMENT: <%= job.getJobRequirement() %></span><br/>
+				</div>
+			</div>
+		<% } %>
+	</div>
+	<% } %>
+</div>
+	
+	
 </body>
 </html>
 
@@ -20,20 +184,29 @@
 <script type="text/javascript">
 
 var applicaitonURL = "/LMS/api";
+var userCourseDetailURL = applicaitonURL + "/jwsUserCourseDetailService";
 var userServiceURl ;
 
+$("document").ready(function(){
+	loadCourseRoleForUser(<%= userId %>);
+	$(".job-title").click(function (){
+	  var myUL = $(this).siblings(".job-child").toggle();
+	});
+});
+
 $("#btn-set-follower").click(function(){
-	var UserData = {"followerUserId" : <%= userId %>, "followedUserId" : 1};
-	
+	console.log({"followerUserId" : <%= userId %>, "followedUserId" : <%= user.getUserId() %>});
 	userServiceURl =  applicaitonURL + "/jwsUserService/UserFollowsAnotherUser";
 	$.ajax({
 		type : "POST",
 		url : userServiceURl,
-		data : UserData,
+		data : {"followerUserId" : <%= userId %>, "followedUserId" : <%= user.getUserId() %>},
 		dataType:"JSON",
 		contentType: "application/x-www-form-urlencoded",
 		success : function(user){
 			console.log(user);
+			$("#btn-set-follower").hide();
+			$("#btn-Un-set-follower").show();
 		},
 		failure : function(){
 			console.log("Error while Following a User...");
@@ -44,23 +217,66 @@ $("#btn-set-follower").click(function(){
 
 
 $("#btn-Un-set-follower").click(function(){
-	var UserData = {"followerUserId" : <%= userId %>, "followedUserId" : 5};
+	console.log({"followerUserId" : <%= userId %>,  "followedUserId" : <%= user.getUserId() %>});
 	userServiceURl =  applicaitonURL + "/jwsUserService/UserUnFollowsAnotherUser";
 	$.ajax({
 		type : "POST",
 		url : userServiceURl,
-		data : UserData,
+		data : {"followerUserId" : <%= userId %>, "followedUserId" : <%= user.getUserId() %>},
 		dataType:"JSON",
 		contentType: "application/x-www-form-urlencoded",
 		success : function(user){
 			console.log(user);
+			$("#btn-Un-set-follower").hide();
+			$("#btn-set-follower").show();
 		},
 		failure : function(){
 			console.log("Error while Following a User...");
 		}
 	});
 
-})
+});
 
+function loadCourseRoleForUser(userId){
+	$.ajax({
+		type : "GET",
+		url : userCourseDetailURL + "/findCourseRoleByUserId/" + userId,
+		dataType:"JSON",
+		success : function(userCourseRoles){
+			console.log("user role:");
+			console.log(userCourseRoles);
+			$("#course-role").html("<option class='form-control' id='course-role-none' role='' value='0'>SELECT A COURSE</option>");
+			$.each(userCourseRoles, function(i, ucr){
+				console.log(ucr.roleName + " IN " + ucr.course.courseName);
+				$("#course-role").append(
+						"<option class='form-control' " +  
+						"') value='" + ucr.course.courseId + "' role='" + ucr.roleName + "'>" + 
+						ucr.roleName + " IN " + ucr.course.courseName + "</option>");
+				$("#course-role").change(function(){
+					loadViewForCourse($("#course-role").find(":selected").val(),
+										$("#course-role").find(":selected").attr("role"));
+				});
+				<% if (courseId != 0) { %>
+					$("#course-role").val(<%=courseId%>);
+				<% } %> 
+			});
+		},
+		failure : function(){
+			console.log("Error while Following a User...");
+		}
+	});	
+}
+
+function loadViewForCourse(course, role){
+
+	var form = $('<form>', {
+	    "html":  '<input type="hidden" name="userId" value="<%= userId %>" />'
+	    +		'<input type="hidden" name="courseId" value="' + course + '" />'
+	    +		'<input type="hidden" name="role" value="' + role + '" />',
+	    "action": '<%= applicationContext %>/ProfilePageForCourse',
+	    "method": 'post'
+	});
+	form.appendTo("body").submit();
+}
 
 </script>

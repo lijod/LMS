@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.lms.dao.JobDao;
 import com.lms.dao.UserDao;
 import com.lms.model.User;
 import com.lms.model.UserCourseDetail;
@@ -31,22 +32,6 @@ public class UserLoginServlet extends HttpServlet {
     }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		PrintWriter out = response.getWriter();
-		  out.println("<HTML>");
-		  out.println("<HEAD>");
-		  out.println("<TITLE>Servlet Testing</TITLE>");
-		  out.println("</HEAD>");
-		  out.println("<BODY>");
-		  out.println("Welcome to the Servlet Testing Center");
-		  out.println("</BODY>");
-		  out.println("</HTML>");
-	}
-
-	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -54,7 +39,7 @@ public class UserLoginServlet extends HttpServlet {
 		
 		Boolean isUserFound=false;
 		Boolean hasUserSelectedCorrectRole=false; 
-		
+		System.out.println("prf:"+ request.getParameter("user-type"));
 		String userName = request.getParameter("user-name").toLowerCase();
 		String userPassword = request.getParameter("password").toLowerCase();
 		String userType = request.getParameter("user-type").toLowerCase();
@@ -67,18 +52,22 @@ public class UserLoginServlet extends HttpServlet {
 		for(User user :  allUsersList){
 			if((userName.equals(user.getUserName().toLowerCase()) && (userPassword.equals(user.getPassword().toLowerCase())))){
 				isUserFound=true;
+				System.out.println("User found with username:" + user.getUserName());
 				for(UserCourseDetail ucd:user.getUserCourseDetail()){
+					System.out.println("course and role:" + ucd.getCourse().getCourseName() + "->" + ucd.getRoleName());
 					if(userType.equals(ucd.getRoleName().toLowerCase())){
-					System.out.println("course found");					
-					hasUserSelectedCorrectRole=true;
-					request.setAttribute("user", user);
-					rd = request.getRequestDispatcher("/jsp/user/user-profile.jsp");
-					rd.forward(request, response);
-					
-			}
-					else
-						break;
-					
+						System.out.println("Log in success for:" + user.getUserName() + "->" + ucd.getCourse().getCourseName() 
+								+ "->" + ucd.getRoleName());					
+						hasUserSelectedCorrectRole=true;
+						if(userType.equalsIgnoreCase("student") || userType.equalsIgnoreCase("ta"))
+							request.setAttribute("jobs", new JobDao().findAllJobs());
+						request.setAttribute("role", ucd.getRoleName());
+						request.setAttribute("user", user);
+						rd = request.getRequestDispatcher("/jsp/user/user-profile.jsp");
+						rd.forward(request, response);
+						return;
+					}/*else
+						break;*/
 				}
 			}
 		}
@@ -87,20 +76,14 @@ public class UserLoginServlet extends HttpServlet {
 			request.setAttribute("errorMessage", "This role does not exist for the current user.");
 			rd = request.getRequestDispatcher("/jsp/user/user-login.jsp");
 			rd.forward(request, response);		
+			return;
 		}
 		else if (isUserFound == false && hasUserSelectedCorrectRole == false) {
 				request.setAttribute("errorMessage", "User does not exist,Please try again.");
 				rd = request.getRequestDispatcher("/jsp/user/user-login.jsp");
 				rd.forward(request, response);		
-			}
-		
-		
-		
-		
-					
-		
-		
-		
+				return;
+			}		
 	}
 
 }

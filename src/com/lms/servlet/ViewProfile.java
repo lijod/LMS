@@ -12,24 +12,23 @@ import javax.servlet.http.HttpServletResponse;
 import com.lms.dao.UserDao;
 
 /**
- * Servlet implementation class Navigator
+ * Servlet implementation class ViewProfile
  */
-@WebServlet("/Navigator")
-public class Navigator extends HttpServlet {
+@WebServlet("/ViewProfile")
+public class ViewProfile extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+	
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int userId = Integer.parseInt(request.getParameter("userId"));
-		String path = request.getParameter("path");
-		String role = request.getParameter("role");
-		System.out.println("Navigating userId:" + userId + " to " + path + " ...");
+		int displayUserId = Integer.parseInt(request.getParameter("displayUserId"));
+		System.out.println("Displaying userId:"+ displayUserId +" to userId:" + userId);
 		request.setAttribute("user", new UserDao().findUserByUserId(userId));
-		request.setAttribute("role", role);
-		RequestDispatcher rd = request.getRequestDispatcher(path);
+		request.setAttribute("displayUser", new UserDao().findUserByUserId(displayUserId));
+		RequestDispatcher rd = request.getRequestDispatcher("/jsp/user/user-profile.jsp");
 		rd.forward(request, response);
 	}
-
+	
 }

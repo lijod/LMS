@@ -1,5 +1,6 @@
 package com.lms.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -11,8 +12,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import com.lms.dao.UserCourseDetailDao;
+import com.lms.dao.UserDao;
+import com.lms.model.Post;
+import com.lms.model.Thread;
 import com.lms.model.User;
 import com.lms.model.UserCourseDetail;
+import com.lms.model.UserCourseRole;
 import com.lms.util.UserCourseDetailUtil;
 
 // /com.lms.servic/jwsUserCourseDetailService
@@ -32,8 +37,6 @@ public class UserCourseDetailService {
 		}
 	}
 	
-	
-
 	// /com.lms.servic/jwsUserCourseDetailService/deleteUserCourseDetail
 
 	@Path("/deleteUserCourseDetail/{courseId}/{userId}/{roleName}")
@@ -47,6 +50,7 @@ public class UserCourseDetailService {
 
 	// /com.lms.servic/jwsUserCourseDetailService/findByUserId
 
+	@GET
 	@Path("/findByUserId/{userId}")
 	public List<UserCourseDetail> findByUserIdService(@PathParam("userId") int userId) {
 		UserCourseDetailDao ucd = new UserCourseDetailDao();
@@ -55,8 +59,8 @@ public class UserCourseDetailService {
 	
 	// /com.lms.servic/jwsUserCourseDetailService/findByCourseId
 
-	@Path("/findByCourseId/{userId}")
-	public List<UserCourseDetail> findByCourseIdService(@PathParam("courseIdId") int courseId) {
+	@Path("/findByCourseId/{courseId}")
+	public List<UserCourseDetail> findByCourseIdService(@PathParam("courseId") int courseId) {
 		UserCourseDetailDao ucd = new UserCourseDetailDao();
 		return ucd.findByUserId(courseId);
 	}
@@ -67,4 +71,12 @@ public class UserCourseDetailService {
 		UserCourseDetailDao ucd = new UserCourseDetailDao();
 		return UserCourseDetailUtil.getUsersFromUserCourseDetail(ucd.findByRole(role));
 	}
+	
+	@GET
+	@Path("/findCourseRoleByUserId/{userId}")
+	public List<UserCourseRole> findCourseRoleByUserId(@PathParam("userId") int userId) {
+		UserCourseDetailDao ucd = new UserCourseDetailDao();
+		return UserCourseDetailUtil.getUserCourseRole(ucd.findByUserId(userId));
+	}
+	
 }
