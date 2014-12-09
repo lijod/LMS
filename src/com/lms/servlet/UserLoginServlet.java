@@ -28,14 +28,19 @@ public class UserLoginServlet extends HttpServlet {
      */
     public UserLoginServlet() {
         super();
-        // TODO Auto-generated constructor stub
+    }
+    
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+    		throws ServletException, IOException {
+    	
+    	resp.sendRedirect("/LMS/jsp/user/user-login.jsp");
     }
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		
 		Boolean isUserFound=false;
 		Boolean hasUserSelectedCorrectRole=false; 
@@ -53,6 +58,13 @@ public class UserLoginServlet extends HttpServlet {
 			if((userName.equals(user.getUserName().toLowerCase()) && (userPassword.equals(user.getPassword().toLowerCase())))){
 				isUserFound=true;
 				System.out.println("User found with username:" + user.getUserName());
+				if(userType.equalsIgnoreCase("ADMIN")){
+					request.setAttribute("role", "ADMIN");
+					request.setAttribute("user", user);
+					rd = request.getRequestDispatcher("/jsp/admin/admin-home.jsp");
+					rd.forward(request, response);
+					return;
+				}
 				for(UserCourseDetail ucd:user.getUserCourseDetail()){
 					System.out.println("course and role:" + ucd.getCourse().getCourseName() + "->" + ucd.getRoleName());
 					if(userType.equals(ucd.getRoleName().toLowerCase())){

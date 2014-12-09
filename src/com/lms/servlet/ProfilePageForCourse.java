@@ -23,6 +23,13 @@ import com.lms.model.User;
 public class ProfilePageForCourse extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
+	@Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+    		throws ServletException, IOException {
+    	
+    	resp.sendRedirect("/LMS/jsp/user/user-login.jsp");
+    }
+	
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */

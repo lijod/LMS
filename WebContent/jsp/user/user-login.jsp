@@ -4,9 +4,9 @@ String errorMessage=(String) request.getAttribute("errorMessage");
 
 %>
 <html>
-<%=
-errorMessage
-%>
+<% if (errorMessage != null) { %>
+	<%=errorMessage%>
+<% } %>
 <body>
 <form id="form-user-login" action="/LMS/UserLoginServlet" method="post">
 
@@ -19,7 +19,7 @@ errorMessage
 </div>
 
 <input id="user-name" name="user-name" type="text" class="form-control" placeholder="USER NAME" />
-<input id="password" name="password" type="text" class="form-control" placeholder="PASSWORD" />
+<input id="password" name="password" type="password" class="form-control" placeholder="PASSWORD" />
 <button id="btn-login" class="btn btn-default">LOGIN</button>
 </form>
 </body>
