@@ -11,6 +11,7 @@ import com.lms.dao.CourseDao;
 import com.lms.dao.CourseScheduleDao;
 import com.lms.dao.JobDao;
 import com.lms.dao.PostDao;
+import com.lms.dao.TaHoursDao;
 import com.lms.dao.ThreadDao;
 import com.lms.dao.UserCourseDetailDao;
 import com.lms.dao.UserDao;
@@ -18,6 +19,7 @@ import com.lms.enumeration.Role;
 import com.lms.model.Course;
 import com.lms.model.CourseSchedule;
 import com.lms.model.Post;
+import com.lms.model.TaHour;
 import com.lms.model.User;
 import com.lms.model.UserCourseDetail;
 
@@ -119,11 +121,25 @@ public class Test {
 	System.out.println(userDaoObj2.findAThreadByThreadId(5).getPosts().get(0).getUsersWhoHaveLikedPosts());*/
 	
 	
-	JobDao jobdaoObj=new JobDao();
+	/*JobDao jobdaoObj=new JobDao();
 	
 	System.out.println(jobdaoObj.findJobsByProfessorIdAndCourseId(11,41));
 	
-	System.out.println(jobdaoObj.findJobsByCourseId(41).get(0).getJobResponsobility());
+	System.out.println(jobdaoObj.findJobsByCourseId(41).get(0).getJobResponsobility());*/
+	
+	
+	
+	/*TaHoursDao taHourDaoObj = new TaHoursDao();
+	List<TaHour> th = taHourDaoObj.findTaHoursByCourseId(22);
+	System.out.println(th.get(0));
+	th.get(0).setTaHourLocation("CityViewApt for new");
+	System.out.println(th.get(0));
+	
+	taHourDaoObj.updateExistingTaHour(3,th.get(0));
+	//System.out.println(taHour);
+*/	
+	/*int courseId, String taHourDay, Date taHourEndTime,
+	String taHourLocation, Date taHourStartTime, int taId) {*/
 		
 	}
 	

@@ -92,6 +92,11 @@ public class User implements Serializable {
 	@JoinColumn(name="user_id")
 	private List<Job> jobList; 
 	
+	@OneToMany(fetch=FetchType.EAGER,cascade=CascadeType.ALL)
+	@JoinColumn(name="ta_hour_id", referencedColumnName = "user_id")
+	private List<TaHour> taAllHoursForAllCourses;
+	
+	
 
 	private static final long serialVersionUID = 1L;
 	   
