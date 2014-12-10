@@ -90,6 +90,24 @@ public class CourseService {
 		CourseDao courseDaoObj = CourseDao.getInstance();
 		return courseDaoObj.findAllCoursesForAUserId(userId);
 	}
+	
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/findAllCourses")
+	public List<Course> findAllCoursesService() {		
+		CourseDao courseDaoObj = CourseDao.getInstance();
+		return courseDaoObj.findAllCourses();
+	}
+	
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/findAllCoursesForATa")
+	public List<Course> findAllCoursesForATaService(int userId) {		
+		CourseDao courseDaoObj = CourseDao.getInstance();
+		return courseDaoObj.findAllCoursesForATa(userId);
+	}
 
 	
 

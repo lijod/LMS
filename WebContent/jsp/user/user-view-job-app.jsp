@@ -60,7 +60,7 @@ $(document).ready(function(){
 
 
 function refreshCourseList(){
-	userServiceURl = applicaitonURL + "/jwsCourseService/findAllCoursesForAUserId";
+	userServiceURl = applicaitonURL + "/jwsCourseService/findAllCourses";
 	$.ajax({
 		type : "POST",
 		url :  userServiceURl,
@@ -91,14 +91,12 @@ function loadAllJobsByCourseId(courseId){
 			dataType:"JSON",
 			contentType: "application/x-www-form-urlencoded",
 			success : function (allJobs) {
-				//console.log(allJobs);
-			/* 	$("#tbl-all-threads").children().remove();
-				$("#tbl-all-threads").append(getNewPostBtn()); */
-				//$("#tbl-thread-desc").children().remove();
+				$("#tbl-all-jobs").children().remove();
+				$("#tbl-job-desc").children().remove();
 					if(allJobs.length > 0){	
 					$.each(allJobs, function(i, job){				
 						$("#tbl-all-jobs").append(
-								"<tr style='height:120px;'> <td  onClick='loadAJobByJobId("+job.jobId+")'> <span class='spanClass'  id='"+ job.jobId +"'>"+ job.jobTitle+ "</span></td></tr>");
+								"<tr style='height:120px;'> <td  onClick='loadAJobByJobId("+job.jobId+")'><label> (Job Id:"+job.jobId+") </label> <span class='spanClass'  id='"+ job.jobId +"'>"+ job.jobTitle+ "</span></td></tr>");
 					});
 					var firstJobIdInList = $("#tbl-all-jobs span:first").attr("id");
 					loadAJobByJobId(firstJobIdInList);
@@ -130,7 +128,7 @@ function loadAJobByJobId(jobId){
 			console.log(job);
 			$("#tbl-job-desc").children().remove();	
 				 $("#tbl-job-desc").html(
-						"<tr style='height:20px;'> <td>  <span  id='job-title" + job.jobId + "'>"+ job.jobTitle+ "</span></td></tr>"+
+						"<tr style='height:20px;'> <td><span  id='job-title" + job.jobId + "'>"+ job.jobTitle+ "</span><label> (Job Id:"+job.jobId+") </label></td></tr>"+
 						"<tr style='height:250px;'> <td> <span  id='job-desc" + job.jobId+ "'>"+ job.jobDesc+ "</span></td></tr>"+
 						"<tr style='height:100px;'> <td> <span   id='job-Requirement" + job.jobId+ "'>"+ job.jobRequirement+ "</span></td></tr>"+
 						"<tr style='height:100px;'> <td> <span   id='job-Responsobility" + job.jobId+ "'>"+ job.jobResponsobility+ "</span></td></tr>"+
@@ -174,7 +172,9 @@ function applyForJob(jobId){
 			dataType:"JSON",
 			contentType: "application/json",
 			success : function (job) {
-				console.log(job);
+				
+				alert("Your application for job id :"+job.jobId+" has been successfully submitted. To view job home page click ok.");
+				location.reload(true);
 			},
 			failure : function () {
 				console.log("failed");

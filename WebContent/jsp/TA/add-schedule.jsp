@@ -159,7 +159,7 @@ function createNewTaHour(){
 
 
 function refreshCourseList(){
-	userServiceURl =  applicaitonURL + "/jwsCourseService/findAllCoursesForAUserId";	
+	userServiceURl =  applicaitonURL + "/jwsCourseService/findAllCoursesForATa";	
 	$.ajax({
 		type : "POST",
 		url :  userServiceURl,

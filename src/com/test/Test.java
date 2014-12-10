@@ -138,8 +138,12 @@ public class Test {
 	taHourDaoObj.updateExistingTaHour(3,th.get(0));
 	//System.out.println(taHour);
 */	
-	CourseDao courseDaoObj = CourseDao.getInstance();
-	System.out.println(courseDaoObj.findAllCoursesForAUserId(11).size());
+/*	CourseDao courseDaoObj = CourseDao.getInstance();
+	System.out.println(courseDaoObj.findAllCoursesForAUserId(11).size());*/
+	
+	
+	CourseDao cd = CourseDao.getInstance();
+	System.out.println(cd.findAllCoursesForATa(11).size());
 	
 	
 		

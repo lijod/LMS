@@ -87,6 +87,15 @@ public class CourseDao {
 	}
 	
 	
+	
+	public List<Course> findAllCoursesForATa(int userId) {
+		Query query = em.createQuery("select course from Course course where course.courseId IN ( select distinct ucd.courseId from UserCourseDetail ucd where ucd.roleName like 'TA' and ucd.userId =:userId)");
+		query.setParameter("userId", userId);
+		List<Course> result = query.getResultList();
+		return result;
+	}
+	
+	
 	/*CourseSchedule courseScheduleObj=em.find(CourseSchedule.class, courseObj.getCourseId());
 	courseScheduleObj.setCourseEndDate(course);
 	courseScheduleObj.setCourseEndTime(courseEndTime);
