@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.lms.dao.JobDao;
 import com.lms.dao.UserDao;
 import com.lms.model.Post;
 import com.lms.model.Thread;
@@ -74,6 +75,8 @@ public class ProfilePageForCourse extends HttpServlet {
 		request.setAttribute("user", user);
 		request.setAttribute("courseId", courseId);
 		request.setAttribute("role", role);
+		if(role.equalsIgnoreCase("student") || role.equalsIgnoreCase("ta"))
+			request.setAttribute("jobs", new JobDao().findAllJobs());
 		RequestDispatcher rd = request.getRequestDispatcher("/jsp/user/user-profile.jsp");
 		rd.forward(request, response);
 	}
