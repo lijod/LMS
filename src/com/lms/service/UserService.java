@@ -9,21 +9,18 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import org.codehaus.jackson.annotate.JsonAutoDetect;
-import org.codehaus.jettison.json.JSONArray;
-
-import com.lms.dao.PostDao;
 import com.lms.dao.UserCourseDetailDao;
 import com.lms.dao.UserDao;
-import com.lms.model.Post;
+import com.lms.enumeration.Role;
 import com.lms.model.User;
 import com.lms.model.UserCourseDetail;
+import com.sun.xml.internal.ws.developer.MemberSubmissionAddressing;
 
 // /com.lms.servic/JWSUserService
 @Path("/jwsUserService")
@@ -38,28 +35,30 @@ public class UserService {
 			@PathParam("lastName") String lastName,
 			@PathParam("email") String email,
 			@PathParam("dateOfBirth") String dateOfBirth) {
-		User user =new User (userName,password,firstName,lastName,email,new Date(), null);
+		User user = new User(userName, password, firstName, lastName, email,
+				new Date(), null);
 		UserDao userDaoObj = new UserDao();
 		userDaoObj.createUser(user);
 		return user;
 	}
-	
+
 	@GET
 	@Path("/createUser/{userName}/{password}/{firstName}/{lastName}/{email}/{dateOfBirth}/{role}/{courses}")
-	public User createUserServiceWithRole(@PathParam("userName") String userName,
+	public User createUserServiceWithRole(
+			@PathParam("userName") String userName,
 			@PathParam("password") String password,
 			@PathParam("firstName") String firstName,
 			@PathParam("lastName") String lastName,
 			@PathParam("email") String email,
 			@PathParam("dateOfBirth") String dateOfBirth,
-			@PathParam("role") String role,
-			@PathParam("courses") String courses) {
-		User user =new User (userName,password,firstName,lastName,email,new Date(), null);
+			@PathParam("role") String role, @PathParam("courses") String courses) {
+		User user = new User(userName, password, firstName, lastName, email,
+				new Date(), null);
 		user = new UserDao().createUser(user);
 		List<UserCourseDetail> ucdList = new ArrayList<UserCourseDetail>();
-		for(String id : courses.split(",")){
-			UserCourseDetail ucd = new UserCourseDetail(
-					Integer.parseInt(id), user.getUserId(), role);
+		for (String id : courses.split(",")) {
+			UserCourseDetail ucd = new UserCourseDetail(Integer.parseInt(id),
+					user.getUserId(), role);
 			ucdList.add(new UserCourseDetailDao().createUserCourseDetail(ucd));
 		}
 		user.setUserCourseDetail(ucdList);
@@ -70,13 +69,12 @@ public class UserService {
 
 	@Path("/findUserByUserId/{id}")
 	public User findUserByUserIdService(@PathParam("id") int id) {
-		User user =new User();
+		User user = new User();
 		UserDao userDaoObj = new UserDao();
-		user=userDaoObj.findUserByUserId(id);
+		user = userDaoObj.findUserByUserId(id);
 		return user;
 	}
-	
-	
+
 	// /com.lms.servic/jwsUserService/deleteUser
 
 	@GET
@@ -96,8 +94,7 @@ public class UserService {
 			@PathParam("lastName") String lastName,
 			@PathParam("email") String email,
 			@PathParam("dateOfBirth") String dateOfBirth,
-			@PathParam("role") String role,
-			@PathParam("courses") String courses){
+			@PathParam("role") String role, @PathParam("courses") String courses) {
 		UserDao userDaoObj = new UserDao();
 		User user = userDaoObj.findUserByUserId(userId);
 		user.setFirstName(firstName);
@@ -108,75 +105,91 @@ public class UserService {
 		userDaoObj.updateUser(user);
 		UserCourseDetailDao ucdDao = new UserCourseDetailDao();
 		ucdDao.deleteByUserIdAndRole(userId, role);
-		for(String id : courses.split(",")){
-			UserCourseDetail ucd = new UserCourseDetail(
-					Integer.parseInt(id), user.getUserId(), role);
+		for (String id : courses.split(",")) {
+			UserCourseDetail ucd = new UserCourseDetail(Integer.parseInt(id),
+					user.getUserId(), role);
 			new UserCourseDetailDao().createUserCourseDetail(ucd);
 		}
 		return user;
 	}
-	
-	 @POST
-	 @Produces(MediaType.APPLICATION_JSON)
-	 @Consumes(MediaType.APPLICATION_JSON)
-	 @Path("/findAllUsers")
-	 public List<User> findAllUsersService(){
-	  UserDao userDaoObj = new UserDao();
-	  return userDaoObj.findAllUsers();
-	 }
-	 
-	 
-	 
-	 @POST
-	 @Produces(MediaType.APPLICATION_JSON)
-	 @Consumes(MediaType.APPLICATION_JSON)
-	 @Path("/findAllUsersNotTAForACourse")
-	 public List<User> findAllUsersNotTAForACourseService(int courseId){
-	  UserDao userDaoObj = new UserDao();
-	  return userDaoObj.findAllUsersNotTAForACourse(courseId);
-	 }
-	 
-	  
-		@Produces(MediaType.APPLICATION_JSON)
-		@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-		@Path("/UserFollowsAnotherUser")
-		public User UserFollowsAnotherUserService(@FormParam("followerUserId") int followerUserId,@FormParam("followedUserId") int followedUserId) {
-			UserDao userDaoObj = new UserDao();			
-			User followerUserObj = userDaoObj.findUserByUserId(followerUserId);
-			System.out.println("service before dao call1"+followerUserObj);						
-			List<User> existingFollowedUserList = followerUserObj.getFollowedUsersList();			
-			User followedUserObj = userDaoObj.findUserByUserId(followedUserId);
-			System.out.println("service before dao call2"+followedUserObj);
-			existingFollowedUserList.add(followedUserObj);			
-			followerUserObj.setFollowedUsersList(existingFollowedUserList);			
-		  return userDaoObj.updateUser(followerUserObj);
-	    	//return followerUserObj;
-		}
-	    
-	    @POST
-		@Produces(MediaType.APPLICATION_JSON)
-		@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-		@Path("/UserUnFollowsAnotherUser")
-		public User UserUnFollowsAnotherUserService(@FormParam("followerUserId") int followerUserId,@FormParam("followedUserId") int followedUserIdToBeRemoved) {
 
-	    	System.out.println(followerUserId+ "_"+followedUserIdToBeRemoved);
-	    	
-			UserDao userDaoObj = new UserDao();			
-			User followerUserObj = userDaoObj.findUserByUserId(followerUserId);
-			System.out.println("service before dao call1"+followerUserObj);			
-					
-			List<User> usersWhoHaveAlreadyFollowedUsers = new CopyOnWriteArrayList<User>(followerUserObj.getFollowedUsersList());
-			
-			for(User u : usersWhoHaveAlreadyFollowedUsers) {
-				if(u.getUserId() == followedUserIdToBeRemoved){
-					usersWhoHaveAlreadyFollowedUsers.remove(u);
-				}
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/findAllUsers")
+	public List<User> findAllUsersService() {
+		UserDao userDaoObj = new UserDao();
+		return userDaoObj.findAllUsers();
+	}
+
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/findAllUsersNotTAForACourse")
+	public List<User> findAllUsersNotTAForACourseService(int courseId) {
+		UserDao userDaoObj = new UserDao();
+		return userDaoObj.findAllUsersNotTAForACourse(courseId);
+	}
+
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	@Path("/UserFollowsAnotherUser")
+	public User UserFollowsAnotherUserService(
+			@FormParam("followerUserId") int followerUserId,
+			@FormParam("followedUserId") int followedUserId) {
+		UserDao userDaoObj = new UserDao();
+		User followerUserObj = userDaoObj.findUserByUserId(followerUserId);
+		System.out.println("service before dao call1" + followerUserObj);
+		List<User> existingFollowedUserList = followerUserObj
+				.getFollowedUsersList();
+		User followedUserObj = userDaoObj.findUserByUserId(followedUserId);
+		System.out.println("service before dao call2" + followedUserObj);
+		existingFollowedUserList.add(followedUserObj);
+		followerUserObj.setFollowedUsersList(existingFollowedUserList);
+		return userDaoObj.updateUser(followerUserObj);
+		// return followerUserObj;
+	}
+
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	@Path("/UserUnFollowsAnotherUser")
+	public User UserUnFollowsAnotherUserService(
+			@FormParam("followerUserId") int followerUserId,
+			@FormParam("followedUserId") int followedUserIdToBeRemoved) {
+
+		System.out.println(followerUserId + "_" + followedUserIdToBeRemoved);
+
+		UserDao userDaoObj = new UserDao();
+		User followerUserObj = userDaoObj.findUserByUserId(followerUserId);
+		System.out.println("service before dao call1" + followerUserObj);
+
+		List<User> usersWhoHaveAlreadyFollowedUsers = new CopyOnWriteArrayList<User>(
+				followerUserObj.getFollowedUsersList());
+
+		for (User u : usersWhoHaveAlreadyFollowedUsers) {
+			if (u.getUserId() == followedUserIdToBeRemoved) {
+				usersWhoHaveAlreadyFollowedUsers.remove(u);
 			}
-			
-					
-		followerUserObj.setFollowedUsersList(usersWhoHaveAlreadyFollowedUsers);			
-		  return userDaoObj.updateUser(followerUserObj);
-	    	//return followerUserObj;
 		}
-	
+
+		followerUserObj.setFollowedUsersList(usersWhoHaveAlreadyFollowedUsers);
+		return userDaoObj.updateUser(followerUserObj);
+		// return followerUserObj;
+	}
+
+	@PUT	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/updateCourseForStudent")
+	public List<User> updateCourseForStudent(User user){
+		UserCourseDetailDao ucdDao = new UserCourseDetailDao();
+		ucdDao.deleteByUserIdAndRole(user.getUserId(), Role.STUDENT.toString());
+
+		for (UserCourseDetail ucd : user.getUserCourseDetail()) {
+			new UserCourseDetailDao().createUserCourseDetail(ucd);
+		}
+		
+		return new UserDao().findAllUsers();
+	}
 }

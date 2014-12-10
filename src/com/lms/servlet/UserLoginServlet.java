@@ -65,6 +65,11 @@ public class UserLoginServlet extends HttpServlet {
 					rd.forward(request, response);
 					return;
 				}
+				if(userType.equalsIgnoreCase("STUDENT") && user.getUserCourseDetail().size() == 1 &&
+						user.getUserCourseDetail().get(0).getCourseId() == 0){
+					response.sendRedirect("/LMS/jsp/user/not-added-to-course.jsp");
+					return;
+				}
 				for(UserCourseDetail ucd:user.getUserCourseDetail()){
 					System.out.println("course and role:" + ucd.getCourse().getCourseName() + "->" + ucd.getRoleName());
 					if(userType.equals(ucd.getRoleName().toLowerCase())){

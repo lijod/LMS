@@ -76,7 +76,8 @@
 				populateuserDetail(val.firstName, val.lastName, val.userName, val.password, val.email, val.dateOfBirth);
 				clearCourseSelection();
 				$.each(val.userCourseDetail, function(j, ucdVal){
-					$("#course-" + ucdVal.courseId).attr("selected", true);
+					if(ucdVal.roleName.toLowerCase() == "professor")
+						$("#course-" + ucdVal.courseId).attr("selected", true);
 				});
 			}
 		});
