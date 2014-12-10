@@ -22,7 +22,7 @@ public class TaHoursService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/createTaHours")
 	public TaHour createTaHoursService(TaHour taHour) {
-		TaHoursDao taHourDaoObj = new TaHoursDao();
+		TaHoursDao taHourDaoObj = TaHoursDao.getInstance();
 		taHourDaoObj.createTaHours(taHour);
 		return taHour;
 	}
@@ -34,7 +34,7 @@ public class TaHoursService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/findTaHoursByCourseId")
 	public List<TaHour> findTaHoursByCourseIdService(int courseId){
-		TaHoursDao taHourDaoObj = new TaHoursDao();
+		TaHoursDao taHourDaoObj = TaHoursDao.getInstance();
 		List<TaHour> taHourList = taHourDaoObj.findTaHoursByCourseId(courseId);
 		return taHourList;
 	}
@@ -46,7 +46,7 @@ public class TaHoursService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/deleteTaHoursByTaHourId")
 	public Boolean deleteTaHoursByTaHourIdService(int taHourId){
-		TaHoursDao taHourDaoObj = new TaHoursDao();
+		TaHoursDao taHourDaoObj = TaHoursDao.getInstance();
 		return taHourDaoObj.deleteTaHoursByTaHourId(taHourId);
 		
 	}
@@ -57,7 +57,7 @@ public class TaHoursService {
 	@Consumes(MediaType.APPLICATION_JSON) 
 	@Produces(MediaType.APPLICATION_JSON)
 	public TaHour updateExistingTaHourService(@PathParam("taHourId") int taHourId, TaHour taHour) {
-		TaHoursDao taHourDaoObj = new TaHoursDao();
+		TaHoursDao taHourDaoObj = TaHoursDao.getInstance();
 		return taHourDaoObj.updateExistingTaHour(taHourId,taHour);
 	}
 	

@@ -33,9 +33,9 @@ public class ViewProfile extends HttpServlet {
 		int displayUserId = Integer.parseInt(request.getParameter("displayUserId"));
 		String role = request.getParameter("role");
 		System.out.println("Displaying userId:"+ displayUserId +" to userId:" + userId);
-		request.setAttribute("user", new UserDao().findUserByUserId(userId));
+		request.setAttribute("user", UserDao.getInstance().findUserByUserId(userId));
 		request.setAttribute("role", role); 	
-		request.setAttribute("displayUser", new UserDao().findUserByUserId(displayUserId));
+		request.setAttribute("displayUser", UserDao.getInstance().findUserByUserId(displayUserId));
 		RequestDispatcher rd = request.getRequestDispatcher("/jsp/user/user-profile.jsp");
 		rd.forward(request, response);
 	}

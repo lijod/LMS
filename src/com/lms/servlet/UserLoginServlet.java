@@ -51,7 +51,7 @@ public class UserLoginServlet extends HttpServlet {
 		System.out.println(userName);
 		System.out.println(userPassword);
 		System.out.println(userType);
-		UserDao userDaoObj=new UserDao();
+		UserDao userDaoObj= UserDao.getInstance();
 		List<User> allUsersList=userDaoObj.findAllUsers();
 		RequestDispatcher rd = null;
 		for(User user :  allUsersList){
@@ -77,7 +77,7 @@ public class UserLoginServlet extends HttpServlet {
 								+ "->" + ucd.getRoleName());					
 						hasUserSelectedCorrectRole=true;
 						if(userType.equalsIgnoreCase("student") || userType.equalsIgnoreCase("ta"))
-							request.setAttribute("jobs", new JobDao().findAllJobs());
+							request.setAttribute("jobs", JobDao.getInstance().findAllJobs());
 						request.setAttribute("role", ucd.getRoleName());
 						request.setAttribute("user", user);
 						rd = request.getRequestDispatcher("/jsp/user/user-profile.jsp");

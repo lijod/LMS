@@ -39,7 +39,7 @@ public class ProfilePageForCourse extends HttpServlet {
 		int courseId = Integer.parseInt(request.getParameter("courseId"));
 		String role = request.getParameter("role");
 
-		User user = new UserDao().findUserByUserId(userId);
+		User user = UserDao.getInstance().findUserByUserId(userId);
 		
 		if(courseId != 0){
 			List<Thread> threads = new ArrayList<Thread>();
@@ -76,7 +76,7 @@ public class ProfilePageForCourse extends HttpServlet {
 		request.setAttribute("courseId", courseId);
 		request.setAttribute("role", role);
 		if(role.equalsIgnoreCase("student") || role.equalsIgnoreCase("ta"))
-			request.setAttribute("jobs", new JobDao().findAllJobs());
+			request.setAttribute("jobs", JobDao.getInstance().findAllJobs());
 		RequestDispatcher rd = request.getRequestDispatcher("/jsp/user/user-profile.jsp");
 		rd.forward(request, response);
 	}

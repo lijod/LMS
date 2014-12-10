@@ -32,7 +32,7 @@ public class UserCourseDetailService {
 	public void createUserCourseDetailForTaService(List<UserCourseDetail> ucdList) {
 		for(UserCourseDetail ucd : ucdList){
 		//UserCourseDetail ucd = new UserCourseDetail(courseId, userId, roleName);
-		UserCourseDetailDao userCourseDetailDaoObj = new UserCourseDetailDao();
+		UserCourseDetailDao userCourseDetailDaoObj = UserCourseDetailDao.getInstance();
 		userCourseDetailDaoObj.createUserCourseDetail(ucd);
 		}
 	}
@@ -44,7 +44,7 @@ public class UserCourseDetailService {
 			@PathParam("courseId") int courseId,
 			@PathParam("userId") int userId,
 			@PathParam("roleName") String roleName) {
-		UserCourseDetailDao ucd = new UserCourseDetailDao();
+		UserCourseDetailDao ucd = UserCourseDetailDao.getInstance();
 		return ucd.deleteUserCourseDetail(courseId, userId, roleName);
 	}
 
@@ -53,7 +53,7 @@ public class UserCourseDetailService {
 	@GET
 	@Path("/findByUserId/{userId}")
 	public List<UserCourseDetail> findByUserIdService(@PathParam("userId") int userId) {
-		UserCourseDetailDao ucd = new UserCourseDetailDao();
+		UserCourseDetailDao ucd = UserCourseDetailDao.getInstance();
 		return ucd.findByUserId(userId);
 	}
 	
@@ -61,21 +61,21 @@ public class UserCourseDetailService {
 
 	@Path("/findByCourseId/{courseId}")
 	public List<UserCourseDetail> findByCourseIdService(@PathParam("courseId") int courseId) {
-		UserCourseDetailDao ucd = new UserCourseDetailDao();
+		UserCourseDetailDao ucd = UserCourseDetailDao.getInstance();
 		return ucd.findByUserId(courseId);
 	}
 	
 	@GET
 	@Path("/findUserByRole/{role}")
 	public List<User> findUserByRole(@PathParam("role") String role) {
-		UserCourseDetailDao ucd = new UserCourseDetailDao();
+		UserCourseDetailDao ucd = UserCourseDetailDao.getInstance();
 		return UserCourseDetailUtil.getUsersFromUserCourseDetail(ucd.findByRole(role));
 	}
 	
 	@GET
 	@Path("/findCourseRoleByUserId/{userId}")
 	public List<UserCourseRole> findCourseRoleByUserId(@PathParam("userId") int userId) {
-		UserCourseDetailDao ucd = new UserCourseDetailDao();
+		UserCourseDetailDao ucd = UserCourseDetailDao.getInstance();
 		return UserCourseDetailUtil.getUserCourseRole(ucd.findByUserId(userId));
 	}
 	

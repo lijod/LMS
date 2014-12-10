@@ -19,7 +19,7 @@ public class JobApplicationService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/createJobApplication")
 	public JobApplication createJobApplicationService(JobApplication jobApplication) {
-		JobApplicationDao JobApplicationDaoObj = new JobApplicationDao();
+		JobApplicationDao JobApplicationDaoObj = JobApplicationDao.getInstance();
 		JobApplicationDaoObj.createJobApplication(jobApplication);
 		return jobApplication;
 	}

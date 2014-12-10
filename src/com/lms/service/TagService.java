@@ -15,13 +15,13 @@ public class TagService {
 	@GET
 	@Path("findAllTags")
 	public List<Tag> findAllTags(){
-		return new TagDao().findAllTags();
+		return TagDao.getInstance().findAllTags();
 	}
 	
 	@POST
 	@Path("createTag")
 	public Tag createTag(Tag tag){
-		return new TagDao().createTag(tag);
+		return TagDao.getInstance().createTag(tag);
 	}
 
 }

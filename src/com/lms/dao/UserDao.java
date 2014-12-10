@@ -14,8 +14,17 @@ public class UserDao {
 
 	EntityManagerFactory emf = Persistence.createEntityManagerFactory("LMS");
 	EntityManager em = null;
-	public UserDao() {
+	private UserDao() {
 		em = emf.createEntityManager();
+	}
+	
+	private static UserDao _instance = null;
+	
+	public static UserDao getInstance(){
+		if(_instance == null){
+			_instance = new UserDao();
+		}
+		return _instance;
 	}
 	
 	public User createUser(User user){

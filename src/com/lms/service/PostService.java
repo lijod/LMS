@@ -32,7 +32,7 @@ public class PostService {
 	public Post createPostService(Post post) {
 		post.setPostDate(new Date());
         post.setPostTime(new Time(new Date().getTime()));
-		PostDao poastDaoObj = new PostDao();
+		PostDao poastDaoObj = PostDao.getInstance();
 		poastDaoObj.createPost(post);
 		return post;
 	}
@@ -43,7 +43,7 @@ public class PostService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/findAllPostsByThreadId")
 	public List<Post> findAllPostsByThreadIdService(int threadId) {		
-		PostDao postDaoObject = new PostDao();
+		PostDao postDaoObject = PostDao.getInstance();
 		return postDaoObject.findAllPostsByThreadId(threadId);
 	}
 	
@@ -54,10 +54,10 @@ public class PostService {
 	@Path("/likeAPost")
 	public Post likeAPostService(Post post) {	
 				
-		UserDao userDaoObj = new UserDao();
+		UserDao userDaoObj = UserDao.getInstance();
 		User userObj=userDaoObj.findUserByUserId(post.getUserId());		
 		
-		PostDao postDaoObject = new PostDao();
+		PostDao postDaoObject = PostDao.getInstance();
 		Post postObj = postDaoObject.findPostByPostId(post.getPostId());
 		
 		List<User> usersWhoHaveAlreadyLikedThisPostLst =postObj.getUsersWhoHaveLikedPosts();
@@ -75,8 +75,8 @@ public class PostService {
 	@Path("/unLikeAPost")
 	public Post UnLikeAPostService(Post post) {	
 				
-		UserDao userDaoObj = new UserDao();
-		PostDao postDaoObject = new PostDao();
+		UserDao userDaoObj = UserDao.getInstance();
+		PostDao postDaoObject = PostDao.getInstance();
 		Post postObj = postDaoObject.findPostByPostId(post.getPostId());
 		
 		List<User> usersWhoHaveAlreadyLikedThisPostLst = new CopyOnWriteArrayList<User>(postObj.getUsersWhoHaveLikedPosts());

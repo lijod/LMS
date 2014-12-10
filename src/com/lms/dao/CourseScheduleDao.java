@@ -15,10 +15,18 @@ public class CourseScheduleDao {
 	EntityManagerFactory emf = Persistence.createEntityManagerFactory("LMS");
 	EntityManager em = null;
 	
-	public CourseScheduleDao() {
+	private CourseScheduleDao() {
 		em = emf.createEntityManager();
 	}
 	
+	private static CourseScheduleDao _instance = null;
+	
+	public static CourseScheduleDao getInstance(){
+		if(_instance == null){
+			_instance = new CourseScheduleDao();
+		}
+		return _instance;
+	}
 	public CourseSchedule createCourseSchedule(CourseSchedule courseSchedule){
 		
 		em.getTransaction().begin();

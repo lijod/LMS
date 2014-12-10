@@ -17,9 +17,18 @@ public class TaHoursDao {
 	EntityManagerFactory emf = Persistence.createEntityManagerFactory("LMS");
 	EntityManager em = null;
 	
-	public TaHoursDao() {
+	private TaHoursDao() {
 		em = emf.createEntityManager();
 	}	
+	
+	private static TaHoursDao _instance = null;
+	
+	public static TaHoursDao getInstance(){
+		if(_instance == null){
+			_instance = new TaHoursDao();
+		}
+		return _instance;
+	}
 	
 	public TaHour createTaHours(TaHour taHour){		
 		em.getTransaction().begin();

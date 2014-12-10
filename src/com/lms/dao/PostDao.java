@@ -16,8 +16,17 @@ public class PostDao {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("LMS");
 		EntityManager em = null;
 		
-		public PostDao(){
+		private PostDao(){
 			em = emf.createEntityManager();	
+		}
+		
+		private static PostDao _instance = null;
+		
+		public static PostDao getInstance(){
+			if(_instance == null){
+				_instance = new PostDao();
+			}
+			return _instance;
 		}
 		
 		public Post createPost(Post post){

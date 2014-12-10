@@ -14,8 +14,17 @@ public class UserCourseDetailDao {
 
 	EntityManagerFactory emf = Persistence.createEntityManagerFactory("LMS");
 	EntityManager em = null;
-	public UserCourseDetailDao() {
+	private UserCourseDetailDao() {
 		em = emf.createEntityManager();
+	}
+	
+	private static UserCourseDetailDao _instance = null;
+	
+	public static UserCourseDetailDao getInstance(){
+		if(_instance == null){
+			_instance = new UserCourseDetailDao();
+		}
+		return _instance;
 	}
 	
 	public UserCourseDetail createUserCourseDetail(UserCourseDetail ucd){

@@ -37,7 +37,7 @@ public class UserService {
 			@PathParam("dateOfBirth") String dateOfBirth) {
 		User user = new User(userName, password, firstName, lastName, email,
 				new Date(), null);
-		UserDao userDaoObj = new UserDao();
+		UserDao userDaoObj = UserDao.getInstance();
 		userDaoObj.createUser(user);
 		return user;
 	}
@@ -54,12 +54,12 @@ public class UserService {
 			@PathParam("role") String role, @PathParam("courses") String courses) {
 		User user = new User(userName, password, firstName, lastName, email,
 				new Date(), null);
-		user = new UserDao().createUser(user);
+		user = UserDao.getInstance().createUser(user);
 		List<UserCourseDetail> ucdList = new ArrayList<UserCourseDetail>();
 		for (String id : courses.split(",")) {
 			UserCourseDetail ucd = new UserCourseDetail(Integer.parseInt(id),
 					user.getUserId(), role);
-			ucdList.add(new UserCourseDetailDao().createUserCourseDetail(ucd));
+			ucdList.add(UserCourseDetailDao.getInstance().createUserCourseDetail(ucd));
 		}
 		user.setUserCourseDetail(ucdList);
 		return user;
@@ -70,7 +70,7 @@ public class UserService {
 	@Path("/findUserByUserId/{id}")
 	public User findUserByUserIdService(@PathParam("id") int id) {
 		User user = new User();
-		UserDao userDaoObj = new UserDao();
+		UserDao userDaoObj = UserDao.getInstance();
 		user = userDaoObj.findUserByUserId(id);
 		return user;
 	}
@@ -81,7 +81,7 @@ public class UserService {
 	@Path("/deleteUser/{id}")
 	public Boolean deleteUserService(@PathParam("id") int id) {
 		System.out.println("id" + id);
-		UserDao userDaoObj = new UserDao();
+		UserDao userDaoObj = UserDao.getInstance();
 		return userDaoObj.deleteUser(id);
 	}
 
@@ -95,7 +95,7 @@ public class UserService {
 			@PathParam("email") String email,
 			@PathParam("dateOfBirth") String dateOfBirth,
 			@PathParam("role") String role, @PathParam("courses") String courses) {
-		UserDao userDaoObj = new UserDao();
+		UserDao userDaoObj = UserDao.getInstance();
 		User user = userDaoObj.findUserByUserId(userId);
 		user.setFirstName(firstName);
 		user.setLastName(lastName);
@@ -103,12 +103,12 @@ public class UserService {
 		user.setUserName(userName);
 		user.setEmail(email);
 		userDaoObj.updateUser(user);
-		UserCourseDetailDao ucdDao = new UserCourseDetailDao();
+		UserCourseDetailDao ucdDao = UserCourseDetailDao.getInstance();
 		ucdDao.deleteByUserIdAndRole(userId, role);
 		for (String id : courses.split(",")) {
 			UserCourseDetail ucd = new UserCourseDetail(Integer.parseInt(id),
 					user.getUserId(), role);
-			new UserCourseDetailDao().createUserCourseDetail(ucd);
+			UserCourseDetailDao.getInstance().createUserCourseDetail(ucd);
 		}
 		return user;
 	}
@@ -118,7 +118,7 @@ public class UserService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/findAllUsers")
 	public List<User> findAllUsersService() {
-		UserDao userDaoObj = new UserDao();
+		UserDao userDaoObj = UserDao.getInstance();
 		return userDaoObj.findAllUsers();
 	}
 
@@ -127,7 +127,7 @@ public class UserService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/findAllUsersNotTAForACourse")
 	public List<User> findAllUsersNotTAForACourseService(int courseId) {
-		UserDao userDaoObj = new UserDao();
+		UserDao userDaoObj = UserDao.getInstance();
 		return userDaoObj.findAllUsersNotTAForACourse(courseId);
 	}
 
@@ -137,7 +137,7 @@ public class UserService {
 	public User UserFollowsAnotherUserService(
 			@FormParam("followerUserId") int followerUserId,
 			@FormParam("followedUserId") int followedUserId) {
-		UserDao userDaoObj = new UserDao();
+		UserDao userDaoObj = UserDao.getInstance();
 		User followerUserObj = userDaoObj.findUserByUserId(followerUserId);
 		System.out.println("service before dao call1" + followerUserObj);
 		List<User> existingFollowedUserList = followerUserObj
@@ -160,7 +160,7 @@ public class UserService {
 
 		System.out.println(followerUserId + "_" + followedUserIdToBeRemoved);
 
-		UserDao userDaoObj = new UserDao();
+		UserDao userDaoObj = UserDao.getInstance();
 		User followerUserObj = userDaoObj.findUserByUserId(followerUserId);
 		System.out.println("service before dao call1" + followerUserObj);
 
@@ -183,13 +183,13 @@ public class UserService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/updateCourseForStudent")
 	public List<User> updateCourseForStudent(User user){
-		UserCourseDetailDao ucdDao = new UserCourseDetailDao();
+		UserCourseDetailDao ucdDao = UserCourseDetailDao.getInstance();
 		ucdDao.deleteByUserIdAndRole(user.getUserId(), Role.STUDENT.toString());
 
 		for (UserCourseDetail ucd : user.getUserCourseDetail()) {
-			new UserCourseDetailDao().createUserCourseDetail(ucd);
+			UserCourseDetailDao.getInstance().createUserCourseDetail(ucd);
 		}
 		
-		return new UserDao().findAllUsers();
+		return UserDao.getInstance().findAllUsers();
 	}
 }

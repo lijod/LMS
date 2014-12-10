@@ -33,7 +33,7 @@ public class CourseScheduleService {
     	  for (CourseSchedule cs  : courseScheduleList) {
     		  System.out.println(cs.getCourseId());
     		  System.out.println(cs.getCourseLocation());
-    		  CourseScheduleDao courseScheduleDaoObj = new CourseScheduleDao();
+    		  CourseScheduleDao courseScheduleDaoObj = CourseScheduleDao.getInstance();
     			courseScheduleDaoObj.createCourseSchedule(cs);
     	      }
 		return courseScheduleList;
@@ -72,7 +72,7 @@ public class CourseScheduleService {
 
 	@Path("/deleteCourseSchedule/{id}")
 	public Boolean deleteCourseScheduleService(@PathParam("id") int id) {
-		CourseScheduleDao courseScheduleDaoObj = new CourseScheduleDao();
+		CourseScheduleDao courseScheduleDaoObj = CourseScheduleDao.getInstance();
 		return courseScheduleDaoObj.deleteCourseSchedule(id);
 	}
 
@@ -80,7 +80,7 @@ public class CourseScheduleService {
 @GET
 	@Path("/findAllCourseSchedule")
 	public List<CourseSchedule> findAlleCoursesService() {
-		CourseScheduleDao courseScheduleDaoObj = new CourseScheduleDao();
+		CourseScheduleDao courseScheduleDaoObj = CourseScheduleDao.getInstance();
 		 return courseScheduleDaoObj.findAllCourseSchedule();
 	}
 

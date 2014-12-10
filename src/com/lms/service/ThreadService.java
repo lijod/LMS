@@ -26,7 +26,7 @@ public class ThreadService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/findThreadsByCourseId")
 	public List<Thread> findThreadsByCourseIdService(int courseId) {		
-		ThreadDao courseDaoObj = new ThreadDao();
+		ThreadDao courseDaoObj = ThreadDao.getInstance();
 		return courseDaoObj.findThreadsByCourseId(courseId);
 	}
 	
@@ -36,7 +36,7 @@ public class ThreadService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/findAllThreads")
 	public List<Thread> findAllThreads() {		
-		ThreadDao courseDaoObj = new ThreadDao();
+		ThreadDao courseDaoObj = ThreadDao.getInstance();
 		return courseDaoObj.findAllThreads();
 	}
 	
@@ -46,7 +46,7 @@ public class ThreadService {
 	//@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/findAThreadByThreadId")
 	public Thread findAThreadByThreadIdService(int threadId) {		
-		ThreadDao courseDaoObj = new ThreadDao();
+		ThreadDao courseDaoObj = ThreadDao.getInstance();
 		return courseDaoObj.findAThreadByThreadId(threadId);
 	}
 	
@@ -55,7 +55,7 @@ public class ThreadService {
 	public Thread createThread(Thread thread){
 		thread.setThreadTime(new Time(new Date().getTime()));
 		thread.setThreadDate(new Date());
-		new ThreadDao().createThread(thread);
+		ThreadDao.getInstance().createThread(thread);
 		return thread;
 	}
 	
@@ -65,8 +65,8 @@ public class ThreadService {
 	 @Path("/setFavThreadForUser")
 	 public Thread setFavThreadForUser(Thread thread){		 
 		 System.out.println(thread.getUserId() + "_" + thread.getThreadId());
-		 ThreadDao threadDao = new ThreadDao(); 
-		 User user = new UserDao().findUserByUserId(thread.getUserId());
+		 ThreadDao threadDao = ThreadDao.getInstance(); 
+		 User user = UserDao.getInstance().findUserByUserId(thread.getUserId());
 		 Thread threadNew = threadDao.findAThreadByThreadId(thread.getThreadId());
 		 System.out.println(thread.getFavUsers());
 		 List<User> userList = threadNew.getFavUsers();
@@ -74,7 +74,7 @@ public class ThreadService {
 		 userList.add(user);
 		 System.out.println(userList);
 		 threadNew.setFavUsers(userList);
-		 threadNew = new ThreadDao().updateThread(threadNew);
+		 threadNew = ThreadDao.getInstance().updateThread(threadNew);
 		 return threadNew;
 	 }
 	 
@@ -83,7 +83,7 @@ public class ThreadService {
 	 @Consumes(MediaType.APPLICATION_JSON)
 	 @Path("/undoFavThreadForUser")
 	 public Thread undoFavThreadForUser(Thread thread){
-		 ThreadDao threadDao = new ThreadDao(); 
+		 ThreadDao threadDao = ThreadDao.getInstance(); 
 		 Thread threadNew = threadDao.findAThreadByThreadId(thread.getThreadId());
 		 List<User> userList = new CopyOnWriteArrayList<User>(threadNew.getFavUsers());
 		 for(User user : userList){
@@ -91,7 +91,7 @@ public class ThreadService {
 				userList.remove(user);
 		 }
 		 threadNew.setFavUsers(userList);
-		 threadNew = new ThreadDao().updateThread(threadNew);
+		 threadNew = ThreadDao.getInstance().updateThread(threadNew);
 		 
 		 return threadNew;
 	 }

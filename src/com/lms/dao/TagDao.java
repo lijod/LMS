@@ -15,8 +15,17 @@ public class TagDao {
 	EntityManagerFactory emf = Persistence.createEntityManagerFactory("LMS");
 	EntityManager em = null;
 	
-	public TagDao() {
+	private TagDao() {
 		em = emf.createEntityManager();
+	}
+	
+	private static TagDao _instance = null;
+	
+	public static TagDao getInstance(){
+		if(_instance == null){
+			_instance = new TagDao();
+		}
+		return _instance;
 	}
 	
 	public List<Tag> findAllTags(){

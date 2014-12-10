@@ -29,7 +29,7 @@ public class JobService {
 	 @Path("/createAJob")
 	public Job createJobService(Job jobObject) {	
 		 System.out.println(jobObject);
-		JobDao jobDaoObj = new JobDao();
+		JobDao jobDaoObj = JobDao.getInstance();
 		jobDaoObj.createJob(jobObject);
 		return jobObject;
 	}
@@ -42,7 +42,7 @@ public class JobService {
 	 @Consumes(MediaType.APPLICATION_JSON)
 	 @Path("/findJobsByProfessorId")
 	 public List<Job> findJobsByProfessorIdService(int userId){
-	  JobDao jobDaoObj = new JobDao();
+	  JobDao jobDaoObj = JobDao.getInstance();
 	  return jobDaoObj.findJobsByProfessorId(userId);
 	 }
 	 
@@ -51,7 +51,7 @@ public class JobService {
 	 @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	 @Path("/findJobsByProfessorIdAndCourseId")
 	 public List<Job> findJobsByProfessorIdAndCourseIdService(@FormParam("userId") int userId, @FormParam("courseId") int courseId){
-	  JobDao jobDaoObj = new JobDao();
+	  JobDao jobDaoObj = JobDao.getInstance();
 	  return jobDaoObj.findJobsByProfessorIdAndCourseId(userId,courseId);
 	 }
 	 
@@ -60,7 +60,7 @@ public class JobService {
 	 @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	 @Path("/findAllJobsByCourseId")
 	 public List<Job> findJobsByCourseIdService(@FormParam("courseId") int courseId){
-	  JobDao jobDaoObj = new JobDao();
+	  JobDao jobDaoObj = JobDao.getInstance();
 	  return jobDaoObj.findJobsByCourseId(courseId);
 	 }
 	 
@@ -69,7 +69,7 @@ public class JobService {
 		//@Consumes(MediaType.APPLICATION_JSON)
 		@Path("/findAJobByJobId")
 		public Job findAJobByJobIdService(int jobId) {		
-			JobDao courseDaoObj = new JobDao();
+			JobDao courseDaoObj = JobDao.getInstance();
 			return courseDaoObj.findAJobByJobId(jobId);
 		}
 	 
@@ -82,7 +82,7 @@ public class JobService {
 	 @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	 @Path("/deleteJobByJobId")
 		public Boolean deleteJobByJobIdService(@FormParam("jobId") int jobId) {
-			JobDao jobDaoObj = new JobDao();
+			JobDao jobDaoObj = JobDao.getInstance();
 			return jobDaoObj.deletejOB(jobId);
 		}
 	 
@@ -92,7 +92,7 @@ public class JobService {
 	 @Consumes(MediaType.APPLICATION_JSON)
 	 @Path("/updateJobByJobId")
 		public Job updateJobByJobIdService(Job job) {
-			JobDao jobDaoObj = new JobDao();
+			JobDao jobDaoObj = JobDao.getInstance();
 			return jobDaoObj.updateJob(job);
 		}
 	 

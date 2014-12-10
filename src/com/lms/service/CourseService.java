@@ -36,7 +36,7 @@ public class CourseService {
 	@Path("/createCourse")
 	public Course createCourseService(Course course) {
 
-		CourseDao courseDaoObj = new CourseDao();
+		CourseDao courseDaoObj = CourseDao.getInstance();
 		courseDaoObj.createCourse(course);
 		return course;
 	}
@@ -46,7 +46,7 @@ public class CourseService {
 	@Path("/findCourseById/{id}")
 	public Course findCourseByIdService(@PathParam("id") int id) {
 		Course course = new Course();
-		CourseDao courseDaoObj = new CourseDao();
+		CourseDao courseDaoObj = CourseDao.getInstance();
 		course = courseDaoObj.findCourseById(id);
 		return course;
 	}
@@ -57,7 +57,7 @@ public class CourseService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/deleteCourseById")
 	public Boolean deleteCourseService(int id) {
-		CourseDao courseDaoObj = new CourseDao();
+		CourseDao courseDaoObj = CourseDao.getInstance();
 		return courseDaoObj.deleteCourse(id);
 	}
 
@@ -66,7 +66,7 @@ public class CourseService {
 	@Path("/findAllCourses")
 	public List<Course> findAlleCoursesService() {
 		
-		CourseDao courseDaoObj = new CourseDao();
+		CourseDao courseDaoObj = CourseDao.getInstance();
 		return courseDaoObj.findAllCourses();
 	}
 
@@ -76,7 +76,7 @@ public class CourseService {
 	@Path("/updateCourse")
 	public Course updateCourseService(Course course) {
         System.out.println("updateCourseService");
-		CourseDao courseDaoObj = new CourseDao();
+		CourseDao courseDaoObj = CourseDao.getInstance();
 		courseDaoObj.updateCourse(course);
 		return course;
 	}
@@ -87,7 +87,7 @@ public class CourseService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/findAllCoursesForAUserId")
 	public List<Course> findAllCoursesForAUserIdService(int userId) {		
-		CourseDao courseDaoObj = new CourseDao();
+		CourseDao courseDaoObj = CourseDao.getInstance();
 		return courseDaoObj.findAllCoursesForAUserId(userId);
 	}
 

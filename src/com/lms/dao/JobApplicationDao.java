@@ -11,10 +11,18 @@ public class JobApplicationDao {
 	EntityManagerFactory emf = Persistence.createEntityManagerFactory("LMS");
 	EntityManager em = null;
 	
-	public JobApplicationDao() {
+	private JobApplicationDao() {
 		em = emf.createEntityManager();
 	}
 	
+	private static JobApplicationDao _instance = null;
+	
+	public static JobApplicationDao getInstance(){
+		if(_instance == null){
+			_instance = new JobApplicationDao();
+		}
+		return _instance;
+	}
 	
 	public JobApplication createJobApplication(JobApplication jobApplicationObj){		
 		em.getTransaction().begin();

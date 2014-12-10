@@ -87,8 +87,8 @@ public class UserSignupServlet extends HttpServlet {
 					user.setUserImage(image);
 				}
 			}
-			user = new UserDao().createUser(user);
-			new UserCourseDetailDao().createUserCourseDetail(new UserCourseDetail(0, user.getUserId(), "STUDENT"));
+			user = UserDao.getInstance().createUser(user);
+			UserCourseDetailDao.getInstance().createUserCourseDetail(new UserCourseDetail(0, user.getUserId(), "STUDENT"));
 			studentcreated = true;
 		} catch (FileUploadException e) {
 			e.printStackTrace();

@@ -18,8 +18,17 @@ public class CourseDao {
 	EntityManagerFactory emf = Persistence.createEntityManagerFactory("LMS");
 	EntityManager em = null;
 	
-	public CourseDao() {
+	private CourseDao() {
 		em = emf.createEntityManager();
+	}
+	
+	private static CourseDao _instance = null;
+	
+	public static CourseDao getInstance(){
+		if(_instance == null){
+			_instance = new CourseDao();
+		}
+		return _instance;
 	}
 	
 	public Course createCourse(Course course){
