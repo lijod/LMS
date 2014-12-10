@@ -23,8 +23,6 @@ public class Course implements Serializable {
 	private int courseId;
 	@Column(name="course_name")
 	private String courseName;
-//	@Column(name="section_num")
-//	private int sectionNumber;
 	
 	//@JsonIgnore
 	@OneToMany(fetch=FetchType.EAGER,cascade=CascadeType.ALL)
@@ -42,32 +40,32 @@ public class Course implements Serializable {
 		super();
 	}   
 	
-	public Course(String courseName/*, int sectionNumber*/) {
+	public Course(String courseName) {
 		super();
 		this.courseName = courseName;
-		//this.sectionNumber = sectionNumber;
+		
 	}
 	
-	public Course(String courseName/*, int sectionNumber*/, List<CourseSchedule> courseScheduleList) {
+	public Course(String courseName, List<CourseSchedule> courseScheduleList) {
 		super();
 		this.courseName = courseName;
-		//this.sectionNumber = sectionNumber;
+		
 		this.courseScheduleList=courseScheduleList;
 	}
 	
-	public Course(int courseId, String courseName/*, int sectionNumber*/,List<CourseSchedule> courseScheduleList) {
+	public Course(int courseId, String courseName,List<CourseSchedule> courseScheduleList) {
 		super();
 		this.courseId = courseId;
 		this.courseName = courseName;
-		//this.sectionNumber = sectionNumber;
+		
 		this.courseScheduleList=courseScheduleList;
 	}
 
-	public Course(int courseId, String courseName/*, int sectionNumber*/) {
+	public Course(int courseId, String courseName) {
 		super();
 		this.courseId = courseId;
 		this.courseName = courseName;
-		//this.sectionNumber = sectionNumber;
+		
 	}
 
 	public int getCourseId() {
@@ -84,13 +82,6 @@ public class Course implements Serializable {
 	public void setCourseName(String courseName) {
 		this.courseName = courseName;
 	}   
-	/*public int getSectionNumber() {
-		return this.sectionNumber;
-	}
-
-	public void setSectionNumber(int sectionNumber) {
-		this.sectionNumber = sectionNumber;
-	}*/   
 	
    
 	public List<UserCourseDetail> getUserCourseDetail() {
@@ -118,8 +109,6 @@ public class Course implements Serializable {
 		builder.append(courseId);
 		builder.append(", courseName=");
 		builder.append(courseName);
-		/*builder.append(", sectionNumber=");
-		builder.append(sectionNumber);*/
 		builder.append(", userCourseDetail=");
 		builder.append(userCourseDetail);
 		builder.append(", courseScheduleList=");

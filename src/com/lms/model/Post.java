@@ -57,7 +57,7 @@ public class Post implements Serializable {
 	
 	
 
-
+    @JsonIgnore
 	//bi-directional many-to-many association to Tag
 		@ManyToMany(fetch=FetchType.EAGER, cascade={CascadeType.MERGE, CascadeType.REFRESH})
 		@JoinTable(name="user_like_post", 

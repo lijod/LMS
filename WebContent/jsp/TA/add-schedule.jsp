@@ -159,13 +159,15 @@ function createNewTaHour(){
 
 
 function refreshCourseList(){
-	userServiceURl =  applicaitonURL + "/jwsCourseService/findAllCourses";
-	
+	userServiceURl =  applicaitonURL + "/jwsCourseService/findAllCoursesForAUserId";	
 	$.ajax({
-		type : "GET",
+		type : "POST",
 		url :  userServiceURl,
+		data : JSON.stringify(<%= userId %>),
 		dataType:"JSON",
+		contentType: "application/json",
 			success : function (result) {
+				console.log(result);
 				$.each(result, function(i, val){
 				$("#dd-course-list").append(
 					"<option id='course-" + val.courseId + "' value='"+val.courseId+"'>" + val.courseName + "</option>");

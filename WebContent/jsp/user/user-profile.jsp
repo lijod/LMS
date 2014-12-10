@@ -21,6 +21,7 @@
 
 </html>
 <body>
+	<a href="javascript:void(0)" onClick="navigate('/jsp/TA/add-schedule.jsp')">TA adds his schedule</a-->
 	<!--a href="javascript:void(0)" onClick="navigate('/jsp/user/threads-for-a-course.jsp')">VIEW ALL THREADS</a>
 	<a href="javascript:void(0)" onClick="navigate('/jsp/admin/add-prof.jsp')">ADD PROFESSOR</a>
 	<a href="javascript:void(0)" onClick="navigate('/jsp/user/threads-for-a-course.jsp')">ADD/VIEW THREAD</a>
@@ -76,7 +77,8 @@
 	<div id="posted-thread-container" >
 		<% for(Thread thread : user.getThreads()) {%>
 			<%= thread.getThreadTitle() %>
-			<%= thread.getThreadContent() %>
+		
+			<a href="javascript:void(0)" onClick="browseThreadByThreadId(<%= thread.getThreadId() %>,<%= thread.getCourseId() %>)"><%= thread.getThreadContent() %></a>
 			<% if(!viewer) { %>
 				EDIT ONLY
 			<% } %>
@@ -84,6 +86,7 @@
 		<% } %>
 		<% if(!viewer) { %>
 				ADD NEW THREAD
+				<a href="javascript:void(0)" onClick="navigate('/jsp/user/threads-for-a-course.jsp')">ADD/VIEW THREAD</a>
 		<% } %>
 	</div>
 	<hr/>
@@ -91,7 +94,7 @@
 	<div id="fav-thread-container" >
 		<% for(Thread thread : user.getFavThreads()) {%>
 			<%= thread.getThreadTitle() %>
-			<%= thread.getThreadContent() %>
+	<a href="javascript:void(0)" onClick="browseThreadByThreadId(<%= thread.getThreadId() %>,<%= thread.getCourseId() %>)"><%= thread.getThreadContent() %></a>
 			<hr/>
 		<% } %>
 	</div>
@@ -277,6 +280,11 @@ function loadViewForCourse(course, role){
 	    "method": 'post'
 	});
 	form.appendTo("body").submit();
+}
+
+function browseThreadByThreadId(threadId,courseId){
+	navigate('/jsp/user/threads-for-a-course.jsp?threadId='+threadId+'&courseId='+courseId);
+	
 }
 
 </script>

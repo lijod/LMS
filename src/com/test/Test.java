@@ -138,8 +138,10 @@ public class Test {
 	taHourDaoObj.updateExistingTaHour(3,th.get(0));
 	//System.out.println(taHour);
 */	
-	/*int courseId, String taHourDay, Date taHourEndTime,
-	String taHourLocation, Date taHourStartTime, int taId) {*/
+	CourseDao courseDaoObj = new CourseDao();
+	System.out.println(courseDaoObj.findAllCoursesForAUserId(11).size());
+	
+	
 		
 	}
 	

@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import java.util.List;
 
 
@@ -40,6 +42,7 @@ public class Job implements Serializable {
 	@Column(name="user_id")
 	private int userId;
     
+	@JsonIgnore
 	//bi-directional many-to-one association to JobApplication
 	@OneToMany(mappedBy="job", fetch=FetchType.EAGER)
 	private List<JobApplication> jobApplications;

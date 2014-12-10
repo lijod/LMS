@@ -35,6 +35,7 @@ public class Navigator extends HttpServlet {
 		System.out.println("Navigating userId:" + userId + " to " + path + " ...");
 		request.setAttribute("user", new UserDao().findUserByUserId(userId));
 		request.setAttribute("role", role);
+		request.setAttribute("path", path);
 		RequestDispatcher rd = request.getRequestDispatcher(path);
 		rd.forward(request, response);
 	}

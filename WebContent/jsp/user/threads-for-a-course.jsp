@@ -1,9 +1,13 @@
 <%@ include file="../common.jsp"%>
 <%@ include file="../check-login.jsp"%>
 <link href="/LMS/css/jquery-te-1.4.0.css" rel="stylesheet">
-
+ <% 
+String path = (String) request.getAttribute("path");
+//String threadId =console.log(path.split('=')[1]);
+%> 
 <script src="/LMS/js/jquery-te-1.4.0.min.js" type="text/javascript"></script>
 <html>
+<input id="hdn-Path" type="hidden" name="hdn-Path" value="<%= path %>" />
 <style>
 
 table, td, th {
@@ -71,7 +75,10 @@ var userServiceURl ;
 var threadService = applicaitonURL + "/jwsThreadService";
 var tagService = applicaitonURL + "/jwsTagService";
 
-$(document).ready(function(){	
+var threadIdFromPath = getUrlParams($("#hdn-Path").val()).threadId;
+var courseIdFromPath = getUrlParams($("#hdn-Path").val()).courseId;
+console.log(threadIdFromPath +"_"+courseIdFromPath);
+$(document).ready(function(){
 	refreshCourseList();
 	$('#thread-content').jqte();
 	loadTags();
@@ -89,11 +96,21 @@ function refreshCourseList(){
 		success : function (result) {
 			//console.log(result);
 			$.each(result, function(i, val){
-				$("#course-list").append(
-						"<option id='course-" + val.courseId + "' value='"+val.courseId+"'>" + val.courseName + "</option>");
-			});		
-			var courseId = $("#course-list").children(":selected").attr("value");
-			loadAllThreadsByCourseId(courseId);
+					$("#course-list").append(
+							"<option id='course-" + val.courseId + "' value='"+val.courseId+"'>" + val.courseName + "</option>");
+				});
+			
+			if(threadIdFromPath != undefined && courseIdFromPath != undefined)
+				{				
+					$("#course-list").val(parseInt(courseIdFromPath));
+					loadAllThreadsByCourseId(parseInt(courseIdFromPath));
+				}
+			else
+				{
+					
+					var courseId = $("#course-list").children(":selected").attr("value");
+					loadAllThreadsByCourseId(courseId);
+				}
 		},
 		failure : function () {
 			console.log("failed");
@@ -102,33 +119,43 @@ function refreshCourseList(){
 }
 
 
-	function loadAllThreadsByCourseId(courseId){
-	userServiceURl =  applicaitonURL + "/jwsThreadService/findThreadsByCourseId";
-		$.ajax({
-			type : "POST",
-			url :  userServiceURl,
-			data: JSON.stringify(courseId),
-			dataType:"JSON",
-			contentType: "application/json",
-			success : function (result) {
-				$("#tbl-all-threads").children().remove();
-				$("#tbl-all-threads").append(getNewPostBtn());
-				$("#tbl-thread-desc").children().remove();
-					if(result.length > 0){	
+function loadAllThreadsByCourseId(courseId){
+userServiceURl =  applicaitonURL + "/jwsThreadService/findThreadsByCourseId";
+	$.ajax({
+		type : "POST",
+		url :  userServiceURl,
+		data: JSON.stringify(courseId),
+		dataType:"JSON",
+		contentType: "application/json",
+		success : function (result) {
+			$("#tbl-all-threads").children().remove();
+			$("#tbl-all-threads").append(getNewPostBtn());
+			$("#tbl-thread-desc").children().remove();
+				if(result.length > 0){	
 					$.each(result, function(i, val){				
 						$("#tbl-all-threads").append(
 								"<tr style='height:120px;'> <td  onClick='clickOnThread("+val.threadId+")'> <span class='spanClass'  id='"+ val.threadId +"'>"+ val.threadContent+ "</span></td></tr>");
 					});
 					
-					var firstThreadIdInList = $("#tbl-all-threads span:first").attr("id");
-					loadAThreadAndItsAllPosts(firstThreadIdInList);
-				}				
-			},
-			failure : function () {
-				console.log("failed");
-			}
-		});
-	}
+					if(threadIdFromPath != undefined && courseIdFromPath != undefined)
+					{			
+						loadAThreadAndItsAllPosts(parseInt(threadIdFromPath));
+					}
+					else
+					{
+						var firstThreadIdInList = $("#tbl-all-threads span:first").attr("id");
+						loadAThreadAndItsAllPosts(firstThreadIdInList);
+						
+					}
+					
+			
+			}				
+		},
+		failure : function () {
+			console.log("failed");
+		}
+	});
+}
 	
 
 
@@ -464,6 +491,15 @@ function getFavoriteBtn(threadId){
 
 function getUndoFavoriteBtn(threadId){
 	return '<input type="button" value="UNDO FAVORITE" id="thread-fav-btn" class="btn btn-warning" onClick="undoFav(' + threadId + ')" />';
+}
+
+function getUrlParams(url) {
+    var params = {};
+    url.substring(1).replace(/[?&]+([^=&]+)=([^&]*)/gi,
+            function (str, key, value) {
+                 params[key] = value;
+            });
+    return params;
 }
 
 </script>
