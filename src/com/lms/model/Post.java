@@ -50,6 +50,7 @@ public class Post implements Serializable {
 	@JoinColumn(name="thread_id",insertable=false,updatable=false)
 	private Thread thread;
 
+	@JsonIgnore
 	//bi-directional many-to-one association to Thread
 	@ManyToOne
 	@JoinColumn(name="user_id",insertable=false,updatable=false)
@@ -57,7 +58,7 @@ public class Post implements Serializable {
 	
 	
 
-    @JsonIgnore
+    
 	//bi-directional many-to-many association to Tag
 		@ManyToMany(fetch=FetchType.EAGER, cascade={CascadeType.MERGE, CascadeType.REFRESH})
 		@JoinTable(name="user_like_post", 

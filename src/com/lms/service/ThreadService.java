@@ -7,6 +7,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -38,6 +39,17 @@ public class ThreadService {
 	public List<Thread> findAllThreads() {		
 		ThreadDao courseDaoObj = ThreadDao.getInstance();
 		return courseDaoObj.findAllThreads();
+	}
+	
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	@Path("/findAllThreadsByAKeyWord")
+	public List<Thread> findAllThreadsByAKeyWordService (
+			@FormParam("courseId") int courseId,
+			@FormParam("keyword") String keyword) {				
+		ThreadDao courseDaoObj = ThreadDao.getInstance();
+		return courseDaoObj.findAllThreadsByAKeyWord(courseId,keyword);
 	}
 	
 	

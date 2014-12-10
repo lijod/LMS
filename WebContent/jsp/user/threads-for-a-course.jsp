@@ -135,7 +135,6 @@ userServiceURl =  applicaitonURL + "/jwsThreadService/findThreadsByCourseId";
 						$("#tbl-all-threads").append(
 								"<tr style='height:120px;'> <td  onClick='clickOnThread("+val.threadId+")'> <span class='spanClass'  id='"+ val.threadId +"'>"+ val.threadContent+ "</span></td></tr>");
 					});
-					console.log($("#tbl-all-threads").html(	));
 				
 					if(threadIdFromPath != undefined && courseIdFromPath != undefined)
 					{			
@@ -146,7 +145,6 @@ userServiceURl =  applicaitonURL + "/jwsThreadService/findThreadsByCourseId";
 					else
 					{
 						var firstThreadIdInList = $("#tbl-all-threads span:first").attr("id");
-						console.log(firstThreadIdInList);
 						loadAThreadAndItsAllPosts(firstThreadIdInList);
 						
 					}
@@ -382,7 +380,10 @@ function getTags(){
 }
 
 function getNewPostBtn(){
-	return '<tr> <td> <input type="button" value="NEW THREAD" class="btn btn-success" onClick="showNewPostContainer()" /> </td> </tr>';	
+	return '<tr> <td> <input type="button" value="NEW THREAD" class="btn btn-success" onClick="showNewPostContainer()" />'+
+	'<input id="txt-search" type="text"  style="margin-left:4px;width:55%;" placeholder="Search:Enter keywords" />'+
+	'<button id="btn-txt-search" onClick="searchThread()">search</button></td>'+
+	'</tr>';	
 }
 
 
@@ -496,5 +497,70 @@ function getUrlParams(url) {
             });
     return params;
 }
+
+$("#txt-search").keyup(function(){
+	  $("#txt-searcht").css("background-color","pink");
+	  
+	  var keyword = $("#txt-search").val();
+	  
+		
+		
+	}); 
+
+function searchThread() {
+	var userId= parseInt(<%= userId %>);
+	var courseId = parseInt($("#course-list").children(":selected").attr("value"));
+	var keyword = $("#txt-search").val();
+	searchThreadHelper(courseId, userId, keyword)
+}
+
+
+
+	function searchThreadHelper(courseId, userId, keyword){
+	userServiceURl = applicaitonURL + "/jwsThreadService/findAllThreadsByAKeyWord";
+	console.log({"courseId":courseId, "keyword" : keyword, "userId" :userId});
+	$.ajax({
+		type : "POST",
+		url :  userServiceURl,
+		data: {"courseId":courseId, "keyword" : keyword, "userId" :userId},
+		dataType:"JSON",
+		contentType: "application/x-www-form-urlencoded",
+		success : function (result) { 
+			$("#tbl-all-threads").children().remove();
+			$("#tbl-all-threads").html('');
+			$("#tbl-all-threads").append(getNewPostBtn());
+			$("#tbl-thread-desc").children().remove();
+				if(result.length > 0){	
+					$.each(result, function(i, val){				
+						$("#tbl-all-threads").append(
+								"<tr style='height:120px;'> <td  onClick='clickOnThread("+val.threadId+")'> <span class='spanClass'  id='"+ val.threadId +"'>"+ val.threadContent+ "</span></td></tr>");
+					});
+					
+				
+					if(threadIdFromPath != undefined && courseIdFromPath != undefined)
+					{			
+						loadAThreadAndItsAllPosts(parseInt(threadIdFromPath));
+						threadIdFromPath = undefined;
+						courseIdFromPath = undefined;
+					}
+					else
+					{
+						var firstThreadIdInList = $("#tbl-all-threads span:first").attr("id");
+						loadAThreadAndItsAllPosts(firstThreadIdInList);
+						
+					}
+				
+				}
+		},
+		failure : function () {
+			console.log("failed");
+		}
+	});
+	}
+
+
+
+
+
 
 </script>

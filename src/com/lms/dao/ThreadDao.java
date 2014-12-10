@@ -52,6 +52,19 @@ public class ThreadDao {
 		return thread;
 	}
 	
+	public List<Thread> findAllThreadsByAKeyWord(int courseId, String keyword){
+		List<Thread> threadList = null;
+		em.getTransaction().begin();
+		
+		Query query = em.createQuery("select thread from Thread thread where thread.courseId =:courseId and ( thread.threadContent like :keyword or thread.threadTitle like :keyword)");
+		query.setParameter("keyword", "%" + keyword + "%");
+		query.setParameter("courseId", courseId);
+		threadList = query.getResultList();
+		em.getTransaction().commit();
+		return threadList;
+		
+	}
+	
 	public Boolean deleteThread(int threadId){
 		em.getTransaction().begin();
 		Thread thread = em.find (Thread.class, threadId);

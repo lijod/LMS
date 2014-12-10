@@ -59,6 +59,7 @@ public class User implements Serializable {
 	@JoinColumn(name="user_id", referencedColumnName = "user_id")
 	private List<UserCourseDetail> userCourseDetail;
 	
+	@JsonIgnore
 	//bi-directional many-to-one association to Post
 	@OneToMany(mappedBy="user", fetch=FetchType.EAGER)
 	private List<Post> posts;
