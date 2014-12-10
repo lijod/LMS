@@ -1,13 +1,16 @@
 package com.lms.service;
 
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -38,14 +41,14 @@ public class PostService {
 	}
 	
 
-	@POST
+	/*@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Path("/findAllPostsByThreadId")
-	public List<Post> findAllPostsByThreadIdService(int threadId) {		
+	@Path("/findAllPostsByThreadId/{threadId}")
+	public List<Post> findAllPostsByThreadIdService(@PathParam("threadId") int threadId) {		
 		PostDao postDaoObject = PostDao.getInstance();
 		return postDaoObject.findAllPostsByThreadId(threadId);
-	}
+	}*/
 	
 	
 	@POST
@@ -60,7 +63,15 @@ public class PostService {
 		PostDao postDaoObject = PostDao.getInstance();
 		Post postObj = postDaoObject.findPostByPostId(post.getPostId());
 		
-		List<User> usersWhoHaveAlreadyLikedThisPostLst =postObj.getUsersWhoHaveLikedPosts();
+		//List<User> usersWhoHaveAlreadyLikedThisPostLst =postObj.getUsersWhoHaveLikedPosts();
+		 List<User> usersWhoHaveAlreadyLikedThisPostLst=null;
+		 if(postObj.getUsersWhoHaveLikedPosts() == null)
+			 usersWhoHaveAlreadyLikedThisPostLst = new ArrayList<User>();
+		 else
+			 usersWhoHaveAlreadyLikedThisPostLst =postObj.getUsersWhoHaveLikedPosts();
+		
+		
+		
 		usersWhoHaveAlreadyLikedThisPostLst.add(userObj);
 		
 		postObj.setUsersWhoHaveLikedPosts(usersWhoHaveAlreadyLikedThisPostLst);

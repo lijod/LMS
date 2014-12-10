@@ -5,7 +5,9 @@ import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -37,43 +39,43 @@ public class JobService {
 	 
 	 
 	 
-	 @POST
+	/* @POST
 	 @Produces(MediaType.APPLICATION_JSON)
 	 @Consumes(MediaType.APPLICATION_JSON)
-	 @Path("/findJobsByProfessorId")
-	 public List<Job> findJobsByProfessorIdService(int userId){
+	 @Path("/findJobsByProfessorId/{userId}")
+	 public List<Job> findJobsByProfessorIdService(@PathParam("userId") int userId){
 	  JobDao jobDaoObj = JobDao.getInstance();
 	  return jobDaoObj.findJobsByProfessorId(userId);
-	 }
+	 }*/
 	 
-	 @POST
+	 @GET
 	 @Produces(MediaType.APPLICATION_JSON)
-	 @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	 @Path("/findJobsByProfessorIdAndCourseId")
-	 public List<Job> findJobsByProfessorIdAndCourseIdService(@FormParam("userId") int userId, @FormParam("courseId") int courseId){
+	 @Consumes(MediaType.APPLICATION_JSON)
+	 @Path("/findJobsByProfessorIdAndCourseId/{userId}/{courseId}")
+	 public List<Job> findJobsByProfessorIdAndCourseIdService(@PathParam("userId") int userId, @PathParam("courseId") int courseId){
 	  JobDao jobDaoObj = JobDao.getInstance();
 	  return jobDaoObj.findJobsByProfessorIdAndCourseId(userId,courseId);
 	 }
 	 
-	 @POST
+	 @GET
 	 @Produces(MediaType.APPLICATION_JSON)
 	 @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	 @Path("/findAllJobsByCourseId")
-	 public List<Job> findJobsByCourseIdService(@FormParam("courseId") int courseId){
+	 @Path("/findAllJobsByCourseId/{courseId}")
+	 public List<Job> findJobsByCourseIdService(@PathParam("courseId") int courseId){
 	  JobDao jobDaoObj = JobDao.getInstance();
 	  return jobDaoObj.findJobsByCourseId(courseId);
 	 }
 	 
-	    @POST
+	    @GET
 		@Produces(MediaType.APPLICATION_JSON)
 		//@Consumes(MediaType.APPLICATION_JSON)
-		@Path("/findAJobByJobId")
-		public Job findAJobByJobIdService(int jobId) {		
+		@Path("/findAJobByJobId/{jobId}")
+		public Job findAJobByJobIdService(@PathParam("jobId") int jobId) {		
 			JobDao courseDaoObj = JobDao.getInstance();
 			return courseDaoObj.findAJobByJobId(jobId);
 		}
 	 
-	 //
+	 
 	 
 	 
 	 
@@ -87,7 +89,7 @@ public class JobService {
 		}
 	 
 	 
-	 @POST
+	 @PUT
 	 @Produces(MediaType.APPLICATION_JSON)
 	 @Consumes(MediaType.APPLICATION_JSON)
 	 @Path("/updateJobByJobId")

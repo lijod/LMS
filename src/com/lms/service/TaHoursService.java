@@ -3,6 +3,8 @@ package com.lms.service;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -29,11 +31,11 @@ public class TaHoursService {
 	
 	
 	
-	@POST
+	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Path("/findTaHoursByCourseId")
-	public List<TaHour> findTaHoursByCourseIdService(int courseId){
+	@Path("/findTaHoursByCourseId/{courseId}")
+	public List<TaHour> findTaHoursByCourseIdService(@PathParam("courseId") int courseId){
 		TaHoursDao taHourDaoObj = TaHoursDao.getInstance();
 		List<TaHour> taHourList = taHourDaoObj.findTaHoursByCourseId(courseId);
 		return taHourList;
@@ -41,7 +43,7 @@ public class TaHoursService {
 	
 	
 	
-	@POST
+	@DELETE
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/deleteTaHoursByTaHourId")

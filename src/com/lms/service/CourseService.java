@@ -6,6 +6,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -41,7 +42,7 @@ public class CourseService {
 		return course;
 	}
 
-	// /com.lms.service/jwsCourseService/findCourseById
+	
 	@GET
 	@Path("/findCourseById/{id}")
 	public Course findCourseByIdService(@PathParam("id") int id) {
@@ -70,7 +71,7 @@ public class CourseService {
 		return courseDaoObj.findAllCourses();
 	}
 
-	@POST
+	@PUT
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/updateCourse")
@@ -82,16 +83,16 @@ public class CourseService {
 	}
 	
 	
-	@POST
+	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Path("/findAllCoursesForAUserId")
-	public List<Course> findAllCoursesForAUserIdService(int userId) {		
+	@Path("/findAllCoursesForAUserId/{userId}")
+	public List<Course> findAllCoursesForAUserIdService(@PathParam("userId") int userId) {		
 		CourseDao courseDaoObj = CourseDao.getInstance();
 		return courseDaoObj.findAllCoursesForAUserId(userId);
 	}
 	
-	@POST
+	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/findAllCourses")
@@ -100,11 +101,11 @@ public class CourseService {
 		return courseDaoObj.findAllCourses();
 	}
 	
-	@POST
+	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Path("/findAllCoursesForATa")
-	public List<Course> findAllCoursesForATaService(int userId) {		
+	@Path("/findAllCoursesForATa/{userId}")
+	public List<Course> findAllCoursesForATaService(@PathParam("userId") int userId) {		
 		CourseDao courseDaoObj = CourseDao.getInstance();
 		return courseDaoObj.findAllCoursesForATa(userId);
 	}

@@ -153,14 +153,14 @@ $("#dd-course-list" ).change(function() {
 })
 
 function findJobsByProfessorIdAndCourseId(userId,courseId){
-	userServiceURl =applicaitonURL + "/jwsJobService/findJobsByProfessorIdAndCourseId";
+	userServiceURl =applicaitonURL + "/jwsJobService/findJobsByProfessorIdAndCourseId/"+userId +"/"+courseId;
 	var jobData = {"userId" : userId, "courseId" :courseId };
 	$.ajax({
 		type : "POST",
 		url : userServiceURl,
-		data : jobData,
+		//data : jobData,
 		dataType:"JSON",
-		contentType: "application/x-www-form-urlencoded",		
+		contentType: "application/json",		
 		success : function (jobsList) {
 			$("#cls-job-desc-container").children().remove();
 			$.each(jobsList, function(i, job){

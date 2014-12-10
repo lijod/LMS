@@ -142,8 +142,12 @@ public class Test {
 	System.out.println(courseDaoObj.findAllCoursesForAUserId(11).size());*/
 	
 	
-	CourseDao cd = CourseDao.getInstance();
-	System.out.println(cd.findAllCoursesForATa(11).size());
+/*	CourseDao cd = CourseDao.getInstance();
+	System.out.println(cd.findAllCoursesForATa(11).size());*/
+	
+	ThreadDao doa= ThreadDao.getInstance();
+	System.out.println(doa.findAThreadByThreadId(2));
+	
 	
 	
 		

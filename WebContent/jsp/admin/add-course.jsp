@@ -86,6 +86,7 @@ $("#add-new-course").click(function(){
 	$("#delete-course").hide();
 	$("#save-after-edit").hide();
 	addEmptyInputFields();
+	enableCourseDetails();
 	//refreshCourseList();
 })
 	
@@ -122,6 +123,7 @@ $("#btn-save-course").click(function(){
 			success : function (result) {
 				console.log(result);
 				refreshCourseList();
+				$("#course-list").val(result.courseId);
 				findCourseByIdFunction(result.courseId);
 			},
 			failure : function () {
@@ -173,14 +175,15 @@ $("#save-after-edit").click(function(){
 		console.log($("#course-location"+ count).val());
 		
  		$.ajax({
-			type : "POST",
+			type : "PUT",
 			url :  userServiceURl,
 			data:queryArr,
 			dataType:"JSON",
 			contentType: "application/json",
 				success : function (result) {
 					console.log(result);	
-					location.reload();
+					refreshCourseList();
+					findCourseByIdFunction(result.courseId);
 				},
 				failure : function () {
 					console.log("failed");
@@ -203,7 +206,8 @@ $("#delete-course").click(function(){
 				dataType:"json",
 				contentType: "application/json",
 				success : function (result) {
-					location.reload();
+					refreshCourseList();
+				findCourseByIdFunction(result.courseId);
 					console.log(result);
 				},
 				failure : function () {

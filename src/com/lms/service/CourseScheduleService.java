@@ -24,20 +24,18 @@ public class CourseScheduleService {
 	
 	
 	// /com.lms.service/jwsCourseScheduleService/createCourseSchedule
-    @POST
+ /*   @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
 	@Path("/createCourseSchedule")
 	public List<CourseSchedule> createCourseScheduleService(List<CourseSchedule> courseScheduleList) {
     	System.out.println("createCourseScheduleService-- \n" + courseScheduleList);
     	  for (CourseSchedule cs  : courseScheduleList) {
-    		  System.out.println(cs.getCourseId());
-    		  System.out.println(cs.getCourseLocation());
     		  CourseScheduleDao courseScheduleDaoObj = CourseScheduleDao.getInstance();
     			courseScheduleDaoObj.createCourseSchedule(cs);
     	      }
 		return courseScheduleList;
-	}
+	}*/
     
 	
 /*	
@@ -70,18 +68,18 @@ public class CourseScheduleService {
 	
 	// /com.lms.service/jwsCourseService/deleteCourse
 
-	@Path("/deleteCourseSchedule/{id}")
+/*	@Path("/deleteCourseSchedule/{id}")
 	public Boolean deleteCourseScheduleService(@PathParam("id") int id) {
 		CourseScheduleDao courseScheduleDaoObj = CourseScheduleDao.getInstance();
 		return courseScheduleDaoObj.deleteCourseSchedule(id);
-	}
+	}*/
 
 	// /com.lms.service/jwsCourseService/findAllCourses
-@GET
+/*@GET
 	@Path("/findAllCourseSchedule")
 	public List<CourseSchedule> findAlleCoursesService() {
 		CourseScheduleDao courseScheduleDaoObj = CourseScheduleDao.getInstance();
 		 return courseScheduleDaoObj.findAllCourseSchedule();
-	}
+	}*/
 
 }

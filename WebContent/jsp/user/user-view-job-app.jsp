@@ -60,11 +60,11 @@ $(document).ready(function(){
 
 
 function refreshCourseList(){
-	userServiceURl = applicaitonURL + "/jwsCourseService/findAllCourses";
+	userServiceURl = applicaitonURL + "/jwsCourseService/findAllCourses/";
 	$.ajax({
-		type : "POST",
+		type : "GET",
 		url :  userServiceURl,
-		data: "<%= userId %>",
+		//data: "<%= userId %>",
 		dataType:"JSON",
 		contentType: "application/json",
 		success : function (result) {
@@ -83,11 +83,11 @@ function refreshCourseList(){
 }
 
 function loadAllJobsByCourseId(courseId){
-	userServiceURl =  applicaitonURL + "/jwsJobService/findAllJobsByCourseId";
+	userServiceURl =  applicaitonURL + "/jwsJobService/findAllJobsByCourseId/"+courseId;
 		$.ajax({
-			type : "POST",
+			type : "GET",
 			url :  userServiceURl,
-			data: {"courseId" : courseId},
+			//data: {"courseId" : courseId},
 			dataType:"JSON",
 			contentType: "application/x-www-form-urlencoded",
 			success : function (allJobs) {
@@ -117,11 +117,11 @@ $("#course-list").change(function() {
 
 function loadAJobByJobId(jobId){
 	console.log(jobId);
-	userServiceURl = applicaitonURL + "/jwsJobService/findAJobByJobId";
+	userServiceURl = applicaitonURL + "/jwsJobService/findAJobByJobId/"+jobId;
 	$.ajax({
-		type : "POST",
+		type : "GET",
 		url :  userServiceURl,
-		data : JSON.stringify(jobId),
+		//data : JSON.stringify(jobId),
 		dataType:"JSON",
 		contentType: "application/json",
 		success : function (job) {

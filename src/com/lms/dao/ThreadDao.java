@@ -11,8 +11,8 @@ import com.lms.model.Thread;
 
 public class ThreadDao {
 
-	EntityManagerFactory emf = Persistence.createEntityManagerFactory("LMS");
-	EntityManager em = null;
+	static EntityManagerFactory emf = Persistence.createEntityManagerFactory("LMS");
+	static EntityManager em = null;
 	
 	private ThreadDao() {
 		em = emf.createEntityManager();
@@ -24,6 +24,12 @@ public class ThreadDao {
 		if(_instance == null){
 			_instance = new ThreadDao();
 		}
+		
+		if(em != null){
+			em.close();
+		}
+		em = emf.createEntityManager();
+		
 		return _instance;
 	}
 	

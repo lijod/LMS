@@ -86,6 +86,10 @@ var applicaitonURL = "/LMS/api";
 var userServiceURl ;
 
 $(document).ready(function(){
+	$("#btn-add-new-ta-schedule").hide();
+	$("#btn-edit-ta-schedule").hide();
+	$("#btn-delete-ta-schedule").hide();
+	
 	refreshCourseList();
 	$("#btn-save-ta-schedule").hide();
 })
@@ -99,10 +103,10 @@ $("#btn-save-ta-schedule").click(function(){
 		createNewTaHour();
 	}
 	else
-		{
+	{
 		console.log("updateNewTaHour");
 		updateExistingTaHour(taHourId);
-		}
+	}
 	
 })
 
@@ -159,11 +163,11 @@ function createNewTaHour(){
 
 
 function refreshCourseList(){
-	userServiceURl =  applicaitonURL + "/jwsCourseService/findAllCoursesForATa";	
+	userServiceURl =  applicaitonURL + "/jwsCourseService/findAllCoursesForATa/"+ <%= userId %>;	
 	$.ajax({
-		type : "POST",
+		type : "GET",
 		url :  userServiceURl,
-		data : JSON.stringify(<%= userId %>),
+		//data : JSON.stringify(<%= userId %>),
 		dataType:"JSON",
 		contentType: "application/json",
 			success : function (result) {
@@ -185,16 +189,20 @@ function refreshCourseList(){
 }
 
 function findTaHoursByCourseId(courseId){
+
+	
 	console.log(courseId);
-	userServiceURl =  applicaitonURL +  "/jwsTaHours/findTaHoursByCourseId";
+	userServiceURl =  applicaitonURL +  "/jwsTaHours/findTaHoursByCourseId/"+courseId;
 	$.ajax({
-		type : "POST",
+		type : "GET",
 		url :  userServiceURl,
-		data : JSON.stringify(courseId),
+		//data : JSON.stringify(courseId),
 		dataType:"JSON",
 		contentType: "application/json",
 		success : function (result) {
-				console.log( result);
+			
+			
+				console.log( result.length);
 				if(result.length > 0){
 				$("#txt-ta-start-time").val(result[0].taHourStartTime);
 			    $("#txt-ta-end-time").val(result[0].taHourEndTime);		
@@ -274,7 +282,7 @@ $("#btn-delete-ta-schedule").click(function(){
 function deleteTaHoursByTaHourId(taHourIdArg){
 userServiceURl =  applicaitonURL +  "/jwsTaHours/deleteTaHoursByTaHourId";
 	$.ajax({
-		type : "POST",
+		type : "DELETE",
 		url :  userServiceURl,
 		data : JSON.stringify(taHourIdArg),
 		dataType:"JSON",
@@ -298,7 +306,6 @@ function updateExistingTaHour(taHourIdArg){
 
 	console.log("updateExistingTaHour-fn-clicked");
 	userServiceURl =  applicaitonURL +  "/jwsTaHours/updateExistingTaHour/"+taHourIdArg;
-	//userServiceURl = "http://localhost:8080/LMS/api/jwsTaHours/updateExistingTaHour/"+taHourIdArg;
 	
 	var courseId = parseInt($("#dd-course-list").children(":selected").attr("value"));
 	var taStarTime= $("#txt-ta-start-time").val();

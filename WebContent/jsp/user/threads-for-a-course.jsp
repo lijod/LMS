@@ -85,11 +85,11 @@ $(document).ready(function(){
 
 
 function refreshCourseList(){
-	userServiceURl = applicaitonURL + "/jwsCourseService/findAllCoursesForAUserId";
+	userServiceURl = applicaitonURL + "/jwsCourseService/findAllCoursesForAUserId/"+<%= userId %>;
 	$.ajax({
-		type : "POST",
+		type : "GET",
 		url :  userServiceURl,
-		data: "<%= userId %>",
+		//data: "<%= userId %>",
 		dataType:"JSON",
 		contentType: "application/json",
 		success : function (result) {
@@ -118,11 +118,11 @@ function refreshCourseList(){
 
 
 function loadAllThreadsByCourseId(courseId){
-userServiceURl =  applicaitonURL + "/jwsThreadService/findThreadsByCourseId";
+userServiceURl =  applicaitonURL + "/jwsThreadService/findThreadsByCourseId/"+courseId;
 	$.ajax({
-		type : "POST",
+		type : "GET",
 		url :  userServiceURl,
-		data: JSON.stringify(courseId),
+		//data: JSON.stringify(courseId),
 		dataType:"JSON",
 		contentType: "application/json",
 		success : function (result) {
@@ -161,11 +161,11 @@ userServiceURl =  applicaitonURL + "/jwsThreadService/findThreadsByCourseId";
 
 function loadAThreadAndItsAllPosts(threadId){
 	console.log(threadId);
-	userServiceURl = applicaitonURL + "/jwsThreadService/findAThreadByThreadId";
+	userServiceURl = applicaitonURL + "/jwsThreadService/findAThreadByThreadId/"+threadId;
 	$.ajax({
-		type : "POST",
+		type : "GET",
 		url :  userServiceURl,
-		data : JSON.stringify(threadId),
+		//data : JSON.stringify(threadId),
 		dataType:"JSON",
 		contentType: "application/json",
 		success : function (result) {
@@ -178,8 +178,9 @@ function loadAThreadAndItsAllPosts(threadId){
 						"<tr style='height:5px;'> <td> <span id='span-" + result.threadId + "'>Created on :"+ result.threadDate+ "</span>&nbsp;"
 						 +  getFavBtnForThread(result.favUsers, result.threadId) + "</td></tr>"		
 				 );
-				 
+				 console.log()
 				$.each(result.posts, function(i, val){
+					console.log(val.usersWhoHaveLikedPosts);
 						if(doesLoggedInUserIExistInThisUser (<%= userId %>,val.usersWhoHaveLikedPosts) == 1)
 						{								
 							getLikedButton(val,result.threadId);				
@@ -216,6 +217,7 @@ function appendTagsOnLoadingAThread(tags){
 
 function doesLoggedInUserIExistInThisUser (userId,allUsers){
 	var isLiked=0;
+	
 	$.each(allUsers, function(i, aUser){
 		if(userId==aUser.userId)
 			isLiked=1;
@@ -264,6 +266,8 @@ function submitpost(threadId){
 		dataType:"JSON",
 		contentType: "application/json",
 		success : function (result) {
+			
+			console.log("submitted");
 			loadAThreadAndItsAllPosts(threadId);
 				
 		},
@@ -517,12 +521,12 @@ function searchThread() {
 
 
 	function searchThreadHelper(courseId, userId, keyword){
-	userServiceURl = applicaitonURL + "/jwsThreadService/findAllThreadsByAKeyWord";
+	userServiceURl = applicaitonURL + "/jwsThreadService/findAllThreadsByAKeyWord/"+courseId+"/"+keyword;
 	console.log({"courseId":courseId, "keyword" : keyword, "userId" :userId});
 	$.ajax({
-		type : "POST",
+		type : "GET",
 		url :  userServiceURl,
-		data: {"courseId":courseId, "keyword" : keyword, "userId" :userId},
+	//	data: {"courseId":courseId, "keyword" : keyword, "userId" :userId},
 		dataType:"JSON",
 		contentType: "application/x-www-form-urlencoded",
 		success : function (result) { 
