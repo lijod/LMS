@@ -93,10 +93,8 @@ public class User implements Serializable {
 	private List<Job> jobList; 
 	
 	@OneToMany(fetch=FetchType.EAGER,cascade=CascadeType.ALL)
-	@JoinColumn(name="ta_hour_id", referencedColumnName = "user_id")
+	@JoinColumn(name="ta_id", referencedColumnName = "user_id")
 	private List<TaHour> taAllHoursForAllCourses;
-	
-	
 
 	private static final long serialVersionUID = 1L;
 	   
@@ -249,6 +247,14 @@ public class User implements Serializable {
 
 	public void setJobList(List<Job> jobList) {
 		this.jobList = jobList;
+	}
+
+	public List<TaHour> getTaAllHoursForAllCourses() {
+		return taAllHoursForAllCourses;
+	}
+
+	public void setTaAllHoursForAllCourses(List<TaHour> taAllHoursForAllCourses) {
+		this.taAllHoursForAllCourses = taAllHoursForAllCourses;
 	}
 
 	@Override

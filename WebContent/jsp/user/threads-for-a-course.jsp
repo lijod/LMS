@@ -209,8 +209,7 @@ function loadAThreadAndItsAllPosts(threadId){
 function appendTagsOnLoadingAThread(tags){
 	$("#tbl-thread-desc").children().remove();
 	$.each(tags, function(i, tag){
-		i=i+1;
-		$("#tbl-thread-desc").html("Tag No.:("+i+")<label class='tagClass'>&nbsp" + tag.tagText + "&nbsp</label> ||")
+		$("#tbl-thread-desc").html("<label class='tagClass'>&nbsp" + tag.tagText + "&nbsp</label> ||")
 	})
 	
 

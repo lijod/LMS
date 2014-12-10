@@ -4,6 +4,7 @@
 <%@ page import="com.lms.model.Post" %>
 <%@page import="com.lms.model.Job"%>
 <%@page import="com.lms.model.JobApplication"%>
+<%@page import="com.lms.model.TaHour"%>
 
 <%
 	User displayUser = (User) request.getAttribute("displayUser");
@@ -29,7 +30,9 @@
 	<a href="javascript:void(0)" onClick="navigate('/jsp/professor/add-job.jsp')">ADD Job</a>
 	<a href="javascript:void(0)" onClick="navigate('/jsp/user/user-view-job-app.jsp')">View Latest Jobs</a>
 	<a href="javascript:void(0)" onClick="navigate('/jsp/TA/add-schedule.jsp')">TA adds his schedule</a-->
-	<div class="container">
+	
+<div class="container">
+	<div class="well">	
 	<hr/>
 	<% if(displayUser != null)  {%>
 		<a href="javascript:void(0)" onClick="navigate('/jsp/user/user-profile.jsp')">BACK TO MY PROFILE</a> <br/>
@@ -64,12 +67,23 @@
 	<!-- a href="javascript:void(0)" onClick="navigate('/jsp/user/threads-for-a-course.jsp')">ADD/VIEW THREAD</a -->
 	<br/><br/>
 	<% if (role != null && role.equalsIgnoreCase("TA")) { %>
-		TA VIEW ONLY!!!
+		Office Hours: <br/>
+		<% for(TaHour taHr : user.getTaAllHoursForAllCourses()) {%>
+			<b>COURSE:</b><%= taHr.getCourse().getCourseName() %>,
+			<b>LOCATION:</b><%= taHr.getTaHourLocation() %>,
+			<b>DAY:</b><%= taHr.getTaHourDay() %>,
+			<b>TIMING:</b><%= taHr.getTaHourStartTime() %> - <%= taHr.getTaHourEndTime() %><br/>
+		<% } %>
 		<% if(!viewer) { %>
-			EDIT ONLY
+			<a href="javascript:void(0)" onClick="navigate('/jsp/TA/add-schedule.jsp')">ADD SCHEDULE</a>
 		<% } %>
 	<% } %>
 	<br/>
+	
+	<% if (role != null && role.equalsIgnoreCase("PROFESSOR")) { %>
+		<a href="javascript:void(0)" onClick="navigate('/jsp/professor/add-ta.jsp')">ADD/REMOVE TA</a>
+	<% } %>
+	
 	<select id="course-role" class="form-control"></select>
 	
 	<hr/>
@@ -177,6 +191,7 @@
 		<% } %>
 	</div>
 	<% } %>
+	</div>
 </div>
 	
 	

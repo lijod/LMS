@@ -49,6 +49,12 @@ public class TaHour implements Serializable {
 	@ManyToOne(optional=false, fetch=FetchType.EAGER)
 	@JoinColumn(name="ta_hour_id", referencedColumnName= "user_id", updatable=false, insertable=false)
 	private User user;
+	
+	
+	@JsonIgnore
+	@ManyToOne(optional=false, fetch=FetchType.EAGER)
+	@JoinColumn(name="course_id", referencedColumnName= "course_id", updatable=false, insertable=false)
+	private Course course;
 
 
 	public TaHour() {
@@ -155,7 +161,27 @@ public class TaHour implements Serializable {
 		this.taId = taId;
 	}
 
+	public User getUser() {
+		return user;
+	}
 
+
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+
+
+	public Course getCourse() {
+		return course;
+	}
+
+
+
+	public void setCourse(Course course) {
+		this.course = course;
+	}
 
 	@Override
 	public String toString() {

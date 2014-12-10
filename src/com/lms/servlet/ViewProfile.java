@@ -31,8 +31,10 @@ public class ViewProfile extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int userId = Integer.parseInt(request.getParameter("userId"));
 		int displayUserId = Integer.parseInt(request.getParameter("displayUserId"));
+		String role = request.getParameter("role");
 		System.out.println("Displaying userId:"+ displayUserId +" to userId:" + userId);
 		request.setAttribute("user", new UserDao().findUserByUserId(userId));
+		request.setAttribute("role", role); 	
 		request.setAttribute("displayUser", new UserDao().findUserByUserId(displayUserId));
 		RequestDispatcher rd = request.getRequestDispatcher("/jsp/user/user-profile.jsp");
 		rd.forward(request, response);

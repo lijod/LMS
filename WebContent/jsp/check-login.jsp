@@ -56,5 +56,4 @@
 		form.appendTo("body").submit();
 	}
 	
-	
 </script>
