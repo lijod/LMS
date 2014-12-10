@@ -170,9 +170,11 @@ function loadAThreadAndItsAllPosts(threadId){
 		dataType:"JSON",
 		contentType: "application/json",
 		success : function (result) {
-			//console.log(result);
+			console.log(result);
 			$("#tbl-thread-desc").children().remove();	
-				 $("#tbl-thread-desc").html(
+			appendTagsOnLoadingAThread(result.tags);
+			
+				 $("#tbl-thread-desc").append(
 						"<tr style='height:120px;'> <td> <a href='#' id='thread-" + result.threadId + "'>"+ result.threadContent+ "</a></td></tr>"+
 						"<tr style='height:5px;'> <td> <span id='span-" + result.threadId + "'>Created on :"+ result.threadDate+ "</span>&nbsp;"
 						 +  getFavBtnForThread(result.favUsers, result.threadId) + "</td></tr>"		
@@ -202,6 +204,18 @@ function loadAThreadAndItsAllPosts(threadId){
 		}
 	});
 	
+}
+
+function appendTagsOnLoadingAThread(tags){
+	$("#tbl-thread-desc").children().remove();
+	$.each(tags, function(i, tag){
+		
+		$("#tbl-thread-desc").html("<span class='tagClass'>&nbsp" + 
+							"<input type='checkbox' value='" +tag.tagId + "_" + tag.tagText + "' class='form-field' />" + tag.tagText  
+							+ "&nbsp</span> ||")
+	})
+	
+
 }
 
 
