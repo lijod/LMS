@@ -77,7 +77,6 @@ var tagService = applicaitonURL + "/jwsTagService";
 
 var threadIdFromPath = getUrlParams($("#hdn-Path").val()).threadId;
 var courseIdFromPath = getUrlParams($("#hdn-Path").val()).courseId;
-console.log(threadIdFromPath +"_"+courseIdFromPath);
 $(document).ready(function(){
 	refreshCourseList();
 	$('#thread-content').jqte();
@@ -94,7 +93,6 @@ function refreshCourseList(){
 		dataType:"JSON",
 		contentType: "application/json",
 		success : function (result) {
-			//console.log(result);
 			$.each(result, function(i, val){
 					$("#course-list").append(
 							"<option id='course-" + val.courseId + "' value='"+val.courseId+"'>" + val.courseName + "</option>");
@@ -129,6 +127,7 @@ userServiceURl =  applicaitonURL + "/jwsThreadService/findThreadsByCourseId";
 		contentType: "application/json",
 		success : function (result) {
 			$("#tbl-all-threads").children().remove();
+			$("#tbl-all-threads").html('');
 			$("#tbl-all-threads").append(getNewPostBtn());
 			$("#tbl-thread-desc").children().remove();
 				if(result.length > 0){	
@@ -136,20 +135,23 @@ userServiceURl =  applicaitonURL + "/jwsThreadService/findThreadsByCourseId";
 						$("#tbl-all-threads").append(
 								"<tr style='height:120px;'> <td  onClick='clickOnThread("+val.threadId+")'> <span class='spanClass'  id='"+ val.threadId +"'>"+ val.threadContent+ "</span></td></tr>");
 					});
-					
+					console.log($("#tbl-all-threads").html(	));
+				
 					if(threadIdFromPath != undefined && courseIdFromPath != undefined)
 					{			
 						loadAThreadAndItsAllPosts(parseInt(threadIdFromPath));
+						threadIdFromPath = undefined;
+						courseIdFromPath = undefined;
 					}
 					else
 					{
 						var firstThreadIdInList = $("#tbl-all-threads span:first").attr("id");
+						console.log(firstThreadIdInList);
 						loadAThreadAndItsAllPosts(firstThreadIdInList);
 						
 					}
-					
-			
-			}				
+				
+				}
 		},
 		failure : function () {
 			console.log("failed");
@@ -160,8 +162,7 @@ userServiceURl =  applicaitonURL + "/jwsThreadService/findThreadsByCourseId";
 
 
 function loadAThreadAndItsAllPosts(threadId){
-	//console.log("hhhhhhhh");
-	//console.log("loadAThreadAndItsAllPosts");
+	console.log(threadId);
 	userServiceURl = applicaitonURL + "/jwsThreadService/findAThreadByThreadId";
 	$.ajax({
 		type : "POST",
@@ -170,7 +171,7 @@ function loadAThreadAndItsAllPosts(threadId){
 		dataType:"JSON",
 		contentType: "application/json",
 		success : function (result) {
-			console.log(result);
+			//console.log(result);
 			$("#tbl-thread-desc").children().remove();	
 			appendTagsOnLoadingAThread(result.tags);
 			
@@ -181,7 +182,6 @@ function loadAThreadAndItsAllPosts(threadId){
 				 );
 				 
 				$.each(result.posts, function(i, val){
-					//console.log(val);
 						if(doesLoggedInUserIExistInThisUser (<%= userId %>,val.usersWhoHaveLikedPosts) == 1)
 						{								
 							getLikedButton(val,result.threadId);				
@@ -209,10 +209,8 @@ function loadAThreadAndItsAllPosts(threadId){
 function appendTagsOnLoadingAThread(tags){
 	$("#tbl-thread-desc").children().remove();
 	$.each(tags, function(i, tag){
-		
-		$("#tbl-thread-desc").html("<span class='tagClass'>&nbsp" + 
-							"<input type='checkbox' value='" +tag.tagId + "_" + tag.tagText + "' class='form-field' />" + tag.tagText  
-							+ "&nbsp</span> ||")
+		i=i+1;
+		$("#tbl-thread-desc").html("Tag No.:("+i+")<label class='tagClass'>&nbsp" + tag.tagText + "&nbsp</label> ||")
 	})
 	
 
@@ -223,7 +221,6 @@ function doesLoggedInUserIExistInThisUser (userId,allUsers){
 	var isLiked=0;
 	$.each(allUsers, function(i, aUser){
 		if(userId==aUser.userId)
-			//console.log("doesLoggedInUserIExistInThisUser");
 			isLiked=1;
 			return isLiked;			
 	});
@@ -253,7 +250,6 @@ function clickOnThread(threadId) {
 
 $("#course-list").change(function() {
 	var courseId = $(this).children(":selected").attr("value");
-	console.log(courseId);
 	loadAllThreadsByCourseId(courseId);
 });
 
@@ -264,7 +260,6 @@ function submitpost(threadId){
     var userId = <%= userId %>;
     var threadId=threadId;
     var post={"postContent" : postContent,  "userId" : userId,"threadId" : threadId};
-	console.log(post);
 	$.ajax({
 		type : "POST",
 		url :  userServiceURl,
@@ -272,7 +267,6 @@ function submitpost(threadId){
 		dataType:"JSON",
 		contentType: "application/json",
 		success : function (result) {
-			//console.log(result);
 			loadAThreadAndItsAllPosts(threadId);
 				
 		},
@@ -301,7 +295,6 @@ function createThread(){
 		dataType:"JSON",
 		contentType: "application/json",
 		success : function(result){
-			//console.log(result);
 			hideNewPostContainer();
 			loadAllThreadsByCourseId(result.courseId)
 		},
@@ -395,7 +388,6 @@ function getNewPostBtn(){
 
 
 function likePost(postId,threadId){
-	console.log({"postId" : postId, "userId" : <%= userId %>});
 	userServiceURl = applicaitonURL + "/jwsPostService/likeAPost";	
 	 $.ajax({
 		type : "POST",
@@ -415,7 +407,6 @@ function likePost(postId,threadId){
 }
 
 function unlikePost(postId,threadId){
-	//console.log({"postId" : postId, "userId" : <%= userId %>});
 	userServiceURl = applicaitonURL + "/jwsPostService/unLikeAPost";	
 	 $.ajax({
 		type : "POST",
@@ -434,8 +425,6 @@ function unlikePost(postId,threadId){
 }
 
 function addToFav(threadId){
-	console.log("userId:<%= userId %>");
-	console.log("threadId:" + threadId);
 	$.ajax({
 		type : "post",
 		url : threadService + "/setFavThreadForUser",
@@ -443,8 +432,6 @@ function addToFav(threadId){
 		dataType:"JSON",
 		contentType: "application/json",
 		success : function(thread){
-			console.log("SUCCESS!");
-			console.log(thread);
 			$("#thread-fav-btn").attr("class", "btn btn-warning");
 			$("#thread-fav-btn").attr("value", "UNDO FAVORITE");
 			$("#thread-fav-btn").attr("onClick", "undoFav(" + thread.threadId + ")");
@@ -455,9 +442,7 @@ function addToFav(threadId){
 	});
 }
 
-function undoFav(threadId){
-	console.log("userId:<%= userId %>");
-	console.log("threadId:" + threadId);	
+function undoFav(threadId){	
 	$.ajax({
 		type : "DELETE",
 		url : threadService + "/undoFavThreadForUser",
@@ -478,9 +463,6 @@ function undoFav(threadId){
 }
 
 function getFavBtnForThread(userJson, threadId){
-	console.log("getFavBtnForThread");
-	console.log(userJson);
-	console.log(threadId);
 	if(userExistsInJson(userJson))
 		return getUndoFavoriteBtn(threadId);
 	else
