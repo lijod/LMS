@@ -12,8 +12,8 @@ import com.lms.model.User;
 
 public class TagDao {
 	
-	EntityManagerFactory emf = Persistence.createEntityManagerFactory("LMS");
-	EntityManager em = null;
+	static EntityManagerFactory emf = Persistence.createEntityManagerFactory("LMS");
+	static EntityManager em = null;
 	
 	private TagDao() {
 		em = emf.createEntityManager();
@@ -25,6 +25,9 @@ public class TagDao {
 		if(_instance == null){
 			_instance = new TagDao();
 		}
+		if(em != null)
+			em.close();
+		em = emf.createEntityManager();
 		return _instance;
 	}
 	

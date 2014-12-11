@@ -62,6 +62,7 @@ function refreshCourseList(){
 		dataType:"JSON",
 		success : function (result) {
 			//console.log(result);
+			$("#course-list").html('<option class="form-control">Select</option>');
 			$.each(result, function(i, val){
 				$("#course-list").append(
 				"<option id='course-" + val.courseId + "' value='"+val.courseId+"'>" + val.courseName + "</option>");

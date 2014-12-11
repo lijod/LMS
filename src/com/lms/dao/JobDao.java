@@ -13,8 +13,8 @@ import com.lms.model.User;
 
 public class JobDao {
 	
-	EntityManagerFactory emf = Persistence.createEntityManagerFactory("LMS");
-	EntityManager em = null;
+	static EntityManagerFactory emf = Persistence.createEntityManagerFactory("LMS");
+	static EntityManager em = null;
 	private JobDao() {
 		em = emf.createEntityManager();
 	}
@@ -25,6 +25,9 @@ public class JobDao {
 		if(_instance == null){
 			_instance = new JobDao();
 		}
+		if(em != null)
+			em.close();
+		em = emf.createEntityManager();
 		return _instance;
 	}
 	

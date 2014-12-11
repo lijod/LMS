@@ -13,8 +13,8 @@ import com.lms.model.Thread;
 public class PostDao {
 
 	
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("LMS");
-		EntityManager em = null;
+		static EntityManagerFactory emf = Persistence.createEntityManagerFactory("LMS");
+		static EntityManager em = null;
 		
 		private PostDao(){
 			em = emf.createEntityManager();	
@@ -26,6 +26,9 @@ public class PostDao {
 			if(_instance == null){
 				_instance = new PostDao();
 			}
+			if(em != null)
+				em.close();
+			em = emf.createEntityManager();
 			return _instance;
 		}
 		

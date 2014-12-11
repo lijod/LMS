@@ -14,8 +14,8 @@ import com.lms.model.TaHour;
 public class TaHoursDao {
 	
 	
-	EntityManagerFactory emf = Persistence.createEntityManagerFactory("LMS");
-	EntityManager em = null;
+	static EntityManagerFactory emf = Persistence.createEntityManagerFactory("LMS");
+	static EntityManager em = null;
 	
 	private TaHoursDao() {
 		em = emf.createEntityManager();
@@ -27,6 +27,9 @@ public class TaHoursDao {
 		if(_instance == null){
 			_instance = new TaHoursDao();
 		}
+		if(em != null)
+			em.close();
+		em = emf.createEntityManager();
 		return _instance;
 	}
 	

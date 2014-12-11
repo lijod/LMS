@@ -8,8 +8,8 @@ import com.lms.model.JobApplication;
 
 public class JobApplicationDao {
 	
-	EntityManagerFactory emf = Persistence.createEntityManagerFactory("LMS");
-	EntityManager em = null;
+	static EntityManagerFactory emf = Persistence.createEntityManagerFactory("LMS");
+	static EntityManager em = null;
 	
 	private JobApplicationDao() {
 		em = emf.createEntityManager();
@@ -21,6 +21,9 @@ public class JobApplicationDao {
 		if(_instance == null){
 			_instance = new JobApplicationDao();
 		}
+		if(em != null)
+			em.close();
+		em = emf.createEntityManager();
 		return _instance;
 	}
 	

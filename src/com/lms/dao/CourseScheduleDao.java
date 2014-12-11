@@ -12,8 +12,8 @@ import com.lms.model.UserCourseDetail;
 
 public class CourseScheduleDao {
 	
-	EntityManagerFactory emf = Persistence.createEntityManagerFactory("LMS");
-	EntityManager em = null;
+	static EntityManagerFactory emf = Persistence.createEntityManagerFactory("LMS");
+	static EntityManager em = null;
 	
 	private CourseScheduleDao() {
 		em = emf.createEntityManager();
@@ -25,6 +25,9 @@ public class CourseScheduleDao {
 		if(_instance == null){
 			_instance = new CourseScheduleDao();
 		}
+		if(em != null)
+			em.close();
+		em = emf.createEntityManager();
 		return _instance;
 	}
 	public CourseSchedule createCourseSchedule(CourseSchedule courseSchedule){
