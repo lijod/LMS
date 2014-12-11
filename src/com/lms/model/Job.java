@@ -46,6 +46,11 @@ public class Job implements Serializable {
 	//bi-directional many-to-one association to JobApplication
 	@OneToMany(mappedBy="job", fetch=FetchType.EAGER)
 	private List<JobApplication> jobApplications;
+	
+	@JsonIgnore
+	@ManyToOne(optional=true, cascade = {CascadeType.REMOVE, CascadeType.REFRESH, CascadeType.MERGE})
+	@JoinColumn(name="user_id", insertable=false, updatable=false)
+	private User user;
 
 	public Job() {
 	}

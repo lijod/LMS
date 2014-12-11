@@ -215,7 +215,7 @@
 	
 	function deleteUser(){
 		$.ajax({
-			type : "GET",
+			type : "delete",
 			url :  userUpdatDeleteServiceURl + "/" + extractUserIdFromOptionId($("#prof-list")),
 			dataType : "json",
 			success : function (result) {

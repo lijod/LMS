@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -20,7 +20,6 @@ import com.lms.dao.UserDao;
 import com.lms.enumeration.Role;
 import com.lms.model.User;
 import com.lms.model.UserCourseDetail;
-import com.sun.xml.internal.ws.developer.MemberSubmissionAddressing;
 
 // /com.lms.servic/JWSUserService
 @Path("/jwsUserService")
@@ -72,7 +71,7 @@ public class UserService {
 
 	// /com.lms.servic/jwsUserService/deleteUser
 
-	@GET
+	@DELETE
 	@Path("/deleteUser/{id}")
 	public Boolean deleteUserService(@PathParam("id") int id) {
 		System.out.println("id" + id);

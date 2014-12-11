@@ -89,8 +89,7 @@ public class User implements Serializable {
 	@ManyToMany(mappedBy="followedUsersList", fetch=FetchType.EAGER)
 	private List<User> followersUsersList;
 	
-	@OneToMany
-	@JoinColumn(name="user_id")
+	@OneToMany(mappedBy="user")
 	private List<Job> jobList; 
 	
 	@OneToMany(fetch=FetchType.EAGER,cascade=CascadeType.ALL)
