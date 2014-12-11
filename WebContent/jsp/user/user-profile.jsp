@@ -34,9 +34,9 @@
 <div class="container">
 	<div class="well">	
 	<hr/>
-	<% if(displayUser != null)  {%>
+	<%-- <% if(displayUser != null)  {%>
 		<a href="javascript:void(0)" onClick="navigate('/jsp/user/user-profile.jsp')">BACK TO MY PROFILE</a> <br/>
-	<% }  %>
+	<% }  %> --%>
 	<img style="width: 40px; height: 50px;" alt="No image" src="<%= ImageUtil.getBase64ImageFromByte(user.getUserImage()) %>">
 	
 	<span id="name"><span id="first-name"><%= user.getFirstName() %></span>&nbsp;
@@ -67,6 +67,7 @@
 	<!-- a href="javascript:void(0)" onClick="navigate('/jsp/user/threads-for-a-course.jsp')">ADD/VIEW THREAD</a -->
 	<br/><br/>
 	<% if (role != null && role.equalsIgnoreCase("TA")) { %>
+	<div class="well well-sm">
 		Office Hours: <br/>
 		<% for(TaHour taHr : user.getTaAllHoursForAllCourses()) {%>
 			<b>COURSE:</b><%= taHr.getCourse().getCourseName() %>,
@@ -77,6 +78,7 @@
 		<% if(!viewer) { %>
 			<a href="javascript:void(0)" onClick="navigate('/jsp/TA/add-schedule.jsp')">ADD SCHEDULE</a>
 		<% } %>
+	</div>
 	<% } %>
 	<br/>
 	
@@ -84,28 +86,28 @@
 		<a href="javascript:void(0)" onClick="navigate('/jsp/professor/add-ta.jsp')">ADD/REMOVE TA</a>
 	<% } %>
 	
+	<% if(!viewer) { %>
+		<a href="javascript:void(0)" onClick="navigate('/jsp/user/user-list.jsp')">VIEW ALL USERS</a> <br/>
+	<% } %>
+	
 	<select id="course-role" class="form-control"></select>
 	
 	<hr/>
 	THREAD:
-	<div id="posted-thread-container" >
+	<div id="posted-thread-container" class="well well-sm">
 		<% for(Thread thread : user.getThreads()) {%>
 			<%= thread.getThreadTitle() %>
 		
 			<a href="javascript:void(0)" onClick="browseThreadByThreadId(<%= thread.getThreadId() %>,<%= thread.getCourseId() %>)"><%= thread.getThreadContent() %></a>
-			<% if(!viewer) { %>
-				EDIT ONLY
-			<% } %>
 			<hr/>
 		<% } %>
 		<% if(!viewer) { %>
-				ADD NEW THREAD
 				<a href="javascript:void(0)" onClick="navigate('/jsp/user/threads-for-a-course.jsp')">ADD/VIEW THREAD</a>
 		<% } %>
 	</div>
 	<hr/>
 	FAVORITE THREAD:
-	<div id="fav-thread-container" >
+	<div id="fav-thread-container" class="well well-sm">
 		<% for(Thread thread : user.getFavThreads()) {%>
 			<%= thread.getThreadTitle() %>
 	<a href="javascript:void(0)" onClick="browseThreadByThreadId(<%= thread.getThreadId() %>,<%= thread.getCourseId() %>)"><%= thread.getThreadContent() %></a>
@@ -114,18 +116,15 @@
 	</div>
 	<hr/>
 	POSTS:
-	<div id="user-post-container" >
+	<div id="user-post-container" class="well well-sm">
 		<% for(Post post : user.getPosts()) {%>
 			<%= post.getPostContent() %>
-			<% if(!viewer) { %>
-				EDIT ONLY
-			<% } %>
 			<hr/>
 		<% } %>
 	</div>
 	<hr/>
 	LIKED POSTS:
-	<div id="liked-post-container" >
+	<div id="liked-post-container" class="well well-sm">
 		<% for(Post post : user.getLikedPosts()) {%>
 			<%= post.getPostContent() %>
 			<hr/>
@@ -134,7 +133,7 @@
 	
 	<hr/>
 	FOLLOWING:
-	<div id="following-container" >
+	<div id="following-container" class="well well-sm">
 		<% for(User u: user.getFollowedUsersList()) {%>
 			<a href="javascript:void(0)" onClick="viewUser(<%= u.getUserId() %>)"> <%= u.getFirstName() %> <%= u.getLastName() %> </a>
 			<hr/>
@@ -143,7 +142,7 @@
 	
 	<hr/>
 	FOLLOWED BY:
-	<div id="followed-by-container" >
+	<div id="followed-by-container" class="well well-sm">
 		<% for(User u: user.getFollowersUsersList()) {%>
 			<a href="javascript:void(0)" onClick="viewUser(<%= u.getUserId() %>)"> <%= u.getFirstName() %> <%= u.getLastName() %> </a>
 			<hr/>
@@ -152,7 +151,7 @@
 	
 	<% if ((role != null && role.equalsIgnoreCase("PROFESSOR")) && !viewer) { %>
 	<hr/>
-		<div id="jobs" >
+		<div id="jobs" class="well well-sm">
 			<% for(Job job : user.getJobList()) { %>
 				<div>
 					<span class="job-title"><a><%= job.getJobTitle() %></a></span><br/>
@@ -177,7 +176,7 @@
 	
 	<% if ((role != null && !role.equalsIgnoreCase("PROFESSOR")) && !viewer) { %>
 	<hr/>
-	<div id="job-listing">
+	<div id="job-listing" class="well well-sm">
 		<% for(Job job : jobList){ %>
 			<div>
 				<span class="job-title"><a><%= job.getJobTitle() %></a></span>

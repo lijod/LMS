@@ -20,7 +20,7 @@
 %>
 
 <% if(user != null) { %>
-<div style="width: 100%; height: 50px;">
+<div style="width: 100%; height: 50px;" class="well well-sm">
 	
 	<span style="float: right;"><b>You are logged in as: <%= user.getUserName() %></b></span>
 	<a href="/LMS/jsp/user/user-login.jsp">LOGOUT</a>

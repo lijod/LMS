@@ -53,7 +53,9 @@ table, td, th {
 							<input type="button" value="ADD" class="btn btn-success" onClick="createTag()" style="float:left;" />
 							<input type="button" value="CANCEL" class="btn btn-warning" onClick="hideCreateTagContainer()" style="float:left;" />
 						</div>
-						<a href="javascript:void(0)" id="add-tag-btn" onClick="showCreateTagContainer()">ADD TAG</a>
+						<% if(!role.equalsIgnoreCase("STUDENT")) { %>
+							<a href="javascript:void(0)" id="add-tag-btn" onClick="showCreateTagContainer()">ADD TAG</a>
+						<% } %>
 					</div>
 					<input type="text" value="" class="form-control" id="thread-title" placeholder="THREAD TITLE"/>
 					<textarea name="textarea" id="thread-content" style="height: 100px;"></textarea>
@@ -78,6 +80,7 @@ var tagService = applicaitonURL + "/jwsTagService";
 var threadIdFromPath = getUrlParams($("#hdn-Path").val()).threadId;
 var courseIdFromPath = getUrlParams($("#hdn-Path").val()).courseId;
 $(document).ready(function(){
+	
 	refreshCourseList();
 	$('#thread-content').jqte();
 	loadTags();
@@ -169,7 +172,8 @@ function loadAThreadAndItsAllPosts(threadId){
 		dataType:"JSON",
 		contentType: "application/json",
 		success : function (result) {
-			//console.log(result);
+			console.log("loadAThreadAndItsAllPosts");
+			console.log(result);
 			$("#tbl-thread-desc").children().remove();	
 			appendTagsOnLoadingAThread(result.tags);
 			
@@ -230,17 +234,22 @@ function doesLoggedInUserIExistInThisUser (userId,allUsers){
 function getLikedButton(val,threadId){
 $("#tbl-thread-desc").append(
 		"<tr style='height:120px;'> <td> <a href='#' id='post-" + val.postId + "'>"+ val.postContent +"</a></td>"+
-		"<td> <button class='btn btn-success' onClick='unlikePost("+ val.postId +","+ threadId +")' id='like-post-" + val.postId + "'>Click to Unlike</button></td>"+
+		"<td> " + getUserDisplayLink(val) +  
+		"<button class='btn btn-success' onClick='unlikePost("+ val.postId +","+ threadId +")' id='like-post-" + val.postId + "'>Click to Unlike</button></td>"+
 		"</tr><br/>");
 }
 
 function getUnLikedButton(val,threadId){
 	$("#tbl-thread-desc").append(
 			"<tr style='height:120px;'> <td> <a href='#' id='post-" + val.postId + "'>"+ val.postContent +"</a></td>"+
-			"<td> <button class='btn btn-warning' onClick='likePost("+ val.postId +","+ threadId +")' id='unlike-post-" + val.postId + "'>Click to Like</button></td>"+
+			"<td> " + getUserDisplayLink(val) +
+			"<button class='btn btn-warning' onClick='likePost("+ val.postId +","+ threadId +")' id='unlike-post-" + val.postId + "'>Click to Like</button></td>"+
 			"</tr><br/>");
 }
 
+function getUserDisplayLink(post){
+	return "<a href='javascript:void(0)' onClick='viewUser(" + post.userId + ")'> View poster profile </a><br/>";
+}
 
 function clickOnThread(threadId) {
 	loadAThreadAndItsAllPosts(threadId);
@@ -286,7 +295,6 @@ function showNewPostContainer(){
 function hideNewPostContainer(){
 	$("#tbl-thread-desc").show();
 	$("#create-thread-form").hide();
-
 }
 
 function createThread(){
@@ -299,8 +307,8 @@ function createThread(){
 		success : function(result){
 			hideNewPostContainer();
 			loadAllThreadsByCourseId(result.courseId);
-			$("#thread-title").val('');
-			$(".jqte_editor").html('');
+		  	$("#thread-title").val('');
+		   	$(".jqte_editor").html('');
 		},
 		failure : function(){
 			console.log("Error while saving Thread...");
@@ -318,7 +326,6 @@ function createTag(){
 		success : function(tag){
 			appendTag(tag.tagId, tag.tagText);
 			hideCreateTagContainer();
-	
 		},
 		failure : function(){
 			console.log("Error while saving Tag...");
@@ -565,10 +572,5 @@ function searchThread() {
 		}
 	});
 	}
-
-
-
-
-
 
 </script>
