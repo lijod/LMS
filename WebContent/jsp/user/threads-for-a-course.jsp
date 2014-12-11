@@ -136,7 +136,7 @@ userServiceURl =  applicaitonURL + "/jwsThreadService/findThreadsByCourseId/"+co
 				if(result.length > 0){	
 					$.each(result, function(i, val){				
 						$("#tbl-all-threads").append(
-								"<tr style='height:120px;'> <td  onClick='clickOnThread("+val.threadId+")'> <span class='spanClass'  id='"+ val.threadId +"'>"+ val.threadContent+ "</span></td></tr>");
+								"<tr style='height:120px;'> <td  onClick='clickOnThread("+val.threadId+")'> <span class='spanClass'  id='"+ val.threadId +"'>"+ val.threadTitle+ "</span></td></tr>");
 					});
 				
 					if(threadIdFromPath != undefined && courseIdFromPath != undefined)
@@ -212,7 +212,7 @@ function loadAThreadAndItsAllPosts(threadId){
 function appendTagsOnLoadingAThread(tags){
 	$("#tbl-thread-desc").children().remove();
 	$.each(tags, function(i, tag){
-		$("#tbl-thread-desc").html("<label class='tagClass'>&nbsp" + tag.tagText + "&nbsp</label> ||")
+		$("#tbl-thread-desc").append("<label class='tagClass'>&nbsp" + tag.tagText + "&nbsp</label> ||")
 	})
 	
 

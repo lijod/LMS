@@ -47,7 +47,7 @@ public class TaHour implements Serializable {
 	
 	@JsonIgnore
 	@ManyToOne(optional=false, fetch=FetchType.EAGER)
-	@JoinColumn(name="ta_hour_id", referencedColumnName= "user_id", updatable=false, insertable=false)
+	@JoinColumn(name="ta_id", referencedColumnName= "user_id", updatable=false, insertable=false)
 	private User user;
 	
 	
@@ -189,7 +189,7 @@ public class TaHour implements Serializable {
 				+ ", taHourDay=" + taHourDay + ", taHourEndTime="
 				+ taHourEndTime + ", taHourLocation=" + taHourLocation
 				+ ", taHourStartTime=" + taHourStartTime + ", taId=" + taId
-				+ ", user=" + user + "]";
+				+ ", user=" + user + ", course=" + course + "]";
 	}
 
 	

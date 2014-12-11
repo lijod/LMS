@@ -204,8 +204,10 @@
 			dataType : "json",
 			contentType : "application/json",
 			success : function (result) {
-				//userJson = result;
 				populateProfessorList();
+				$("#prof-list option:first").attr('selected','selected');
+				populateuserDetail("", "", "", "", "", "");
+				clearCourseSelection();
 			},
 			failure : function () {
 				console.log("failed");
@@ -224,6 +226,7 @@
 				populateProfessorList();
 				$("#prof-list option:first").attr('selected','selected');
 				populateuserDetail("", "", "", "", "", "");
+				
 			},
 			failure : function () {
 				console.log("failed");

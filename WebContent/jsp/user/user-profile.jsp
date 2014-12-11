@@ -66,6 +66,24 @@
 	
 	<!-- a href="javascript:void(0)" onClick="navigate('/jsp/user/threads-for-a-course.jsp')">ADD/VIEW THREAD</a -->
 	<br/><br/>
+		<% if ((role != null && !role.equalsIgnoreCase("PROFESSOR")) && !viewer) { %>
+	<hr/>
+	<div id="job-listing" class="well well-sm">
+		<% for(Job job : jobList){ %>
+			<div>
+				<span class="job-title"><a><%= job.getJobTitle() %></a></span>
+				<span><a href="javascript:void(0)" onClick="navigate('/jsp/user/user-view-job-app.jsp')">&nbsp;&nbsp;APPLY</a></span><br/>
+				<div class="job-child" style="display:none;">
+					<span>DESCRIPTION: <%= job.getJobDesc() %></span><br/>
+					<span>RESPONSIBILITIES: <%= job.getJobResponsobility() %></span><br/>
+					<span>REQUIREMENT: <%= job.getJobRequirement() %></span><br/>
+				</div>
+			</div>
+		<% } %>
+	</div>
+	<% } %>
+	
+	
 	<% if (role != null && role.equalsIgnoreCase("TA")) { %>
 	<div class="well well-sm">
 		Office Hours: <br/>
@@ -83,7 +101,8 @@
 	<br/>
 	
 	<% if (role != null && role.equalsIgnoreCase("PROFESSOR")) { %>
-		<a href="javascript:void(0)" onClick="navigate('/jsp/professor/add-ta.jsp')">ADD/REMOVE TA</a>
+		<a href="javascript:void(0)" onClick="navigate('/jsp/professor/add-ta.jsp')">ADD/REMOVE TA</a><br/>
+		<span><a href="javascript:void(0)" onClick="navigate('/jsp/professor/add-job.jsp')">ADD JOB</a></span><br/>
 	<% } %>
 	
 	<% if(!viewer) { %>
@@ -170,26 +189,11 @@
 					</div>
 				</div>
 			<% } %>
-			<br/><span><a href="javascript:void(0)" onClick="navigate('/jsp/professor/add-job.jsp')">ADD JOB</a></span>
+			
 		</div>
 	<% } %>
 	
-	<% if ((role != null && !role.equalsIgnoreCase("PROFESSOR")) && !viewer) { %>
-	<hr/>
-	<div id="job-listing" class="well well-sm">
-		<% for(Job job : jobList){ %>
-			<div>
-				<span class="job-title"><a><%= job.getJobTitle() %></a></span>
-				<span><a href="javascript:void(0)" onClick="navigate('/jsp/user/user-view-job-app.jsp')">APPLY</a></span><br/>
-				<div class="job-child" style="display:none;">
-					<span>DESCRIPTION: <%= job.getJobDesc() %></span><br/>
-					<span>RESPONSIBILITIES: <%= job.getJobResponsobility() %></span><br/>
-					<span>REQUIREMENT: <%= job.getJobRequirement() %></span><br/>
-				</div>
-			</div>
-		<% } %>
-	</div>
-	<% } %>
+
 	</div>
 </div>
 	
