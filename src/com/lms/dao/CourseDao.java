@@ -65,6 +65,14 @@ public class CourseDao {
 		return result;
 	}
 	
+	public List<Course> findAllCoursesForAProf(int userId) {
+		Query query = em.createQuery("select course from Course course where course.courseId IN ( select distinct ucd.courseId from UserCourseDetail ucd where ucd.roleName like 'PROFESSOR' and ucd.userId =:userId)");
+		query.setParameter("userId", userId);
+		List<Course> result = query.getResultList();
+		return result;
+	}
+	
+	
 	
 	
 	

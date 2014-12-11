@@ -29,7 +29,8 @@ var applicaitonURL = "/LMS/api";
 var userServiceURl ="";
 
 $(document).ready(function(){	
-	 userServiceURl = userServiceURl = applicaitonURL + "/jwsCourseService/findAllCourses";
+	// userServiceURl = userServiceURl = applicaitonURL + "/jwsCourseService/findAllCourses";
+	 userServiceURl =  applicaitonURL + "/jwsCourseService/findAllCoursesForAProf/"+<%= userId %>;
 		$.ajax({
 			type : "GET",
 			url :  userServiceURl,
@@ -59,12 +60,12 @@ $("#dd-course-list").change(function(){
 	
 })
 
-function findAllStudentsToBeElligibleToBecomeTa(id){
+function findAllStudentsToBeElligibleToBecomeTa(courseId){
 	userServiceURl = applicaitonURL + "/jwsUserService/findAllUsersNotTAForACourse";
 	$.ajax({
 		type : "POST",
 		url :  userServiceURl,
-		data :id,
+		data :courseId,
 		dataType:"JSON",
 		contentType: "application/json",
 		success : function (result) {

@@ -70,6 +70,18 @@ public class CourseService {
 		CourseDao courseDaoObj = CourseDao.getInstance();
 		return courseDaoObj.findAllCourses();
 	}
+	
+	
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/findAllCoursesForAProf/{userId}")
+	public List<Course> findAllCoursesForAProfService(@PathParam("userId") int userId) {		
+		CourseDao courseDaoObj = CourseDao.getInstance();
+		return courseDaoObj.findAllCoursesForAProf(userId);
+	}
+	
+	
 
 	@PUT
 	@Produces(MediaType.APPLICATION_JSON)
