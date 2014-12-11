@@ -1,4 +1,5 @@
 <%@ include file="../common.jsp" %>
+<%@ include file="../check-login.jsp"%>
 
 
 <html>
@@ -38,7 +39,11 @@ $(document).ready(function(){
 				$.each(result, function(i, val){
 					$("#dd-course-list").append(
 							"<option id='course-" + val.courseId + "' value='"+val.courseId+"'>" + val.courseName + "</option>");
-				});				
+				});
+				
+				var id=id=$("#dd-course-list").children(":selected").attr("value");
+				findAllStudentsToBeElligibleToBecomeTa(id);
+				
 			},
 			failure : function () {
 				console.log("failed");
