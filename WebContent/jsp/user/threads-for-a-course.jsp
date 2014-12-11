@@ -286,6 +286,7 @@ function showNewPostContainer(){
 function hideNewPostContainer(){
 	$("#tbl-thread-desc").show();
 	$("#create-thread-form").hide();
+
 }
 
 function createThread(){
@@ -297,7 +298,9 @@ function createThread(){
 		contentType: "application/json",
 		success : function(result){
 			hideNewPostContainer();
-			loadAllThreadsByCourseId(result.courseId)
+			loadAllThreadsByCourseId(result.courseId);
+			$("#thread-title").val('');
+			$(".jqte_editor").html('');
 		},
 		failure : function(){
 			console.log("Error while saving Thread...");
@@ -315,6 +318,7 @@ function createTag(){
 		success : function(tag){
 			appendTag(tag.tagId, tag.tagText);
 			hideCreateTagContainer();
+	
 		},
 		failure : function(){
 			console.log("Error while saving Tag...");
@@ -528,7 +532,7 @@ function searchThread() {
 		url :  userServiceURl,
 	//	data: {"courseId":courseId, "keyword" : keyword, "userId" :userId},
 		dataType:"JSON",
-		contentType: "application/x-www-form-urlencoded",
+		contentType: "application/json",
 		success : function (result) { 
 			$("#tbl-all-threads").children().remove();
 			$("#tbl-all-threads").html('');
