@@ -27,7 +27,7 @@ import com.sun.xml.internal.ws.developer.MemberSubmissionAddressing;
 public class UserService {
 
 	// /com.lms.servic/jwsUserService/createUser
-
+/*
 	@Path("/createUser/{userName}/{password}/{firstName}/{lastName}/{email}/{dateOfBirth}")
 	public User createUserService(@PathParam("userName") String userName,
 			@PathParam("password") String password,
@@ -40,26 +40,21 @@ public class UserService {
 		UserDao userDaoObj = UserDao.getInstance();
 		userDaoObj.createUser(user);
 		return user;
-	}
+	}*/
 
-	@GET
-	@Path("/createUser/{userName}/{password}/{firstName}/{lastName}/{email}/{dateOfBirth}/{role}/{courses}")
-	public User createUserServiceWithRole(
-			@PathParam("userName") String userName,
-			@PathParam("password") String password,
-			@PathParam("firstName") String firstName,
-			@PathParam("lastName") String lastName,
-			@PathParam("email") String email,
-			@PathParam("dateOfBirth") String dateOfBirth,
-			@PathParam("role") String role, @PathParam("courses") String courses) {
-		User user = new User(userName, password, firstName, lastName, email,
-				new Date(), null);
+	@POST
+	@Path("/createUser")
+	public User createUserServiceWithRole(User user) {
+		user.setDateOfBirth(new Date());
+		List<UserCourseDetail> ucdList = user.getUserCourseDetail();
+		user.setUserCourseDetail(new ArrayList<UserCourseDetail>());
 		user = UserDao.getInstance().createUser(user);
-		List<UserCourseDetail> ucdList = new ArrayList<UserCourseDetail>();
-		for (String id : courses.split(",")) {
-			UserCourseDetail ucd = new UserCourseDetail(Integer.parseInt(id),
-					user.getUserId(), role);
-			ucdList.add(UserCourseDetailDao.getInstance().createUserCourseDetail(ucd));
+		System.out.println(user);
+		List<UserCourseDetail> ucdNewList = new ArrayList<UserCourseDetail>();
+		for (UserCourseDetail ucd : ucdList) {
+			UserCourseDetail ucdNew = new UserCourseDetail(ucd.getCourseId(),
+					user.getUserId(), ucd.getRoleName());
+			ucdNewList.add(UserCourseDetailDao.getInstance().createUserCourseDetail(ucdNew));
 		}
 		user.setUserCourseDetail(ucdList);
 		return user;
@@ -67,13 +62,13 @@ public class UserService {
 
 	// /com.lms.servic/jwsUserService/findUserByUserId
 
-	@Path("/findUserByUserId/{id}")
+	/*@Path("/findUserByUserId/{id}")
 	public User findUserByUserIdService(@PathParam("id") int id) {
 		User user = new User();
 		UserDao userDaoObj = UserDao.getInstance();
 		user = userDaoObj.findUserByUserId(id);
 		return user;
-	}
+	}*/
 
 	// /com.lms.servic/jwsUserService/deleteUser
 
@@ -85,7 +80,7 @@ public class UserService {
 		return userDaoObj.deleteUser(id);
 	}
 
-	@GET
+	@PUT
 	@Path("/updateUser/{userId}/{userName}/{password}/{firstName}/{lastName}/{email}/{dateOfBirth}/{role}/{courses}")
 	public User updateUserService(@PathParam("userId") int userId,
 			@PathParam("userName") String userName,
@@ -97,12 +92,14 @@ public class UserService {
 			@PathParam("role") String role, @PathParam("courses") String courses) {
 		UserDao userDaoObj = UserDao.getInstance();
 		User user = userDaoObj.findUserByUserId(userId);
+		System.out.println(user);
 		user.setFirstName(firstName);
 		user.setLastName(lastName);
 		user.setPassword(password);
 		user.setUserName(userName);
 		user.setEmail(email);
 		userDaoObj.updateUser(user);
+		System.out.println(user);
 		UserCourseDetailDao ucdDao = UserCourseDetailDao.getInstance();
 		ucdDao.deleteByUserIdAndRole(userId, role);
 		for (String id : courses.split(",")) {
@@ -175,7 +172,6 @@ public class UserService {
 
 		followerUserObj.setFollowedUsersList(usersWhoHaveAlreadyFollowedUsers);
 		return userDaoObj.updateUser(followerUserObj);
-		// return followerUserObj;
 	}
 
 	@PUT	

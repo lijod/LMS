@@ -72,13 +72,15 @@
 	
 	function populateUserDetailsFromJSON(userId){
 		$.each(userJson, function(i, val){
-			if(userId == val.userId){
-				populateuserDetail(val.firstName, val.lastName, val.userName, val.password, val.email, val.dateOfBirth);
-				clearCourseSelection();
-				$.each(val.userCourseDetail, function(j, ucdVal){
-					if(ucdVal.roleName.toLowerCase() == "professor")
-						$("#course-" + ucdVal.courseId).attr("selected", true);
-				});
+			if(val != null){
+				if(userId == val.userId){
+					populateuserDetail(val.firstName, val.lastName, val.userName, val.password, val.email, val.dateOfBirth);
+					clearCourseSelection();
+					$.each(val.userCourseDetail, function(j, ucdVal){
+						if(ucdVal.roleName.toLowerCase() == "professor")
+							$("#course-" + ucdVal.courseId).attr("selected", true);
+					});
+				}
 			}
 		});
 	}
@@ -98,9 +100,11 @@
 	
 	function createProfessor(){
 		$.ajax({
-			type : "GET",
+			type : "POST",
 			dataType : "json",
-			url :  userCreateServiceURL + getProfessorQueryString(),
+			url :  userCreateServiceURL,
+			data : JSON.stringify(getUserJson("PROFESSOR")),
+			contentType : "application/json",
 			success : function (result) {
 				console.log(result);
 				location.reload();
@@ -109,6 +113,18 @@
 				console.log("failed");
 			}
 		});
+	}
+	
+	function getUserJson(role){
+		return {
+			"userName" : $("#user-name").val(),
+			"password" : $("#password").val(),
+			"firstName" : $("#first-name").val(),
+			"lastName" : $("#last-name").val(),
+			"email" : $("#email").val(),
+			/*"dateOfBirth" : new Date(),*/
+			"userCourseDetail" : getuserCourseDetailJSON(role)
+		}
 	}
 	
 	function getProfessorQueryString(){
@@ -142,6 +158,19 @@
 		return toReturn;
 	}
 	
+	function getuserCourseDetailJSON(role){
+		var courseList = $("#course-list").val();
+		var toReturn = [];
+		if(courseList != null)
+			$.each(courseList, function (i, val){
+				toReturn.push({
+					"courseId" : val,
+					"roleName" : role,
+				});
+			});
+		return toReturn;
+	}
+	
 	function populateProfessorList(){
 		var profList = [];
 		$.ajax({
@@ -154,10 +183,12 @@
 				"<option class='form-control' id='add-new' value='ADD NEW'>ADD NEW</option>"); 
 				
 				$.each(result, function(i, val){
-					if(profList.indexOf(val.userId) == -1)
-						$("#prof-list").append(
-							"<option id='prof-" + val.userId + "'>" + val.lastName + ", " + val.firstName + "</option>");
-					profList.push(val.userId);
+					if(val != null){
+						if(profList.indexOf(val.userId) == -1)
+							$("#prof-list").append(
+								"<option id='prof-" + val.userId + "'>" + val.lastName + ", " + val.firstName + "</option>");
+						profList.push(val.userId);
+					}
 				});
 			},
 			failure : function () {
@@ -168,9 +199,10 @@
 	
 	function updateUserDetails(){
 		$.ajax({
-			type : "GET",
+			type : "PUT",
 			url :  userUpdateServiceURl + "/" + extractUserIdFromOptionId($("#prof-list")) + getProfessorQueryString(),
 			dataType : "json",
+			contentType : "application/json",
 			success : function (result) {
 				//userJson = result;
 				populateProfessorList();

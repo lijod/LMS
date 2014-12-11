@@ -1,6 +1,5 @@
 package com.lms.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -12,9 +11,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import com.lms.dao.UserCourseDetailDao;
-import com.lms.dao.UserDao;
-import com.lms.model.Post;
-import com.lms.model.Thread;
 import com.lms.model.User;
 import com.lms.model.UserCourseDetail;
 import com.lms.model.UserCourseRole;
@@ -39,7 +35,7 @@ public class UserCourseDetailService {
 	
 	// /com.lms.servic/jwsUserCourseDetailService/deleteUserCourseDetail
 
-	@Path("/deleteUserCourseDetail/{courseId}/{userId}/{roleName}")
+	/*@Path("/deleteUserCourseDetail/{courseId}/{userId}/{roleName}")
 	public Boolean deleteUserCourseDetailService(
 			@PathParam("courseId") int courseId,
 			@PathParam("userId") int userId,
@@ -47,7 +43,7 @@ public class UserCourseDetailService {
 		UserCourseDetailDao ucd = UserCourseDetailDao.getInstance();
 		return ucd.deleteUserCourseDetail(courseId, userId, roleName);
 	}
-
+*/
 	// /com.lms.servic/jwsUserCourseDetailService/findByUserId
 
 	@GET
@@ -59,11 +55,11 @@ public class UserCourseDetailService {
 	
 	// /com.lms.servic/jwsUserCourseDetailService/findByCourseId
 
-	@Path("/findByCourseId/{courseId}")
+	/*@Path("/findByCourseId/{courseId}")
 	public List<UserCourseDetail> findByCourseIdService(@PathParam("courseId") int courseId) {
 		UserCourseDetailDao ucd = UserCourseDetailDao.getInstance();
 		return ucd.findByUserId(courseId);
-	}
+	}*/
 	
 	@GET
 	@Path("/findUserByRole/{role}")

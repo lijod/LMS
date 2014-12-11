@@ -264,10 +264,10 @@ public class User implements Serializable {
 				+ ", password=" + password + ", firstName=" + firstName
 				+ ", lastName=" + lastName + ", email=" + email
 				+ ", dateOfBirth=" + dateOfBirth + ", userCourseDetail="
-				+ userCourseDetail.size() + ", posts=" + posts.size() + ", likedPosts="
-				+ likedPosts.size() + ", favThreads=" + favThreads.size() + ", threads="
-				+ threads.size() + ", followersUsersList=" + followersUsersList.size()
-				+ ", followedUsersList=" + followedUsersList.size() + "]";
+				+ (userCourseDetail !=null? userCourseDetail.size() : 0) + ", posts=" + (posts != null ? posts.size() : null) + ", likedPosts="
+				+ (likedPosts != null ? likedPosts.size() : 0) + ", favThreads=" + (favThreads != null ? favThreads.size() : 0 )+ ", threads="
+				+ (threads != null ? threads.size() : 0) + ", followersUsersList=" + (followersUsersList != null ? followersUsersList.size() : 0)
+				+ ", followedUsersList=" + (followedUsersList != null ? followedUsersList.size() : 0) + "]";
 	}
 
 

@@ -12,8 +12,8 @@ import com.lms.model.UserCourseDetailPK;
 
 public class UserCourseDetailDao {
 
-	EntityManagerFactory emf = Persistence.createEntityManagerFactory("LMS");
-	EntityManager em = null;
+	static EntityManagerFactory emf = Persistence.createEntityManagerFactory("LMS");
+	static EntityManager em = null;
 	private UserCourseDetailDao() {
 		em = emf.createEntityManager();
 	}
@@ -24,6 +24,9 @@ public class UserCourseDetailDao {
 		if(_instance == null){
 			_instance = new UserCourseDetailDao();
 		}
+		if(em != null)
+			em.close();
+		em = emf.createEntityManager();
 		return _instance;
 	}
 	
